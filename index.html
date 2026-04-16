@@ -47,10 +47,6 @@ input::placeholder,textarea::placeholder{color:var(--t3);-webkit-text-fill-color
 .nav-inner{max-width:700px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .nav-logo{font-size:17px;font-weight:900;letter-spacing:-.6px;white-space:nowrap;cursor:pointer;flex-shrink:0}
 .nav-logo em{font-style:normal;color:var(--blue)}
-.seg{display:flex;background:var(--bg2);border-radius:11px;padding:3px;gap:1px;overflow-x:auto;scrollbar-width:none;flex:1}
-.seg::-webkit-scrollbar{display:none}
-.seg-btn{flex:1;padding:5px 8px;border-radius:8px;border:none;background:none;font-size:11.5px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .2s;white-space:nowrap;min-width:0}
-.seg-btn.active{background:var(--card);color:var(--t1);box-shadow:var(--sh-s)}
 .lang-btn{border:none;background:none;cursor:pointer;font-size:16px;padding:4px;flex-shrink:0}
  
 .main{max-width:700px;margin:0 auto;padding:18px 14px 110px}
@@ -62,12 +58,9 @@ input::placeholder,textarea::placeholder{color:var(--t3);-webkit-text-fill-color
 .loc-grid{display:flex;flex-wrap:wrap;gap:7px}
 .loc-pill{flex:1;min-width:72px;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh-s);border:1.5px solid transparent;padding:12px 6px 10px;text-align:center;cursor:pointer;transition:all .22s cubic-bezier(.34,1.2,.64,1);position:relative}
 .loc-pill:hover{transform:translateY(-1px);box-shadow:var(--sh)}
-.loc-pill.active{border-color:var(--blue);background:var(--bl);transform:translateY(-1px)}
-.loc-pill.reform.active{border-color:var(--purple);background:var(--pl)}
+.loc-pill.active{transform:translateY(-1px);box-shadow:var(--sh)}
 .lp-icon{font-size:17px;line-height:1;margin-bottom:3px}
 .lp-name{font-size:9.5px;font-weight:700;color:var(--t2);line-height:1.2}
-.loc-pill.active .lp-name{color:var(--blue)}
-.loc-pill.reform.active .lp-name{color:var(--purple)}
 .reform-badge{position:absolute;top:3px;right:3px;font-size:7px;font-weight:800;background:var(--purple);color:white;border-radius:4px;padding:1px 3px}
  
 /* DATE FIELD */
@@ -425,22 +418,89 @@ textarea.cf-input{resize:none;height:80px;line-height:1.5}
 .cf-save{flex:2;padding:14px;border:none;border-radius:var(--r-lg);background:var(--blue);color:white;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,.3)}
 .cf-del{flex:1;padding:14px;border:none;border-radius:var(--r-lg);background:var(--rl);color:var(--red);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer}
 .cf-cancel{flex:1;padding:14px;border:none;border-radius:var(--r-lg);background:var(--bg2);color:var(--t2);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer}
+ 
+/* ══ BOTTOM TAB BAR ══ */
+.tab-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:95;
+  display:flex;align-items:stretch;
+  background:rgba(250,250,252,.92);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-top:1px solid var(--sep);
+  padding-bottom:env(safe-area-inset-bottom);
+  height:calc(56px + env(safe-area-inset-bottom));
+}
+@media(prefers-color-scheme:dark){
+  .tab-bar{background:rgba(15,15,18,.93);}
+}
+.tab-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;border:none;background:none;cursor:pointer;padding:6px 2px 4px;
+  color:var(--t3);transition:color .15s,transform .12s cubic-bezier(.34,1.3,.64,1);
+  -webkit-user-select:none;user-select:none;
+}
+.tab-btn:active{transform:scale(.88)}
+.tab-btn.active{color:var(--blue)}
+.tab-icon{font-size:20px;line-height:1;display:block}
+.tab-lbl{font-size:10px;font-weight:600;letter-spacing:-.2px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60px}
+/* adjust main padding for bottom bar */
+.main{padding-bottom:calc(72px + env(safe-area-inset-bottom))!important}
+ 
+/* Emoji picker */
+.emoji-picker-ov{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.45);backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s}
+.emoji-picker-ov.open{opacity:1;pointer-events:all}
+.emoji-picker-box{background:var(--card);border-radius:26px 26px 0 0;width:100%;max-width:500px;padding:16px 16px calc(env(safe-area-inset-bottom)+16px);max-height:60vh;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);box-shadow:var(--sh-xl)}
+.emoji-picker-ov.open .emoji-picker-box{transform:translateY(0)}
+.emoji-picker-title{text-align:center;font-size:12px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;overflow-y:auto;max-height:calc(60vh - 80px)}
+.emoji-btn{border:none;background:none;font-size:24px;padding:6px;border-radius:10px;cursor:pointer;transition:background .12s,transform .12s cubic-bezier(.34,1.3,.64,1);aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.emoji-btn:hover{background:var(--bg2)}
+.emoji-btn:active{transform:scale(.85);background:var(--bl)}
+.emoji-btn.selected{background:var(--bl);outline:2px solid var(--blue)}
+ 
+/* Pct slider sheet */
+.pct-display{text-align:center;padding:20px 20px 10px;background:#1c1c1e}
+.pct-big{font-size:72px;font-weight:200;letter-spacing:-4px;color:#fff;line-height:1}
+.pct-unit{font-size:24px;font-weight:300;color:#8e8e93}
+.pct-slider-wrap{padding:0 24px 8px;background:#1c1c1e}
+input.pct-range{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;outline:none;cursor:pointer;background:linear-gradient(to right,#ff9f0a 0%,#ff9f0a var(--pct-fill,45%),#3a3a3c var(--pct-fill,45%),#3a3a3c 100%)}
+input.pct-range::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:grab}
+input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#fff;border:none;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.pct-presets{display:flex;gap:8px;padding:0 20px 12px;background:#1c1c1e;justify-content:center}
+.pct-preset{padding:8px 16px;border:none;border-radius:20px;background:#2c2c2e;color:#8e8e93;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.pct-preset.on{background:#ff9f0a;color:#000}
 </style>
 </head>
 <body>
 <nav class="nav">
   <div class="nav-inner">
     <div class="nav-logo" id="nav-logo" onclick="editAppName()">Barber<em>.</em></div>
-    <div class="seg">
-      <button class="seg-btn active" onclick="showTab('entry')" id="tb-entry"></button>
-      <button class="seg-btn" onclick="showTab('stats')" id="tb-stats"></button>
-      <button class="seg-btn" onclick="showTab('invoice')" id="tb-invoice"></button>
-      <button class="seg-btn" onclick="showTab('clients')" id="tb-clients"></button>
-      <button class="seg-btn" onclick="showTab('settings')" id="tb-settings"></button>
-    </div>
-    <button class="lang-btn" onclick="cycleLang()" title="PL/RU">🌐</button>
+    <button class="lang-btn" onclick="cycleLang()" title="PL/RU/EN">🌐</button>
   </div>
 </nav>
+<!-- BOTTOM TAB BAR -->
+<div class="tab-bar" id="tab-bar">
+  <button class="tab-btn active" onclick="showTab('entry')" id="tb-entry">
+    <span class="tab-icon">✏️</span>
+    <span class="tab-lbl" id="tb-entry-lbl"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('stats')" id="tb-stats">
+    <span class="tab-icon">📊</span>
+    <span class="tab-lbl" id="tb-stats-lbl"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('invoice')" id="tb-invoice">
+    <span class="tab-icon">🧾</span>
+    <span class="tab-lbl" id="tb-invoice-lbl"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('clients')" id="tb-clients">
+    <span class="tab-icon">👤</span>
+    <span class="tab-lbl" id="tb-clients-lbl"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('settings')" id="tb-settings">
+    <span class="tab-icon">⚙️</span>
+    <span class="tab-lbl" id="tb-settings-lbl"></span>
+  </button>
+</div>
  
 <div class="main">
 <div id="tab-entry">
@@ -555,15 +615,7 @@ textarea.cf-input{resize:none;height:80px;line-height:1.5}
   <div class="slabel" id="sl-setloc"></div>
   <div class="set-wrap" id="loc-set-list"></div>
   <button class="add-loc-btn" id="add-loc-btn" onclick="addLoc()"></button>
-  <div class="slabel" id="sl-setreform" style="margin-top:20px"></div>
-  <div class="set-wrap">
-    <div class="set-row">
-      <div class="set-l"><div class="set-icon" style="background:var(--pl)">🏠</div>
-        <div><div class="set-lbl" id="sl-reform-title"></div><div class="set-sub" id="sl-reform-sub"></div></div>
-      </div>
-      <label class="ios-toggle"><input type="checkbox" id="reform-chk" checked onchange="saveSettings()"><span class="ios-slider"></span></label>
-    </div>
-  </div>
+  <div class="slabel" id="sl-setdata" style="margin-top:20px"></div>
   <div class="slabel" id="sl-setdata" style="margin-top:20px"></div>
   <div class="set-wrap">
     <div class="set-row">
@@ -619,6 +671,13 @@ textarea.cf-input{resize:none;height:80px;line-height:1.5}
 </div>
  
 <div class="toast" id="toast"></div>
+<!-- EMOJI PICKER -->
+<div class="emoji-picker-ov" id="emoji-picker-ov" onclick="closeEmojiPicker(event)">
+  <div class="emoji-picker-box" id="emoji-picker-box">
+    <div class="emoji-picker-title" id="emoji-picker-title">Wybierz ikonę</div>
+    <div class="emoji-grid" id="emoji-grid"></div>
+  </div>
+</div>
  
 <script>
 /* ══ PRE-LOADED DATA (backup 2026-04-02) ══ */
@@ -663,7 +722,7 @@ function hap(type){
 }
 // Add haptic to all interactive elements
 document.addEventListener('touchstart',e=>{
-  const t=e.target.closest('button,.loc-pill,.frow,.cd,.pm,.mnav-btn,.cal-nav,.seg-btn,.ck,.ck-zero,.ck-sm,.ck-done,.drum-ok,.drum-cancel,.copy-btn,.save-btn,.m-edit-btn,.m-del-btn');
+  const t=e.target.closest('button,.loc-pill,.frow,.cd,.pm,.mnav-btn,.cal-nav,.tab-btn,.ck,.ck-zero,.ck-sm,.ck-done,.drum-ok,.drum-cancel,.copy-btn,.save-btn,.m-edit-btn,.m-del-btn');
   if(t)hap('light');
 },{passive:true});
  
@@ -684,7 +743,7 @@ pl:{
   byloc:'Według lokalizacji',entries:'Wpisy',mchart:'Miesięczny wykres',
   noData:'Brak danych',noEntries:'Brak wpisów w tym miesiącu',
   toInvoice:'Do faktury',toInvoiceNoRef:'Do faktury (bez Reform)',
-  reformSep:'Oddziel Reform od sumy',reformSepSub:'Reform nie wlicza się do faktury głównej',
+  reformSep:'Oddziel lokacje oznaczone ★ od faktury',reformSepSub:'Lokacje ★ liczą się jako dochód osobisty, nie do faktury',
   setLoc:'Lokalizacje',setReform:'Reform -- Mój salon',setData:'Dane',
   export:'Eksportuj',exportSub:'Pobierz kopię zapasową JSON',
   import:'Importuj',importSub:'Przywróć z kopii zapasowej',
@@ -718,7 +777,7 @@ ru:{
   byloc:'По локациям',entries:'Записи',mchart:'По месяцам',
   noData:'Нет данных',noEntries:'Нет записей за этот месяц',
   toInvoice:'К фактуре',toInvoiceNoRef:'К фактуре (без Reform)',
-  reformSep:'Отделить Reform от суммы',reformSepSub:'Reform не входит в общую фактуру',
+  reformSep:'Отделять локации ★ от фактуры',reformSepSub:'Локации ★ — личный доход, не входят в фактуру',
   setLoc:'Локации',setReform:'Reform -- Мой салон',setData:'Данные',
   export:'Экспорт',exportSub:'Скачать резервную копию JSON',
   import:'Импорт',importSub:'Восстановить из копии',
@@ -738,7 +797,42 @@ ru:{
   monthsShort:['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
   dows:['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
   installTxt:`<p style="margin-bottom:9px"><strong style="color:var(--t1)">📱 iPhone / iPad (Safari):</strong></p><p style="margin-bottom:5px">1. Открой файл в Safari</p><p style="margin-bottom:5px">2. Нажми <strong>Поделиться</strong> ↑</p><p style="margin-bottom:5px">3. Выбери <strong>«На экран «Домой»»</strong></p><p style="margin-bottom:12px">4. Назови → <strong>Добавить</strong> ✅</p><p style="margin-bottom:9px"><strong style="color:var(--t1)">💻 Mac:</strong></p><p style="margin-bottom:12px">Safari: <strong>Файл → Добавить в Dock</strong></p><div style="background:var(--bl);border-radius:11px;padding:11px;border-left:3px solid var(--blue)"><p style="color:var(--blue);font-weight:800;font-size:12.5px">💡 Где данные?</p><p style="font-size:12.5px;margin-top:3px">Данные в браузере. Регулярно делай экспорт JSON → сохраняй в iCloud Drive.</p></div>`,
-}};
+},
+en:{
+  tabs:['Entry','Stats','Invoice','Clients','Settings'],
+  loc:'Location',date:'Date',data:'Data',summary:'Day summary',pickDate:'Pick date',
+  fields:['Hours','Clients','Revenue','My %','Tips (card)','Tips (cash)','Vouchers','Discounts','Notes'],
+  units:['h','','zł','%','zł','zł','pcs','zł',''],
+  save:'Save',saveEdit:'Save changes',editMode:'Editing',wipe:'Delete',cancel:'Cancel',
+  mypct:'My %',tips:'Tips',total:'Total',revenue:'Revenue',clients:'Clients',
+  workdays:'Work days',hours:'Hours',avgDay:'Avg/day',turnover:'Total revenue',
+  period:['Month','Year','All','Chart'],
+  byloc:'By location',entries:'Entries',mchart:'Monthly chart',
+  noData:'No data',noEntries:'No entries this month',
+  toInvoice:'Invoice',toInvoiceNoRef:'Invoice (excl. ★)',
+  reformSep:'Separate ★ locations from invoice',reformSepSub:'★ locations count as personal income',
+  setLoc:'Locations',setReform:'Personal income',setData:'Data',
+  export:'Export',exportSub:'Download JSON backup',
+  import:'Import',importSub:'Restore from backup',
+  delAll:'Delete data',delAllSub:'Irreversible!',
+  addLoc:'+ Add location',install:'Install on Apple device',
+  invTitle:'Invoice',doInvoice:'TO INVOICE',
+  allTotal:'Total',notes:'Notes',close:'Close',done:'OK',
+  calcTitle:'Calculator',drumTitle:'Choose',
+  saved:'✓ Saved',updated:'✓ Updated',deleted:'Entry deleted',
+  locDeleted:'Deleted',imported:'Data imported ✓',importErr:'Import error',
+  minLoc:'Minimum 1 location',selectDate:'Select date',
+  confirmDel:'Delete entry?',confirmDelLoc:'Delete "%s"?',
+  confirmClear:'Delete ALL data?',confirmClear2:'Last warning!',
+  edit:'✏️ Edit',delete:'Delete',reformToggle:'★',reformUntoggle:'☆',
+  vouchers:'Vouchers',vouchersUnit:'pcs',
+  tipsCash:'Cash tips',tipsCashShort:'Cash',
+  monthsFull:['January','February','March','April','May','June','July','August','September','October','November','December'],
+  monthsShort:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  dows:['Mo','Tu','We','Th','Fr','Sa','Su'],
+  installTxt:`<p style="margin-bottom:9px"><strong style="color:var(--t1)">📱 iPhone / iPad (Safari):</strong></p><p style="margin-bottom:5px">1. Open this file in Safari</p><p style="margin-bottom:5px">2. Tap <strong>Share</strong> ↑</p><p style="margin-bottom:5px">3. Select <strong>"Add to Home Screen"</strong></p><p style="margin-bottom:12px">4. Name it → <strong>Add</strong> ✅</p><p style="margin-bottom:9px"><strong style="color:var(--t1)">💻 Mac:</strong></p><p style="margin-bottom:12px">Safari: <strong>File → Add to Dock</strong></p><div style="background:var(--bl);border-radius:11px;padding:11px;border-left:3px solid var(--blue)"><p style="color:var(--blue);font-weight:800;font-size:12.5px">💡 Where is my data?</p><p style="font-size:12.5px;margin-top:3px">Data is stored in your browser. Regularly export JSON → save to iCloud Drive.</p></div>`,
+}
+};
  
 const PRESET_COLORS=['#2563eb','#16a34a','#ea580c','#7c3aed','#0891b2','#be185d','#b45309','#374151','#dc2626','#0d9488'];
 const LOC_ICONS_DEF=['⚡','🏭','🏙️','🏠','✂️','💈','🪒','🏪','⭐','🔥'];
@@ -782,12 +876,17 @@ function saveAll(){
 }
 function saveSettings(){settings.reformSeparate=document.getElementById('reform-chk').checked;saveAll();renderStats();renderInvoice();showToast(T.saved)}
  
-function cycleLang(){lang=lang==='pl'?'ru':'pl';T=TR[lang];applyLang();saveAll();renderLocGrid();renderStats();renderInvoice();renderLocSettings()}
+function cycleLang(){
+  lang=lang==='pl'?'ru':lang==='ru'?'en':'pl';
+  T=TR[lang];applyLang();saveAll();renderLocGrid();renderStats();renderInvoice();renderLocSettings();
+}
 function st(id,txt){const e=document.getElementById(id);if(e)e.textContent=txt}
 function applyLang(){
   document.title=appName+' Stats';
   document.getElementById('nav-logo').innerHTML=appName+'<em>.</em>';
-  st('tb-entry',T.tabs[0]);st('tb-stats',T.tabs[1]);st('tb-invoice',T.tabs[2]);st('tb-clients',T.tabs[3]);st('tb-settings',T.tabs[4]);
+  // Bottom tab labels
+  st('tb-entry-lbl',T.tabs[0]);st('tb-stats-lbl',T.tabs[1]);st('tb-invoice-lbl',T.tabs[2]);
+  st('tb-clients-lbl',T.tabs[3]);st('tb-settings-lbl',T.tabs[4]);
   st('sl-loc',T.loc);st('sl-date',T.date);st('sl-data',T.data);st('sl-summary',T.summary);
   st('df-lbl',T.pickDate);
   st('pv-l1',T.mypct);st('pv-l2',T.tips);st('pv-l3',T.total);
@@ -844,10 +943,49 @@ function renderFormGroup(){
  
 function openField(k){
   if(k==='revenue'||k==='tips'||k==='tipsCash'||k==='discounts') openCalc(k);
-  else if(k==='pct') openDrum(k,1,100,curPct,1,'%');
-  else if(k==='hours') openNumInput(k,fVals.hours||0,'h',0,24,0.5);
-  else if(k==='clients') openNumInput(k,fVals.clients||0,'',0,999,1);
-  else if(k==='vouchers') openNumInput(k,fVals.vouchers||0,T.vouchersUnit,0,999,1);
+  else if(k==='pct') openPctSlider();
+  else if(k==='hours') openNativeNum(k,fVals.hours||0,'h',0,24,0.5);
+  else if(k==='clients') openNativeNum(k,fVals.clients||0,'',0,999,1);
+  else if(k==='vouchers') openNativeNum(k,fVals.vouchers||0,T.vouchersUnit,0,999,1);
+}
+ 
+function openNativeNum(key,current,unit,min,max,step){
+  const isFloat=(step<1);
+  const lbl=T.fields[['hours','clients','revenue','pct','tips','tipsCash','vouchers','discounts','notes'].indexOf(key)];
+  document.getElementById('sheet-title').textContent=lbl;
+  const sb=document.getElementById('sheet-body');
+  sb.innerHTML=`
+    <div style="background:#1c1c1e;padding:20px 20px 8px">
+      <div style="font-size:13px;color:#8e8e93;text-align:center;margin-bottom:12px">${lbl}${unit?' ('+unit+')':''}</div>
+      <input id="nni-inp" type="number" inputmode="${isFloat?'decimal':'numeric'}"
+        min="${min}" max="${max}" step="${step}" value="${current||''}"
+        style="width:100%;border:none;outline:none;background:#2c2c2e;border-radius:14px;
+          padding:14px 18px;font-family:inherit;font-size:28px;font-weight:300;
+          color:#fff;-webkit-text-fill-color:#fff;text-align:center;-webkit-appearance:none;"
+        placeholder="0"
+        oninput="nniUpdate(this.value)">
+    </div>
+    <div style="display:flex;gap:10px;padding:12px 16px 8px;background:#1c1c1e;">
+      <button onclick="closeSheet()" style="flex:1;padding:14px;border:none;border-radius:14px;background:#2c2c2e;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:#8e8e93;">${T.cancel}</button>
+      <button onclick="nniDone()" style="flex:2;padding:14px;border:none;border-radius:14px;background:var(--blue);color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">✓ ${T.done}</button>
+    </div>`;
+  window._nniKey=key;window._nniMax=max;window._nniFloat=isFloat;window._nniStep=step;
+  openSheet();
+  setTimeout(()=>{const inp=document.getElementById('nni-inp');if(inp){inp.focus();inp.select();}},350);
+}
+function nniUpdate(v){/* live preview if needed */}
+function nniDone(){
+  const inp=document.getElementById('nni-inp');
+  let v=parseFloat(inp?.value)||0;
+  v=Math.max(0,Math.min(window._nniMax,v));
+  if(!window._nniFloat)v=Math.round(v);
+  else{
+    // round to nearest step
+    const s=window._nniStep||1;
+    v=Math.round(v/s)*s;
+    v=Math.round(v*1e6)/1e6;
+  }
+  setFval(window._nniKey,v);closeSheet();
 }
  
 function openNumInput(key,current,unit,min,max,step){
@@ -1322,9 +1460,18 @@ function setupSheetSwipe(){
 /* ══ TABS ══ */
 function showTab(id){
   ['entry','stats','invoice','clients','settings'].forEach(t=>{document.getElementById('tab-'+t).style.display=(t===id)?'':'none'});
-  document.querySelectorAll('.seg-btn').forEach((b,i)=>{b.classList.toggle('active',['entry','stats','invoice','clients','settings'][i]===id)});
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',['entry','stats','invoice','clients','settings'][i]===id)});
   if(id==='stats')renderStats();if(id==='invoice')renderInvoice();
-  if(id==='clients'){renderClientList();setTimeout(()=>{const s=document.getElementById('cl-search');if(s)s.placeholder=lang==='pl'?'Szukaj po imieniu, nazwisku lub telefonie…':'Поиск по имени, фамилии или телефону…'},50)}
+  if(id==='clients'){
+    renderClientList();
+    const fab=document.getElementById('cl-fab');if(fab)fab.style.display='flex';
+    setTimeout(()=>{
+      const s=document.getElementById('cl-search');
+      if(s)s.placeholder=lang==='pl'?'Szukaj po imieniu, nazwisku lub telefonie…':'Поиск по имени, фамилии или телефону…';
+    },50);
+  } else {
+    const fab=document.getElementById('cl-fab');if(fab)fab.style.display='none';
+  }
   if(id==='settings'){renderLocSettings();const chk=document.getElementById('reform-chk');if(chk)chk.checked=settings.reformSeparate}
   if(id!=='entry')closeCal();
 }
@@ -1333,16 +1480,25 @@ function showTab(id){
 function renderLocGrid(){
   const g=document.getElementById('loc-grid');if(!g)return;
   g.innerHTML=locs.map((l,i)=>`
-    <div class="loc-pill${l.isReform?' reform':''}${i===curLoc?' active':''}" onclick="selLoc(${i})">
-      ${l.isReform?'<div class="reform-badge">MY</div>':''}
+    <div class="loc-pill${i===curLoc?' active':''}" id="lpill-${i}" onclick="selLoc(${i})"
+      style="${i===curLoc?'border-color:'+l.color+';background:'+hexAlphaJS(l.color,.13)+';':''} ">
+      ${l.isReform?'<div class="reform-badge" style="background:'+l.color+'">MY</div>':''}
       <div class="lp-icon">${l.icon}</div>
-      <div class="lp-name">${l.name}</div>
+      <div class="lp-name" style="color:${i===curLoc?l.color:'var(--t2)'}">${l.name}</div>
     </div>`).join('');
   updPrevColor();
 }
 function selLoc(i){
   hap('light');curLoc=i;
-  document.querySelectorAll('.loc-pill').forEach((p,j)=>p.classList.toggle('active',j===i));
+  // Update all pills: set active state + colors inline
+  document.querySelectorAll('.loc-pill').forEach((p,j)=>{
+    const l=locs[j];if(!l)return;
+    p.classList.toggle('active',j===i);
+    p.style.borderColor=j===i?l.color:'transparent';
+    p.style.background=j===i?hexAlphaJS(l.color,.13):'';
+    const nm=p.querySelector('.lp-name');
+    if(nm)nm.style.color=j===i?l.color:'var(--t2)';
+  });
   updPrevColor();
  
   // When switching loc (with or without editId), check if there's an existing entry
@@ -1376,7 +1532,11 @@ function selLoc(i){
  
   if(!editId){curPct=locs[i]&&locs[i].isReform?40:45;fVals.pct=curPct;renderFormGroup()}
 }
-function updPrevColor(){const isR=locs[curLoc]&&locs[curLoc].isReform;const el=document.getElementById('pv-tot');if(el)el.className='pv-val '+(isR?'cp':'cg')}
+function updPrevColor(){
+  const loc=locs[curLoc];
+  const el=document.getElementById('pv-tot');
+  if(el){el.className='pv-val';el.style.color=loc?loc.color:'var(--green)'}
+}
  
 /* ══ CALENDAR ══ */
 function toggleCal(){calOpen=!calOpen;document.getElementById('cal-drop').classList.toggle('open',calOpen);document.getElementById('df').classList.toggle('open',calOpen)}
@@ -1624,10 +1784,13 @@ function renderMonthStats(){
   const rTot=sep?S(re,'total'):0,rR=sep?S(re,'revenue'):0,rCl=sep?S(re,'clients'):0;
   const reformCard=sep&&re.length?`<div class="sc hero-p full" style="margin-top:4px"><div style="font-size:10px;font-weight:800;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Reform</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0"><div><div class="sc-val" style="font-size:18px">${fmt(rTot)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.6)">${T.toInvoice}</div></div><div><div class="sc-val" style="font-size:18px">${fmt(rR)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.6)">${T.revenue}</div></div><div><div class="sc-val" style="font-size:18px">${rCl}</div><div class="sc-lbl" style="color:rgba(255,255,255,.6)">${T.clients}</div></div></div></div>`:'';
   const tTC=S(ents,'tipsCash');
+  // Personal total = ALL locs (incl ★) + cash tips
+  const allMonthEnts=mEnts(stM,false);
+  const tPersonal=S(allMonthEnts,'myPctAmt')+S(allMonthEnts,'tips')+S(allMonthEnts,'tipsCash');
   const tReal=tTot+tTC;
   document.getElementById('stats-grid').innerHTML=`
-    <div class="sc hero full"><div class="sc-val">${fmt(tTot)} zł</div><div class="sc-lbl">${T.toInvoice}${sep?' (bez Reform)':''}</div></div>
-    ${tTC>0?`<div class="sc full" style="background:linear-gradient(135deg,#15803d,#16a34a,#22c55e)"><div class="sc-val" style="color:white">${fmt(tReal)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.75)">${lang==='pl'?'Mój realny dochód (faktura + gotówka)':'Мой реальный доход (факт. + нал.)'}</div></div>`:''}
+    <div class="sc hero full"><div class="sc-val">${fmt(tTot)} zł</div><div class="sc-lbl">${T.toInvoice}${sep?' — lokacje do faktury':''}</div></div>
+    ${sep?`<div class="sc full" style="background:linear-gradient(135deg,#15803d,#16a34a,#22c55e)"><div class="sc-val" style="color:white">${fmt(tPersonal)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.75)">${lang==='pl'?'💰 Mój łączny dochód (wszystkie lokacje)':'💰 Мой общий доход (все локации)'}</div></div>`:(tTC>0?`<div class="sc full" style="background:linear-gradient(135deg,#15803d,#16a34a,#22c55e)"><div class="sc-val" style="color:white">${fmt(tReal)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.75)">${lang==='pl'?'Mój realny dochód':'Мой реальный доход'}</div></div>`:'')}
     <div class="sc"><div class="sc-val cb">${fmt(tR)} zł</div><div class="sc-lbl">${T.revenue}</div></div>
     <div class="sc"><div class="sc-val cb">${fmt(tP)} zł</div><div class="sc-lbl">${T.mypct}</div></div>
     <div class="sc"><div class="sc-val">${fmt(tT)} zł</div><div class="sc-lbl">${T.fields[4]}</div></div>
@@ -1643,7 +1806,7 @@ function renderMonthStats(){
   const el=document.getElementById('entries-list');
   if(!allE.length){el.innerHTML=`<div class="empty"><div class="empty-icon">✂️</div><div class="empty-txt">${T.noEntries}</div></div>`;return}
   el.innerHTML=`<div class="etbl-hdr"><span>Data</span><span>Lok.</span><span style="text-align:right">${T.revenue}</span><span style="text-align:right">${T.total}</span><span style="text-align:right">Kl.</span></div>`
-    +[...allE].reverse().map(e=>{const l=getLocById(e.locId)||{color:'#888',name:'?',icon:''};return`<div class="erow" onclick="showEntry(${e.id})"><div class="er-date">${fmtD(e.date)}</div><div class="er-loc"><span style="width:7px;height:7px;border-radius:50%;background:${l.color};display:inline-block;flex-shrink:0"></span>${l.name.split(' ')[0]}</div><div class="er-num">${fmt(e.revenue)}</div><div class="er-num ${e.isReform?'p':'g'}">${fmt(e.total)}</div><div class="er-cl">${e.clients}</div></div>`}).join('');
+    +[...allE].reverse().map(e=>{const l=getLocById(e.locId)||{color:'#888',name:'?',icon:''};return`<div class="erow" onclick="showEntry(${e.id})"><div class="er-date">${fmtD(e.date)}</div><div class="er-loc"><span style="width:7px;height:7px;border-radius:50%;background:${l.color};display:inline-block;flex-shrink:0"></span>${l.name.split(' ')[0]}</div><div class="er-num">${fmt(e.revenue)}</div><div class="er-num" style="color:${l.color}">${fmt(e.total)}</div><div class="er-cl">${e.clients}</div></div>`}).join('');
 }
  
 function renderYearStats(){
@@ -1692,7 +1855,7 @@ function renderAllStats(){
     const re=sep?entries.filter(e=>e.date.startsWith(y)&&isReal(e)&&e.isReform):[];
     const mT=Array.from({length:12},(_,i)=>S(ye.filter(e=>e.date.startsWith(`${y}-${p2(i+1)}`)),'total'));
     h+=`<div class="slabel">${y}</div><div class="sg" style="margin-bottom:8px">
-      <div class="sc hero full"><div class="sc-val">${fmt(S(ye,'total'))} zł</div><div class="sc-lbl">${T.allTotal} ${y}${sep?' (bez Reform)':''}</div></div>
+      <div class="sc hero full"><div class="sc-val">${fmt(S(ye,'total'))} zł</div><div class="sc-lbl">${T.allTotal} ${y}${sep?' — do faktury':''}</div></div>
       <div class="sc"><div class="sc-val cb">${fmt(S(ye,'revenue'))} zł</div><div class="sc-lbl">${T.revenue}</div></div>
       <div class="sc"><div class="sc-val cb">${fmt(S(ye,'myPctAmt'))} zł</div><div class="sc-lbl">${T.mypct}</div></div>
       <div class="sc"><div class="sc-val">${fmt(S(ye,'tips'))} zł</div><div class="sc-lbl">${T.tips}</div></div>
@@ -1936,13 +2099,22 @@ function renderLocSettings(){
   st('add-loc-btn',T.addLoc);
   const list=document.getElementById('loc-set-list');if(!list)return;
   list.innerHTML=locs.map((l,i)=>`
-    <div class="loc-set-item" id="lsi-${i}">
+    <div class="loc-set-item" id="lsi-${i}" style="flex-direction:column;align-items:stretch;gap:0;padding:0">
       <div class="loc-del-bg" onclick="deleteLoc(${i})">🗑</div>
-      <div class="loc-drag-handle" id="ldh-${i}" title="Hold to drag">⠿</div>
-      <div class="loc-color-btn" style="background:${l.color}" onclick="openColorPicker(${i},this)"></div>
-      <input class="loc-name-input" value="${l.name}" onchange="renameLoc(${i},this.value)" ${l.isReform?`style="color:var(--purple);-webkit-text-fill-color:var(--purple)"`:''}/>
-      <button class="loc-reform-toggle${l.isReform?' on':''}" onclick="toggleReform(${i})">${l.isReform?'★':'☆'}</button>
-      <button class="loc-del" onclick="deleteLoc(${i})">✕</button>
+      <div style="display:flex;align-items:center;gap:7px;padding:10px 15px">
+        <div class="loc-drag-handle" id="ldh-${i}">⠿</div>
+        <div class="loc-color-btn" style="background:${l.color}" onclick="openColorPicker(${i},this)"></div>
+        <button onclick="openEmojiPicker(${i})" style="width:32px;height:32px;border:1.5px solid var(--sep);border-radius:8px;background:var(--bg2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">${l.icon}</button>
+        <input class="loc-name-input" value="${l.name}" onchange="renameLoc(${i},this.value)" style="color:${l.color};-webkit-text-fill-color:${l.color}"/>
+        <button class="loc-del" onclick="deleteLoc(${i})">✕</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px 9px 42px;border-top:1px solid var(--sep2)">
+        <span style="font-size:11.5px;color:var(--t2);font-weight:500">${lang==='pl'?'Separate from invoice':lang==='ru'?'Отдельно от фактуры':'Separate from invoice'}</span>
+        <label class="ios-toggle" style="transform:scale(.82);transform-origin:right center">
+          <input type="checkbox" ${l.isReform?'checked':''} onchange="toggleReform(${i})">
+          <span class="ios-slider" style="${l.isReform?'background:'+l.color:''}"></span>
+        </label>
+      </div>
     </div>`).join('');
   setTimeout(initLocDrag,50);
   setTimeout(initLocSwipeDelete,60);
@@ -2087,7 +2259,7 @@ function addLoc(){
     </div>
     <div style="display:flex;gap:10px;padding:8px 16px 16px;">
       <button onclick="closeSheet()" style="flex:1;padding:13px;border:none;border-radius:14px;background:var(--bg2);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:var(--t2);">${T.cancel}</button>
-      <button onclick="addLocConfirm()" style="flex:2;padding:13px;border:none;border-radius:14px;background:var(--blue);color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">+ ${lang==='pl'?'Dodaj':'Добавить'}</button>
+      <button onclick="addLocConfirm()" style="flex:2;padding:13px;border:none;border-radius:14px;background:var(--blue);color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">+ ${lang==='pl'?'Add':lang==='ru'?'Добавить':'Add'}</button>
     </div>`;
   openSheet();
   setTimeout(()=>{const inp=document.getElementById('addloc-input');if(inp)inp.focus()},320);
@@ -2109,7 +2281,7 @@ function exportSmart(){
   // iOS: open JSON in new tab — user taps Share button → Save to Files
   if(isIOS){
     // Show instruction overlay first
-    const pl=lang==='pl';
+    const pl=lang!=='ru';  // pl and en both use latin
     const ov=document.createElement('div');
     ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:12px;';
     ov.innerHTML=`<div style="width:100%;max-width:460px;margin-bottom:8px;animation:fadeUp .28s cubic-bezier(.34,1.2,.64,1)">
@@ -2190,7 +2362,7 @@ function clearAll(){
   const thisMonth=`${now.getFullYear()}-${p2(now.getMonth()+1)}`;
   const thisYear=String(now.getFullYear());
  
-  const pl=lang==='pl';
+  const pl=lang!=='ru';  // pl and en both use latin
  
   // Period options
   const periodOpts=[
@@ -2247,7 +2419,7 @@ function clearAll(){
 }
  
 function confirmDelete(periodId,opt){
-  const pl=lang==='pl';
+  const pl=lang!=='ru';  // pl and en both use latin
   const overlay=document.createElement('div');
   overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(14px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:12px;';
   overlay.innerHTML=`<div style="width:100%;max-width:460px;margin-bottom:8px;animation:fadeUp .28s cubic-bezier(.34,1.2,.64,1)">
@@ -2463,7 +2635,7 @@ function avatarInitials(first,last){
 function renderClientList(){
   const q=(document.getElementById('cl-search')?.value||'').toLowerCase().trim();
   const el=document.getElementById('cl-list');if(!el)return;
-  const pl=lang==='pl';
+  const pl=lang!=='ru';  // pl and en both use latin
  
   let filtered=q
     ? clients.filter(cl=>{
@@ -2475,7 +2647,7 @@ function renderClientList(){
         const phone=(cl.phone||'').replace(/\D/g,'');
         const qPhone=q.replace(/\D/g,'');
         return fullN.includes(qN)||firstN.includes(qN)||lastN.includes(qN)||
-               (qPhone.length>2&&phone.includes(qPhone));
+               (qPhone.length>0&&phone.includes(qPhone));
       })
     : [...clients];
  
@@ -2518,7 +2690,7 @@ function renderClientList(){
           <div class="cl-avatar" style="background:${col}">${ini}</div>
           <div style="flex:1;min-width:0">
             <div class="cl-name">${cl.first} ${cl.last}</div>
-            ${ cl.phone ? `<div class='cl-phone' style='display:flex;align-items:center;gap:8px'><span>📞 ${cl.phone}</span><a href='tel:${cl.phone}' onclick='event.stopPropagation()' style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(52,199,89,.15);color:#30d158;font-size:14px;text-decoration:none'>📲</a><a href='sms:${cl.phone}' onclick='event.stopPropagation()' style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(0,122,255,.12);color:#0a84ff;font-size:14px;text-decoration:none'>💬</a></div>` : '' }
+            ${ cl.phone ? `<div class='cl-phone'>📞 ${cl.phone}</div>` : '' }
           </div>
           <div style="color:var(--t3);font-size:18px">›</div>
         </div>
@@ -2533,7 +2705,7 @@ let editClientId=null;
  
 function openClientForm(id){
   editClientId=id;
-  const pl=lang==='pl';
+  const pl=lang!=='ru';  // pl and en both use latin
   const cl=id?clients.find(c=>c.id===id):null;
  
   document.getElementById('sheet-title').textContent=cl?(pl?'Edytuj klienta':'Редактировать клиента'):(pl?'Nowy klient':'Новый клиент');
@@ -2545,38 +2717,38 @@ function openClientForm(id){
   document.getElementById('sheet-body').innerHTML=`
     <div style="padding:4px 16px 8px;max-height:70vh;overflow-y:auto">
       <div class="cf-row">
-        <div class="cf-lbl">${pl?'Imię':'Имя'} *</div>
-        <input id="cf-first" class="cf-input" placeholder="${pl?'Jan':'Иван'}" value="${cl?.first||''}">
+        <div class="cf-lbl">${lang==='ru'?'Имя':'Name'} *</div>
+        <input id="cf-first" class="cf-input" placeholder="${lang==='ru'?'Иван':'John'}" value="${cl?.first||''}">
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${pl?'Nazwisko':'Фамилия'}</div>
-        <input id="cf-last" class="cf-input" placeholder="${pl?'Kowalski':'Иванов'}" value="${cl?.last||''}">
+        <div class="cf-lbl">${lang==='ru'?'Фамилия':'Surname'}</div>
+        <input id="cf-last" class="cf-input" placeholder="${lang==='ru'?'Иванов':'Smith'}" value="${cl?.last||''}">
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${pl?'Telefon':'Телефон'}</div>
+        <div class="cf-lbl">${lang==='ru'?'Телефон':'Phone'}</div>
         <input id="cf-phone" class="cf-input" type="tel" placeholder="+48 600 000 000" value="${cl?.phone||''}"
           autocomplete="tel" autocorrect="off" inputmode="tel">
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${pl?'Lokalizacja':'Локация'}</div>
+        <div class="cf-lbl">${lang==='ru'?'Локация':'Location'}</div>
         <div class="cf-loc-grid" id="cf-locs">${locBtns}</div>
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${pl?'Styl / Strzyżenie':'Стиль / Стрижка'}</div>
+        <div class="cf-lbl">${lang==='ru'?'Стиль / Стрижка':'Style / Haircut'}</div>
         <input id="cf-haircut" class="cf-input" placeholder="${pl?'np. Fade + broda, Crop top…':'напр. Fade + борода, Crop top…'}" value="${cl?.haircut||''}">
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${pl?'Preferencje i upodobania':'Предпочтения и пожелания'}</div>
+        <div class="cf-lbl">${lang==='ru'?'Предпочтения и пожелания':'Preferences & likes'}</div>
         <textarea id="cf-prefs" class="cf-input" placeholder="${pl?'Co lubi, czego nie lubi, długość…':'Что любит, что нет, длина…'}">${cl?.prefs||''}</textarea>
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${pl?'Uwagi':'Примечания'}</div>
+        <div class="cf-lbl">${lang==='ru'?'Примечания':'Notes'}</div>
         <textarea id="cf-notes" class="cf-input" placeholder="${pl?'Dodatkowe informacje…':'Дополнительная информация…'}">${cl?.notes||''}</textarea>
       </div>
       <div class="cf-actions">
         <button class="cf-cancel" onclick="closeSheet()">${T.cancel}</button>
         ${cl?`<button class="cf-del" onclick="deleteClient(${cl.id})">🗑</button>`:''}
-        <button class="cf-save" onclick="saveClient()">${pl?'Zapisz':'Сохранить'}</button>
+        <button class="cf-save" onclick="saveClient()">${lang==='ru'?'Сохранить':'Save'}</button>
       </div>
     </div>`;
  
@@ -2616,7 +2788,7 @@ function saveClient(){
 }
  
 function deleteClient(id){
-  const pl=lang==='pl';
+  const pl=lang!=='ru';  // pl and en both use latin
   const cl=clients.find(x=>x.id===id);if(!cl)return;
   const ov=document.createElement('div');
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(10px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:12px;';
@@ -2640,6 +2812,107 @@ function deleteClient(id){
   });
 }
  
+ 
+/* ══ EMOJI PICKER ══ */
+const EMOJI_LIST=[
+  // Barbershop / salon
+  '✂️','💈','🪒','🧔','💆','🧴','🧼','🪥','💅','🫧',
+  // Places
+  '⚡','🏠','🏙️','🏭','🏪','🏬','🏡','🌆','🌇','🌃',
+  // Work / tools
+  '🔧','🔨','⭐','🔥','💎','🏅','🎯','📍','📌','🗂️',
+  // Nature / fun
+  '🌿','🌸','🌺','🌻','🍀','🦁','🐯','🦊','🐺','🦅',
+  // Symbols
+  '💡','⚙️','🔑','🗝️','💫','✨','🎪','🎨','🎭','🎬',
+  // Numbers / letters as icons
+  '1️⃣','2️⃣','3️⃣','💰','💵','👑','🏆','🎖️','🥇','🎸',
+];
+let _emojiLocIdx=-1;
+ 
+function openEmojiPicker(locIdx){
+  _emojiLocIdx=locIdx;
+  const ov=document.getElementById('emoji-picker-ov');
+  const grid=document.getElementById('emoji-grid');
+  const title=document.getElementById('emoji-picker-title');
+  if(!ov||!grid)return;
+  title.textContent=lang==='ru'?'Выбери иконку':'Pick an icon';
+  const cur=locs[locIdx]?.icon||'';
+  grid.innerHTML=EMOJI_LIST.map(e=>`<button class="emoji-btn${e===cur?' selected':''}" onclick="selectEmoji('${e}')">${e}</button>`).join('');
+  ov.classList.add('open');
+  document.body.classList.add('sheet-open');
+  document.body.style.top='-'+window.scrollY+'px';
+}
+function closeEmojiPicker(e){
+  if(e&&e.target!==document.getElementById('emoji-picker-ov'))return;
+  _closeEmojiPicker();
+}
+function _closeEmojiPicker(){
+  const ov=document.getElementById('emoji-picker-ov');
+  const box=document.getElementById('emoji-picker-box');
+  if(!ov)return;
+  box.style.transition='transform .3s cubic-bezier(.4,0,1,1)';
+  box.style.transform='translateY(100%)';
+  const scrollY=parseInt(document.body.style.top||'0')*-1;
+  document.body.classList.remove('sheet-open');
+  document.body.style.top='';
+  window.scrollTo(0,scrollY);
+  setTimeout(()=>{ov.classList.remove('open');box.style.transform='';},300);
+}
+function selectEmoji(emoji){
+  if(_emojiLocIdx<0)return;
+  locs[_emojiLocIdx].icon=emoji;
+  saveAll();renderLocGrid();renderLocSettings();
+  _closeEmojiPicker();
+}
+ 
+/* ══ PCT SLIDER ══ */
+function openPctSlider(){
+  document.getElementById('sheet-title').textContent='%';
+  let val=curPct;
+  const sb=document.getElementById('sheet-body');
+  const fill=((val-1)/99*100).toFixed(1);
+  sb.innerHTML=`
+    <div class="pct-display">
+      <div class="pct-big" id="pct-num">${val}<span class="pct-unit">%</span></div>
+    </div>
+    <div class="pct-slider-wrap">
+      <input class="pct-range" id="pct-range" type="range" min="1" max="100" value="${val}"
+        style="--pct-fill:${fill}%"
+        oninput="pctSliderMove(this.value)">
+    </div>
+    <div class="pct-presets">
+      ${[30,35,40,45,50,60,70,100].map(p=>`<button class="pct-preset${val===p?' on':''}" onclick="pctPreset(${p})">${p}%</button>`).join('')}
+    </div>
+    <div style="display:flex;gap:10px;padding:0 16px 8px;background:#1c1c1e">
+      <button onclick="closeSheet()" style="flex:1;padding:14px;border:none;border-radius:14px;background:#2c2c2e;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:#8e8e93;">${T.cancel}</button>
+      <button onclick="pctDone()" style="flex:2;padding:14px;border:none;border-radius:14px;background:#ff9f0a;color:#000;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">✓ ${T.done}</button>
+    </div>`;
+  openSheet();
+}
+function pctSliderMove(v){
+  v=parseInt(v);
+  const el=document.getElementById('pct-num');
+  if(el)el.innerHTML=v+'<span class="pct-unit">%</span>';
+  const range=document.getElementById('pct-range');
+  if(range)range.style.setProperty('--pct-fill',((v-1)/99*100).toFixed(1)+'%');
+  document.querySelectorAll('.pct-preset').forEach(b=>{b.classList.toggle('on',parseInt(b.textContent)===v)});
+  hap('selection');
+}
+function pctPreset(v){
+  const range=document.getElementById('pct-range');
+  if(range){range.value=v;pctSliderMove(v);}
+}
+function pctDone(){
+  const v=parseInt(document.getElementById('pct-range')?.value||curPct);
+  setFval('pct',v);
+  closeSheet();
+}
+ 
+function hexAlphaJS(hex,a){
+  try{const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`}
+  catch{return'transparent'}
+}
 function getLocById(id){return locs.find(l=>l.id===id)}
 function S(arr,k){return arr.reduce((s,e)=>s+(e[k]||0),0)}
 function fmt(n){return Number(n||0).toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})}
@@ -2651,3 +2924,4 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 </script>
 </body>
 </html>
+ 
