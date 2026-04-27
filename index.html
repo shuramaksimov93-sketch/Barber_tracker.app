@@ -2554,33 +2554,36 @@ locs.push({id:Date.now(),name:n,icon:LOC_ICONS_DEF[iconIdx],color:PRESET_COLORS[
 hap(‘medium’);saveAll();renderLocGrid();renderLocSettings();closeSheet();showToast(’+ ’+n);
 }
 
-function exportSmart(){
-const data={entries,locs,settings,lang,appName,v:2,exportedAt:new Date().toISOString()};
+async function exportSmart(){
+const data={entries,locs,settings,lang,appName,clients,dayOffDates,v:2,exportedAt:new Date().toISOString()};
 const json=JSON.stringify(data,null,2);
-const filename=`${appName.toLowerCase()}-backup-${todayStr()}.json`;
-const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+const filename=`${appName.toLowerCase().replace(/\s+/g,'-')}-backup-${todayStr()}.json`;
 
-// iOS: open JSON in new tab — user taps Share button → Save to Files
-if(isIOS){
-// Show instruction overlay first
-const pl=lang!==‘ru’;  // pl and en both use latin
-const ov=document.createElement(‘div’);
-ov.style.cssText=‘position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:12px;’;
-ov.innerHTML=`<div style="width:100%;max-width:460px;margin-bottom:8px;animation:fadeUp .28s cubic-bezier(.34,1.2,.64,1)"> <div style="background:rgba(28,28,32,.97);border-radius:20px;overflow:hidden;margin-bottom:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)"> <div style="padding:22px 20px 20px;text-align:center"> <div style="font-size:28px;margin-bottom:10px">💾</div> <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:14px">${pl?'Eksport danych':'Экспорт данных'}</div> <div style="background:rgba(255,255,255,.07);border-radius:14px;padding:14px;text-align:left;margin-bottom:16px"> <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"> <div style="width:28px;height:28px;border-radius:8px;background:#0a84ff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">1</div> <div style="font-size:14px;color:#e5e5ea">${pl?'Naciśnij „Otwórz plik" poniżej':'Нажми «Открыть файл» ниже'}</div> </div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"> <div style="width:28px;height:28px;border-radius:8px;background:#0a84ff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">2</div> <div style="font-size:14px;color:#e5e5ea">${pl?'Naciśnij przycisk Udostępnij ↑ w Safari':'Нажми кнопку Поделиться ↑ в Safari'}</div> </div> <div style="display:flex;align-items:center;gap:10px"> <div style="width:28px;height:28px;border-radius:8px;background:#30d158;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">3</div> <div style="font-size:14px;color:#e5e5ea">${pl?'Wybierz „Zapisz w Plikach" → iCloud Drive':'Выбери «Сохранить в Файлы» → iCloud Drive'}</div> </div> </div> <button id="exp-open" style="width:100%;padding:15px;border:none;border-radius:14px;background:#0a84ff;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:8px"> ${pl?'Otwórz plik →':'Открыть файл →'} </button> <button id="exp-cancel" style="width:100%;padding:13px;border:none;border-radius:14px;background:rgba(255,255,255,.1);color:#8e8e93;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer"> ${T.cancel} </button> </div> </div> </div>`;
-document.body.appendChild(ov);
-const close=()=>{ov.style.opacity=‘0’;ov.style.transition=‘opacity .2s’;setTimeout(()=>ov.remove(),200)};
-ov.addEventListener(‘click’,e=>{if(e.target===ov)close()});
-ov.querySelector(’#exp-cancel’).addEventListener(‘click’,close);
-ov.querySelector(’#exp-open’).addEventListener(‘click’,()=>{
-// Create data URI — opens directly in Safari, Share button available
-const dataUri=‘data:application/json;charset=utf-8,’+encodeURIComponent(json);
-window.open(dataUri,’_blank’);
-close();
-});
+// Try Web Share API with File (works on iOS Safari 15+)
+if(navigator.share && navigator.canShare){
+try{
+const file=new File([json],filename,{type:‘application/json’});
+if(navigator.canShare({files:[file]})){
+await navigator.share({files:[file],title:filename});
 return;
 }
+}catch(e){
+if(e.name===‘AbortError’)return; // user cancelled — that’s fine
+// fall through to next method
+}
+}
 
-// Desktop / Android: standard download
+// Try Web Share API text only (older iOS)
+if(navigator.share){
+try{
+await navigator.share({title:filename,text:json});
+return;
+}catch(e){
+if(e.name===‘AbortError’)return;
+}
+}
+
+// Desktop / Android: standard blob download
 fallbackExport(json,filename);
 }
 function fallbackExport(json,filename){
