@@ -590,103 +590,54 @@ textarea.cf-input{resize:none;height:80px;line-height:1.5}
   }
 }
 
-/* No ::before global indicator — each button has its own pill */
 .tab-btn{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:1px;border:none;background:none;cursor:pointer;
-  padding:5px 4px 4px;
-  color:rgba(120,120,140,.8);
-  transition:color .25s ease;
+  gap:3px;border:none;background:none;cursor:pointer;
+  padding:6px 4px 4px;
+  color:var(--t3);
+  transition:color .25s ease,transform .15s cubic-bezier(.34,1.3,.64,1);
   -webkit-user-select:none;user-select:none;
   position:relative;z-index:1;
 }
-.tab-btn:active .tab-icon-wrap{transform:scale(.85);}
+.tab-btn:active{transform:scale(.86);}
 
-/* Wrapper for icon — the pill lives here */
 .tab-icon-wrap{
-  position:relative;
   display:flex;align-items:center;justify-content:center;
-  gap:5px;
-  width:44px;height:34px;
-  border-radius:20px;
-  transition:
-    width .44s cubic-bezier(.34,1.2,.64,1),
-    padding .44s cubic-bezier(.34,1.2,.64,1),
-    background .3s ease,
-    box-shadow .3s ease,
-    transform .15s cubic-bezier(.34,1.3,.64,1);
-  overflow:hidden;
-  padding:0 10px;
+  width:30px;height:30px;
+  transition:transform .3s cubic-bezier(.34,1.4,.64,1);
 }
-/* Glass pill shimmer pseudo */
-.tab-icon-wrap::before{
-  content:'';
-  position:absolute;inset:0;
-  border-radius:inherit;
-  background:linear-gradient(160deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 60%);
-  opacity:0;
-  transition:opacity .3s ease;
-  pointer-events:none;
-}
-
-/* ACTIVE state — expanded pill with glass */
-.tab-btn.active .tab-icon-wrap{
-  width:auto;
-  min-width:72px;
-  padding:0 14px;
-  background:rgba(255,255,255,.72);
-  box-shadow:
-    0 3px 18px rgba(0,0,0,.1),
-    0 1px 4px rgba(0,0,0,.06),
-    inset 0 1.5px 0 rgba(255,255,255,.95),
-    inset 0 -1px 0 rgba(0,0,0,.04);
-  border:1px solid rgba(255,255,255,.55);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-}
-.tab-btn.active .tab-icon-wrap::before{opacity:1;}
-@media(prefers-color-scheme:dark){
-  .tab-btn.active .tab-icon-wrap{
-    background:rgba(68,72,100,.55);
-    box-shadow:
-      0 3px 18px rgba(0,0,0,.35),
-      0 1px 4px rgba(0,0,0,.25),
-      inset 0 1px 0 rgba(255,255,255,.14),
-      inset 0 -1px 0 rgba(0,0,0,.3);
-    border:1px solid rgba(255,255,255,.08);
-  }
-}
-
 .tab-icon{
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;color:inherit;
-  transition:transform .38s cubic-bezier(.34,1.4,.64,1);
-  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  color:inherit;
 }
-.tab-btn.active .tab-icon{transform:scale(1.1);}
-
+/* Inactive: outline (stroke only, no fill) */
+.tab-icon svg{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  transition:fill .25s ease,stroke-width .25s ease;
+}
+/* Active: FILLED icon + scale up */
 .tab-btn.active{color:var(--blue);}
+.tab-btn.active .tab-icon-wrap{transform:scale(1.12);}
+.tab-btn.active .tab-icon svg{
+  fill:currentColor;
+  fill-opacity:.18;
+  stroke-width:2.1;
+}
 @media(prefers-color-scheme:dark){
+  .tab-btn{color:rgba(160,160,180,.55);}
   .tab-btn.active{color:#7db8f7;}
-  .tab-btn{color:rgba(160,160,180,.65);}
 }
 
-.tab-lbl{font-size:9.5px;font-weight:600;letter-spacing:-.15px;white-space:nowrap;transition:color .25s ease;}
-/* Label INSIDE the pill — visible only when active */
-.tab-lbl-in{
-  display:none;font-size:11px;font-weight:700;letter-spacing:-.2px;
-  white-space:nowrap;max-width:0;overflow:hidden;
-  transition:max-width .4s cubic-bezier(.34,1.2,.64,1),opacity .3s ease;
-  opacity:0;
-}
-.tab-btn.active .tab-lbl-in{
-  display:block;max-width:70px;opacity:1;
-}
-/* Label BELOW — visible only when inactive */
+/* Labels — always below icon */
+.tab-lbl-in{display:none;}
 .tab-lbl-out{
-  font-size:9.5px;font-weight:600;display:block;margin-top:2px;
-  transition:opacity .2s ease;
+  font-size:10px;font-weight:600;letter-spacing:-.15px;display:block;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:64px;
+  transition:color .25s ease,font-weight .2s ease;
 }
-.tab-btn.active .tab-lbl-out{display:none;}
+.tab-btn.active .tab-lbl-out{font-weight:800;}
 .main{padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}
 
 /* Emoji picker */
@@ -775,36 +726,31 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
 <div class="tab-bar" id="tab-bar">
   <button class="tab-btn active" onclick="showTab('entry')" id="tb-entry">
     <div class="tab-icon-wrap">
-      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
-      <span class="tab-lbl tab-lbl-in" id="tb-entry-lbl"></span>
+      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
     </div>
     <span class="tab-lbl tab-lbl-out" id="tb-entry-lbl2"></span>
   </button>
   <button class="tab-btn" onclick="showTab('stats')" id="tb-stats">
     <div class="tab-icon-wrap">
-      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
-      <span class="tab-lbl tab-lbl-in" id="tb-stats-lbl"></span>
+      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
     </div>
     <span class="tab-lbl tab-lbl-out" id="tb-stats-lbl2"></span>
   </button>
   <button class="tab-btn" onclick="showTab('invoice')" id="tb-invoice">
     <div class="tab-icon-wrap">
-      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span>
-      <span class="tab-lbl tab-lbl-in" id="tb-invoice-lbl"></span>
+      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span>
     </div>
     <span class="tab-lbl tab-lbl-out" id="tb-invoice-lbl2"></span>
   </button>
   <button class="tab-btn" onclick="showTab('clients')" id="tb-clients">
     <div class="tab-icon-wrap">
-      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-      <span class="tab-lbl tab-lbl-in" id="tb-clients-lbl"></span>
+      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
     </div>
     <span class="tab-lbl tab-lbl-out" id="tb-clients-lbl2"></span>
   </button>
   <button class="tab-btn" onclick="showTab('settings')" id="tb-settings">
     <div class="tab-icon-wrap">
-      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
-      <span class="tab-lbl tab-lbl-in" id="tb-settings-lbl"></span>
+      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
     </div>
     <span class="tab-lbl tab-lbl-out" id="tb-settings-lbl2"></span>
   </button>
@@ -859,6 +805,8 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
 </div>
 
 <div id="tab-stats" style="display:none">
+  <!-- TODAY widget -->
+  <div id="today-widget" style="display:none"></div>
   <div class="ptabs" id="ptabs"></div>
   <div id="sv-month">
     <div class="card" style="margin-bottom:10px"><div class="mnav">
@@ -869,8 +817,29 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
     <div id="reform-m"></div>
     <div class="sg" id="stats-grid"></div>
     <div class="slabel" id="sl-daychart" style="margin-top:18px"></div>
-    <div class="card" id="day-chart-card" style="margin-bottom:11px;display:none">
-      <div class="day-chart"><div class="day-chart-inner" id="day-chart-inner"></div></div>
+    <div class="card" id="day-chart-card" style="margin-bottom:11px;display:none;padding:0;overflow:hidden">
+      <!-- Scrollable canvas wrapper -->
+      <!-- Y axis sticky + scrollable bars side by side -->
+      <div style="display:flex;align-items:stretch;overflow:hidden">
+        <!-- Sticky Y axis canvas -->
+        <canvas id="day-y-canvas" style="flex-shrink:0;display:block"></canvas>
+        <!-- Scrollable bars -->
+        <div id="day-chart-scroll" style="flex:1;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none">
+          <canvas id="day-canvas" style="display:block;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none"></canvas>
+        </div>
+      </div>
+      <!-- Legend -->
+      <div id="day-legend" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px 10px;border-top:1px solid var(--sep)"></div>
+      <!-- Forecast card -->
+      <div id="day-forecast" style="margin:0 12px 12px;padding:11px 14px;border-radius:14px;background:var(--bg2);display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div id="fc-label" style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px"></div>
+            <div id="fc-avg" style="font-size:12px;color:var(--t2);margin-top:2px"></div>
+          </div>
+          <div id="fc-val" style="font-size:20px;font-weight:900;color:var(--blue)"></div>
+        </div>
+      </div>
     </div>
     <div class="slabel" id="sl-byloc"></div>
     <div class="card"><div class="loc-rows" id="loc-brkd"></div></div>
@@ -887,15 +856,16 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
     <div class="sg" id="ystats-grid"></div>
     <div class="slabel" id="sl-mchart"></div>
     <div class="card"><div class="ybars" id="year-bars"></div></div>
+    <div id="year-loc-breakdown"></div>
   </div>
   <div id="sv-all" style="display:none"><div id="all-content"></div></div>
   <div id="sv-chart" style="display:none">
     <div class="slabel" id="sl-chart-title" style="margin-top:0"></div>
     <div class="card" style="margin-bottom:10px;padding:16px">
       <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
-        <button id="chart-btn-month" class="ptab active" onclick="setChartType('month')" style="font-size:11px;padding:5px 12px;flex:none">Miesięcznie</button>
-        <button id="chart-btn-year" class="ptab" onclick="setChartType('year')" style="font-size:11px;padding:5px 12px;flex:none">Rocznie</button>
-        <button id="chart-btn-loc" class="ptab" onclick="setChartType('loc')" style="font-size:11px;padding:5px 12px;flex:none">Lokalizacje</button>
+        <button id="chart-btn-month" class="ptab active" onclick="setChartType('month')" style="font-size:11px;padding:5px 12px;flex:none"></button>
+        <button id="chart-btn-year" class="ptab" onclick="setChartType('year')" style="font-size:11px;padding:5px 12px;flex:none"></button>
+        <button id="chart-btn-loc" class="ptab" onclick="setChartType('loc')" style="font-size:11px;padding:5px 12px;flex:none"></button>
       </div>
       <canvas id="main-chart" style="width:100%;max-height:280px"></canvas>
     </div>
@@ -1073,7 +1043,8 @@ pl:{
   save:'Zapisz',saveEdit:'Zapisz zmiany',editMode:'Tryb edycji',wipe:'Wyczyść',cancel:'Anuluj',
   mypct:'Mój %',tips:'Napiwki',total:'Łącznie',revenue:'Obrót',clients:'Klientów',
   workdays:'Dni pracy',hours:'Godzin',avgDay:'Śr. dziennie',turnover:'Łączny obrót',
-  period:['Miesiąc','Rok','Wszystko','Wykres'],
+  period:['Miesiąc','Rok','Wszystko'],
+  chartTypes:['Miesięcznie','Rocznie','Lokalizacje'],
   byloc:'Według lokalizacji',entries:'Wpisy',mchart:'Miesięczny wykres',
   noData:'Brak danych',noEntries:'Brak wpisów w tym miesiącu',
   toInvoice:'Do faktury',toInvoiceNoRef:'Do faktury (bez Reform)',
@@ -1107,7 +1078,8 @@ ru:{
   save:'Сохранить',saveEdit:'Сохранить изменения',editMode:'Редактирование',wipe:'Очистить',cancel:'Отмена',
   mypct:'Мой %',tips:'Чаевые',total:'Итого',revenue:'Оборот',clients:'Клиентов',
   workdays:'Рабочих дней',hours:'Часов',avgDay:'Ср. в день',turnover:'Общий оборот',
-  period:['Месяц','Год','Всё','График'],
+  period:['Месяц','Год','Всё'],
+  chartTypes:['По месяцам','По годам','Локации'],
   byloc:'По локациям',entries:'Записи',mchart:'По месяцам',
   noData:'Нет данных',noEntries:'Нет записей за этот месяц',
   toInvoice:'К фактуре',toInvoiceNoRef:'К фактуре (без Reform)',
@@ -1140,7 +1112,8 @@ en:{
   save:'Save',saveEdit:'Save changes',editMode:'Editing',wipe:'Delete',cancel:'Cancel',
   mypct:'My %',tips:'Tips',total:'Total',revenue:'Revenue',clients:'Clients',
   workdays:'Work days',hours:'Hours',avgDay:'Avg/day',turnover:'Total revenue',
-  period:['Month','Year','All','Chart'],
+  period:['Month','Year','All'],
+  chartTypes:['Monthly','Yearly','Locations'],
   byloc:'By location',entries:'Entries',mchart:'Monthly chart',
   noData:'No data',noEntries:'No entries this month',
   toInvoice:'Invoice',toInvoiceNoRef:'Invoice (excl. ★)',
@@ -1196,7 +1169,7 @@ let pickerTarget='stats',pickerY=NOW.getFullYear();
 let fVals={hours:0,clients:0,revenue:0,pct:curPct,tips:0,tipsCash:0,vouchers:0,discounts:0,notes:''};
 
 document.addEventListener('DOMContentLoaded',()=>{
-  applyLang();renderLocGrid();updDateDisplay();renderCal();renderStats();renderInvoice();setupSheetSwipe();setupModalSwipe();setupPullToRefresh();setupParallax();updDayOffBtn();
+  applyLang();renderLocGrid();updDateDisplay();renderCal();renderStats();renderInvoice();setupSheetSwipe();setupModalSwipe();setupPullToRefresh();setupParallax();updDayOffBtn();setupCanvasTouch();setupStatsSwipe();
 });
 
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`}
@@ -1230,6 +1203,7 @@ function applyLang(){
   st('save-btn',editId?T.saveEdit:T.save);
   st('eb-txt',T.editMode);st('eb-reset',T.wipe);st('eb-cancel',T.cancel);
   st('sl-byloc',T.byloc);st('sl-entries',T.entries);st('sl-mchart',T.mchart);
+  if(T.chartTypes){st('chart-btn-month',T.chartTypes[0]);st('chart-btn-year',T.chartTypes[1]);st('chart-btn-loc',T.chartTypes[2]);}
   st('sl-setloc',T.setLoc);st('sl-setreform',T.setReform);st('sl-setdata',T.setData);
   st('sl-exp',T.export);st('sl-exp-s',T.exportSub);
   st('sl-imp',T.import);st('sl-imp-s',T.importSub);
@@ -2094,7 +2068,7 @@ function updPrev(){
 /* ══ STATS ══ */
 function renderPeriodTabs(){
   const row=document.getElementById('ptabs');if(!row)return;
-  const periods=['month','year','all','chart'];
+  const periods=['month','year','all'];
   row.innerHTML=T.period.map((p,i)=>`<button class="ptab${periods[i]===period?' active':''}" onclick="setPeriod('${periods[i]}')">${p}</button>`).join('');
 }
 function setPeriod(p){
@@ -2102,8 +2076,6 @@ function setPeriod(p){
   document.getElementById('sv-month').style.display=p==='month'?'':'none';
   document.getElementById('sv-year').style.display=p==='year'?'':'none';
   document.getElementById('sv-all').style.display=p==='all'?'':'none';
-  document.getElementById('sv-chart').style.display=p==='chart'?'':'none';
-  if(p==='chart'){renderChart();return}
   renderStats();
 }
 function chMonth(d){
@@ -2112,7 +2084,41 @@ function chMonth(d){
   renderStats();
 }
 function chYear(d){stY+=d;renderStats()}
-function renderStats(){if(period==='month')renderMonthStats();else if(period==='year')renderYearStats();else renderAllStats()}
+function renderStats(){renderTodayWidget();if(period==='month')renderMonthStats();else if(period==='year')renderYearStats();else renderAllStats()}
+
+function renderTodayWidget(){
+  const el=document.getElementById('today-widget');
+  if(!el)return;
+  const today=todayStr();
+  const todayEnts=entries.filter(e=>e.date===today&&isReal(e));
+  if(!todayEnts.length){el.style.display='none';return}
+
+  const total=todayEnts.reduce((s,e)=>s+e.total,0);
+  const myPct=todayEnts.reduce((s,e)=>s+e.myPctAmt,0);
+  const tips=todayEnts.reduce((s,e)=>s+(e.tips||0)+(e.tipsCash||0),0);
+  const clients=todayEnts.reduce((s,e)=>s+(e.clients||0),0);
+  const todayLocs=locs.filter(l=>todayEnts.some(e=>e.locId===l.id));
+
+  const dateLabel=lang==='ru'?'Сегодня':lang==='pl'?'Dziś':'Today';
+  const locDots=todayLocs.map(l=>`<span style="display:inline-flex;align-items:center;gap:3px;font-size:11px;color:rgba(255,255,255,.85)"><span style="width:7px;height:7px;border-radius:50%;background:${l.color};box-shadow:0 0 0 1.5px rgba(255,255,255,.4)"></span>${l.name.split(' ')[0]}</span>`).join('');
+
+  el.style.display='';
+  el.innerHTML=`
+    <div style="background:linear-gradient(135deg,#1d4ed8,#2563eb,#3b82f6);border-radius:var(--r-xl);padding:16px 18px;margin-bottom:12px;box-shadow:0 6px 24px rgba(37,99,235,.3);position:relative;overflow:hidden">
+      <div style="position:absolute;top:-30px;right:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.6px">${dateLabel}</div>
+          <div style="font-size:30px;font-weight:900;color:white;margin-top:2px;letter-spacing:-1px">${fmt(total)} zł</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;font-weight:700;color:white">${clients} ${T.clients.toLowerCase()}</div>
+          ${tips>0?`<div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:2px">+${fmt(tips)} zł ${T.tips.toLowerCase()}</div>`:''}
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:10px;position:relative;flex-wrap:wrap">${locDots}</div>
+    </div>`;
+}
 
 // sepLocs = locations with isReform=true (separate from invoice)
 function getSepLocIds(){return locs.filter(l=>l.isReform).map(l=>l.id)}
@@ -2169,6 +2175,7 @@ function renderMonthStats(){
   const dimM=new Date(stM.y,stM.m+1,0).getDate();
   const offDaysM=dayOffDates.filter(d=>d.startsWith(pfxM));
   // Day chart (called directly so lang is fresh)
+  window._lastChartData={allE:allMonthEnts,dayOff:dayOffDates};
   renderDayChart(allMonthEnts,dayOffDates);
   // Personal total = ALL locs (incl ★) + cash tips
   const tPersonal=S(allMonthEnts,'myPctAmt')+S(allMonthEnts,'tips')+S(allMonthEnts,'tipsCash');
@@ -2231,6 +2238,59 @@ function renderYearStats(){
     const w=Math.max(v/maxV*100,v>0?4:0);
     return`<div class="ybar${i===bestI&&v>0?' top':''}"><div class="ybar-lbl">${T.monthsShort[i]}</div><div class="ybar-track">${v>0?`<div class="ybar-fill" style="width:${w}%"><span>${fmt(v)}</span></div>`:`<span class="ybar-empty">--</span>`}</div></div>`;
   }).join('');
+
+  // Per-location breakdown for the year
+  renderLocBreakdown('year-loc-breakdown',entries.filter(e=>e.date.startsWith(String(stY))&&isReal(e)),stY);
+}
+
+/* Per-location breakdown card — used in year & all views */
+function renderLocBreakdown(elId,allEnts,periodLabel){
+  const el=document.getElementById(elId);
+  if(!el)return;
+  const actLocs=locs.filter(l=>allEnts.some(e=>e.locId===l.id));
+  if(!actLocs.length){el.innerHTML='';return}
+  const title=lang==='ru'?'По локациям':lang==='pl'?'Według lokalizacji':'By location';
+  let h=`<div class="slabel" style="margin-top:16px">${title}${periodLabel?' · '+periodLabel:''}</div>`;
+  h+='<div class="card" style="margin-bottom:12px;padding:4px 0">';
+  actLocs.forEach((l,idx)=>{
+    const le=allEnts.filter(e=>e.locId===l.id);
+    const days=new Set(le.map(e=>e.date)).size;
+    h+=`<div style="padding:12px 16px;${idx<actLocs.length-1?'border-bottom:1px solid var(--sep)':''}">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+        <div style="width:9px;height:9px;border-radius:50%;background:${l.color};flex-shrink:0"></div>
+        <span style="font-size:15px;font-weight:700;flex:1">${l.icon} ${l.name}</span>
+        <span style="font-size:16px;font-weight:800;color:${l.color}">${fmt(S(le,'total'))} zł</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px">
+        <div style="background:var(--bg2);border-radius:9px;padding:7px 9px">
+          <div style="color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.3px">${T.revenue}</div>
+          <div style="font-weight:700;font-size:13px;margin-top:1px">${fmt(S(le,'revenue'))} zł</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:9px;padding:7px 9px">
+          <div style="color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.3px">${T.mypct}</div>
+          <div style="font-weight:700;font-size:13px;margin-top:1px;color:${l.color}">${fmt(S(le,'myPctAmt'))} zł</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:9px;padding:7px 9px">
+          <div style="color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.3px">${T.tips}</div>
+          <div style="font-weight:700;font-size:13px;margin-top:1px">${fmt(S(le,'tips'))} zł</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:9px;padding:7px 9px">
+          <div style="color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.3px">${T.clients}</div>
+          <div style="font-weight:700;font-size:13px;margin-top:1px">${S(le,'clients')}</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:9px;padding:7px 9px">
+          <div style="color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.3px">${T.workdays}</div>
+          <div style="font-weight:700;font-size:13px;margin-top:1px">${days}</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:9px;padding:7px 9px">
+          <div style="color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.3px">${T.hours}</div>
+          <div style="font-weight:700;font-size:13px;margin-top:1px">${fmtH(S(le,'hours'))}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  h+='</div>';
+  el.innerHTML=h;
 }
 
 function renderAllStats(){
@@ -2252,7 +2312,26 @@ function renderAllStats(){
       ${sep&&re.length?`<div class="sc hero-p full"><div class="sc-val">${fmt(S(re,'total'))} zł</div><div class="sc-lbl">Reform ${y}</div></div>`:''}
     </div>`;
     if(mT.some(v=>v>0)){const maxV=Math.max(...mT,1);const bI=mT.reduce((bi,v,i)=>v>mT[bi]?i:bi,0);
-      h+=`<div class="card" style="margin-bottom:14px"><div class="ybars">${mT.map((v,i)=>v>0?`<div class="ybar${i===bI?' top':''}"><div class="ybar-lbl">${T.monthsShort[i]}</div><div class="ybar-track"><div class="ybar-fill" style="width:${Math.max(v/maxV*100,4)}%"><span>${fmt(v)}</span></div></div></div>`:'').join('')}</div></div>`}
+      h+=`<div class="card" style="margin-bottom:10px"><div class="ybars">${mT.map((v,i)=>v>0?`<div class="ybar${i===bI?' top':''}"><div class="ybar-lbl">${T.monthsShort[i]}</div><div class="ybar-track"><div class="ybar-fill" style="width:${Math.max(v/maxV*100,4)}%"><span>${fmt(v)}</span></div></div></div>`:'').join('')}</div></div>`}
+    // Per-loc breakdown for this year
+    const allYe=entries.filter(e=>e.date.startsWith(y)&&isReal(e));
+    const actLocs=locs.filter(l=>allYe.some(e=>e.locId===l.id));
+    if(actLocs.length){
+      h+='<div class="card" style="margin-bottom:14px;padding:4px 0">';
+      actLocs.forEach((l,idx)=>{
+        const le=allYe.filter(e=>e.locId===l.id);
+        const days=new Set(le.map(e=>e.date)).size;
+        h+=`<div style="padding:11px 16px;${idx<actLocs.length-1?'border-bottom:1px solid var(--sep)':''}">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:8px;height:8px;border-radius:50%;background:${l.color};flex-shrink:0"></div>
+            <span style="font-size:13px;font-weight:700;flex:1">${l.icon} ${l.name}</span>
+            <span style="font-size:14px;font-weight:800;color:${l.color}">${fmt(S(le,'total'))} zł</span>
+          </div>
+          <div style="font-size:11px;color:var(--t2);margin-top:3px;padding-left:16px">${days} ${T.workdays.toLowerCase()} · ${S(le,'clients')} ${T.clients.toLowerCase()} · ${fmt(S(le,'revenue'))} zł ${T.revenue.toLowerCase()}</div>
+        </div>`;
+      });
+      h+='</div>';
+    }
   });
   document.getElementById('all-content').innerHTML=h;
 }
@@ -3437,86 +3516,279 @@ function setupPullToRefresh(){
 ══════════════════════════════════════ */
 function renderDayChart(allE,dayOffArr){
   const card=document.getElementById('day-chart-card');
-  const inner=document.getElementById('day-chart-inner');
-  const lbl=document.getElementById('sl-daychart');
-  if(!inner||!card)return;
-
-  // Label with current lang
-  const labelTxt=lang==='ru'?'Доход по дням':lang==='pl'?'Dochód dzienny':'Daily income';
-  if(lbl)lbl.textContent=labelTxt;
+  const canvas=document.getElementById('day-canvas');
+  const yCanvas=document.getElementById('day-y-canvas');
+  const scroll=document.getElementById('day-chart-scroll');
+  const lblEl=document.getElementById('sl-daychart');
+  if(!canvas||!card||!scroll||!yCanvas)return;
+  if(lblEl)lblEl.textContent=lang==='ru'?'Доход по дням':lang==='pl'?'Dochód dzienny':'Daily income';
 
   const dim=new Date(stM.y,stM.m+1,0).getDate();
+  const now=new Date();
+  const isCurrentMonth=stM.m===now.getMonth()&&stM.y===now.getFullYear();
+  const todayDay=isCurrentMonth?now.getDate():dim;
 
-  // Build per-day map: {total, entries by loc}
   const byDay={};
   allE.forEach(e=>{
     const d=parseInt(e.date.split('-')[2]);
     if(!byDay[d])byDay[d]={total:0,byLoc:{}};
     byDay[d].total+=e.total;
-    const lid=e.locId;
-    byDay[d].byLoc[lid]=(byDay[d].byLoc[lid]||0)+e.total;
+    byDay[d].byLoc[e.locId]=(byDay[d].byLoc[e.locId]||0)+e.total;
   });
-  const maxV=Math.max(...Object.values(byDay).map(v=>v.total),1);
-  const CHART_H=76; // taller for stacked
 
-  let html='';
+  const activeLocs=locs.filter(l=>Object.values(byDay).some(d=>d.byLoc[l.id]));
+  const workedList=Object.keys(byDay).filter(d=>parseInt(d)<=todayDay&&byDay[d].total>0).map(Number);
+  const totalSoFar=workedList.reduce((s,d)=>s+byDay[d].total,0);
+  const avgDay=workedList.length>0?totalSoFar/workedList.length:0;
+
+  // Smart forecast by weekday pattern
+  let forecastEnd=0;
+  if(isCurrentMonth&&avgDay>0&&workedList.length>2){
+    const wdCount={},wdTotal={};
+    workedList.forEach(d=>{
+      const wd=new Date(stM.y,stM.m,d).getDay();
+      wdCount[wd]=(wdCount[wd]||0)+1;wdTotal[wd]=(wdTotal[wd]||0)+byDay[d].total;
+    });
+    const wdAvg={};Object.keys(wdCount).forEach(wd=>wdAvg[wd]=wdTotal[wd]/wdCount[wd]);
+    let proj=totalSoFar;
+    for(let d=todayDay+1;d<=dim;d++){
+      if(dayOffDates.includes(`${stM.y}-${p2(stM.m+1)}-${p2(d)}`))continue;
+      const wd=new Date(stM.y,stM.m,d).getDay();
+      if(wdAvg[wd])proj+=wdAvg[wd];
+    }
+    forecastEnd=Math.round(proj);
+  }
+
+  // Legend — no forecast dot
+  const legend=document.getElementById('day-legend');
+  if(legend){
+    legend.innerHTML=activeLocs.map(l=>
+      `<div style="display:flex;align-items:center;gap:5px">
+        <div style="width:12px;height:12px;border-radius:3px;background:${l.color}"></div>
+        <span style="font-size:11px;font-weight:600;color:var(--t2)">${l.icon} ${l.name.split(' ')[0]}</span>
+      </div>`).join('');
+  }
+
+  const dpr=window.devicePixelRatio||1;
+  const DAY_W=40,BAR_W=26;
+  const Y_W=42;
+  const PAD={L:6,R:10,T:18,B:32};
+  const H=215;
+
+  // ── Y AXIS (sticky canvas) ──
+  const dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const tClr=dark?'rgba(255,255,255,.38)':'rgba(0,0,0,.4)';
+  const gClr=dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.05)';
+
+  const rawMax=Math.max(...Object.values(byDay).map(d=>d.total),1)*1.15;
+  const mag=Math.pow(10,Math.floor(Math.log10(rawMax)));
+  const step=mag*(rawMax/mag<=2?.5:rawMax/mag<=5?1:2);
+  const maxVal=Math.ceil(rawMax/step)*step;
+  const cH=H-PAD.T-PAD.B;
+  const yOf=v=>PAD.T+cH*(1-Math.min(v/maxVal,1));
+
+  yCanvas.width=Y_W*dpr; yCanvas.height=H*dpr;
+  yCanvas.style.width=Y_W+'px'; yCanvas.style.height=H+'px';
+  const yCtx=yCanvas.getContext('2d');
+  yCtx.scale(dpr,dpr);
+  // Y axis background
+  yCtx.fillStyle=dark?'#1c1c1e':'#ffffff';
+  yCtx.fillRect(0,0,Y_W,H);
+  // Grid value labels
+  for(let i=1;i<=4;i++){
+    const v=maxVal/4*i,y=yOf(v);
+    yCtx.fillStyle=tClr;
+    yCtx.font='600 9px -apple-system,sans-serif';yCtx.textAlign='right';
+    yCtx.fillText(fmtShort(v),Y_W-5,y+3.5);
+    // Grid line hint
+    yCtx.strokeStyle=gClr;yCtx.lineWidth=1;
+    yCtx.beginPath();yCtx.moveTo(Y_W-3,y);yCtx.lineTo(Y_W,y);yCtx.stroke();
+  }
+  if(avgDay>0){
+    const ay=yOf(avgDay);
+    yCtx.fillStyle=dark?'rgba(255,255,255,.28)':'rgba(0,0,0,.28)';
+    yCtx.font='600 8px -apple-system,sans-serif';yCtx.textAlign='right';
+    yCtx.fillText('ø',Y_W-5,ay-3);
+  }
+  // Right border
+  yCtx.strokeStyle=gClr;yCtx.lineWidth=1;
+  yCtx.beginPath();yCtx.moveTo(Y_W-0.5,PAD.T);yCtx.lineTo(Y_W-0.5,H-PAD.B);yCtx.stroke();
+
+  // ── BARS CANVAS ──
+  const W=PAD.L+dim*DAY_W+PAD.R;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.imageSmoothingEnabled=false;
+  ctx.textRendering='geometricPrecision';
+  const xOf=d=>PAD.L+(d-0.5)*DAY_W;
+
+  // Grid lines on bars canvas
+  for(let i=1;i<=4;i++){
+    const y=yOf(maxVal/4*i);
+    ctx.strokeStyle=gClr;ctx.lineWidth=1;ctx.setLineDash([]);
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+  }
+  // Avg line
+  if(avgDay>0){
+    const ay=yOf(avgDay);
+    ctx.strokeStyle=dark?'rgba(255,255,255,.15)':'rgba(0,0,0,.12)';
+    ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+    ctx.beginPath();ctx.moveTo(0,ay);ctx.lineTo(W,ay);ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Draw bars
   for(let d=1;d<=dim;d++){
+    const cx=xOf(d);
     const ds=`${stM.y}-${p2(stM.m+1)}-${p2(d)}`;
-    const dayData=byDay[d];
-    const v=dayData?.total||0;
     const isOff=dayOffArr.includes(ds);
-    const hasEntry=v>0;
-    const todayMark=ds===todayStr();
+    const isToday=d===todayDay&&isCurrentMonth;
+
+    // Day label
+    ctx.fillStyle=isToday?'rgba(255,159,10,.95)':tClr;
+    ctx.font=isToday?'800 9.5px -apple-system,sans-serif':'500 9px -apple-system,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(isToday?(lang==='pl'?'dziś':lang==='ru'?'сег':'now'):String(d),cx,H-PAD.B+13);
 
     if(isOff){
-      html+=`<div class="day-bar" onclick="pickDateFromChart('${ds}')">
-        <div class="day-bar-off">–</div>
-        <div class="day-bar-lbl" style="color:var(--red)">${d}</div>
-      </div>`;
-    } else {
-      const totalH=hasEntry?Math.max(Math.round(v/maxV*CHART_H),6):3;
+      ctx.fillStyle=dark?'rgba(255,80,70,.45)':'rgba(200,50,40,.38)';
+      ctx.font='700 13px -apple-system,sans-serif';ctx.textAlign='center';
+      ctx.fillText('×',cx,PAD.T+cH-6);continue;
+    }
+    const data=byDay[d];
+    if(!data){
+      ctx.fillStyle=dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.05)';
+      ctx.beginPath();ctx.arc(cx,PAD.T+cH-3,2,0,Math.PI*2);ctx.fill();continue;
+    }
 
-      // Build stacked segments from bottom (sorted by locId order in locs array)
-      let segsHtml='';
-      if(hasEntry&&dayData.byLoc){
-        const locEntries=locs
-          .filter(l=>dayData.byLoc[l.id]!=null)
-          .map(l=>({loc:l,val:dayData.byLoc[l.id]}));
-        const totalVal=locEntries.reduce((s,x)=>s+x.val,0)||1;
-        // Stacked: each segment proportional
-        locEntries.forEach((x,i)=>{
-          const segH=Math.max(Math.round(x.val/totalVal*totalH),2);
-          const isFirst=i===0;
-          const isLast=i===locEntries.length-1;
-          const radius=isLast?'5px 5px':'0';
-          const radiusBot=isFirst?'0 0 3px 3px':'0';
-          segsHtml=`<div style="width:100%;height:${segH}px;background:${x.loc.color};border-radius:${radius} ${radiusBot};flex-shrink:0"></div>`+segsHtml;
-        });
-        // Amount label inside if tall enough
-        const amtLbl=totalH>=20?`<span style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:6.5px;font-weight:800;color:rgba(255,255,255,.92);line-height:1;pointer-events:none">${fmtShort(v)}</span>`:'';
-        segsHtml=`<div style="width:18px;height:${totalH}px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;border-radius:5px 5px 3px 3px;overflow:hidden;${todayMark?'box-shadow:0 0 0 2px var(--orange)':''}">${segsHtml}${amtLbl}</div>`;
-      } else {
-        segsHtml=`<div style="width:18px;height:3px;background:var(--bg2);border-radius:3px"></div>`;
+    const totalH=Math.round(Math.max(Math.round(data.total/maxVal*cH),18));
+    const segs=activeLocs.filter(l=>data.byLoc[l.id]).map(l=>({c:l.color,v:data.byLoc[l.id]}));
+    let sy=Math.round(PAD.T+cH);
+    segs.forEach((seg,i)=>{
+      const isLast=i===segs.length-1,isFirst=i===0;
+      const segH=Math.round(isLast?(sy-(PAD.T+cH-totalH)):Math.max(Math.round(seg.v/data.total*totalH),3));
+      sy=Math.round(sy-segH);
+      ctx.fillStyle=seg.c;ctx.beginPath();
+      const r=5;
+      if(segs.length===1){roundRect(ctx,cx-BAR_W/2,sy,BAR_W,segH,r);}
+      else if(isLast){
+        ctx.moveTo(cx-BAR_W/2+r,sy);ctx.lineTo(cx+BAR_W/2-r,sy);
+        ctx.arcTo(cx+BAR_W/2,sy,cx+BAR_W/2,sy+r,r);ctx.lineTo(cx+BAR_W/2,sy+segH);
+        ctx.lineTo(cx-BAR_W/2,sy+segH);ctx.lineTo(cx-BAR_W/2,sy+r);
+        ctx.arcTo(cx-BAR_W/2,sy,cx-BAR_W/2+r,sy,r);ctx.closePath();
+      } else if(isFirst){
+        ctx.moveTo(cx-BAR_W/2,sy);ctx.lineTo(cx+BAR_W/2,sy);
+        ctx.lineTo(cx+BAR_W/2,sy+segH-r);ctx.arcTo(cx+BAR_W/2,sy+segH,cx+BAR_W/2-r,sy+segH,r);
+        ctx.lineTo(cx-BAR_W/2+r,sy+segH);ctx.arcTo(cx-BAR_W/2,sy+segH,cx-BAR_W/2,sy+segH-r,r);
+        ctx.lineTo(cx-BAR_W/2,sy);ctx.closePath();
+      } else {ctx.rect(cx-BAR_W/2,sy,BAR_W,segH);}
+      ctx.fill();
+      if(segH>=14){
+        ctx.fillStyle='rgba(255,255,255,.97)';
+        ctx.font='700 9px -apple-system,sans-serif';
+        ctx.textAlign='center';
+        ctx.textBaseline='alphabetic';
+        ctx.fillText(fmtShort(seg.v),Math.round(cx),Math.round(sy+segH-5));
       }
-
-      html+=`<div class="day-bar" onclick="${hasEntry?`showDayDetail('${ds}')`:''}" id="dbar-${d}">
-        ${segsHtml}
-        <div class="day-bar-lbl" style="${todayMark?'color:var(--blue);font-weight:800':''}">${d}</div>
-      </div>`;
+    });
+    if(isToday){
+      ctx.shadowColor='rgba(255,159,10,.35)';ctx.shadowBlur=12;
+      ctx.strokeStyle='rgba(255,159,10,.8)';ctx.lineWidth=1.5;ctx.setLineDash([]);
+      ctx.beginPath();roundRect(ctx,cx-BAR_W/2-2,PAD.T+cH-totalH-2,BAR_W+4,totalH+4,7);ctx.stroke();
+      ctx.shadowBlur=0;
+    }
+    if(totalH>=20&&segs.length===1){
+      ctx.fillStyle='rgba(255,255,255,.97)';
+      ctx.font='700 9px -apple-system,sans-serif';
+      ctx.textAlign='center';
+      ctx.textBaseline='alphabetic';
+      ctx.fillText(fmtShort(data.total),Math.round(cx),Math.round(PAD.T+cH-6));
     }
   }
 
-  inner.innerHTML=html;
   card.style.display='';
+  if(isCurrentMonth)requestAnimationFrame(()=>{scroll.scrollLeft=Math.max(0,xOf(todayDay)-scroll.clientWidth*0.65);});
 
-  // Scroll to today
-  if(stM.m===new Date().getMonth()&&stM.y===new Date().getFullYear()){
-    const today=parseInt(todayStr().split('-')[2]);
-    inner.parentElement.scrollLeft=Math.max(0,(today-5)*22);
+  canvas._data={byDay,dim,xOf,DAY_W,BAR_W,activeLocs,dark,PAD,H,W,cH,maxVal,yOf,dayOffArr,todayDay};
+
+  // Forecast footer
+  const fc=document.getElementById('day-forecast');
+  if(fc){
+    if(isCurrentMonth&&forecastEnd>0&&workedList.length>2){
+      document.getElementById('fc-label').textContent=
+        lang==='ru'?'Прогноз к концу месяца':lang==='pl'?'Prognoza na koniec miesiąca':'Month forecast';
+      document.getElementById('fc-avg').textContent=
+        lang==='ru'?'На основе паттерна рабочих дней':
+        lang==='pl'?'Na podstawie wzorca dni roboczych':'Based on working day pattern';
+      document.getElementById('fc-val').textContent=fmt(forecastEnd)+' zł';
+      fc.style.display='';
+    } else fc.style.display='none';
   }
 }
 
-/* Day detail popup on bar tap */
+
+/* ══ PARALLAX ══ */
+function setupStatsSwipe(){
+  const sv=document.getElementById('sv-month');
+  if(!sv)return;
+  let startX=0,startY=0,tracking=false;
+
+  sv.addEventListener('touchstart',e=>{
+    // Don't interfere with chart scroll
+    if(e.target.closest('#day-chart-scroll'))return;
+    startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
+  },{passive:true});
+
+  sv.addEventListener('touchend',e=>{
+    if(!tracking)return;tracking=false;
+    if(e.target.closest('#day-chart-scroll'))return;
+    const dx=e.changedTouches[0].clientX-startX;
+    const dy=e.changedTouches[0].clientY-startY;
+    // Horizontal swipe, not vertical scroll
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.8){
+      if(dx>0)chMonth(-1); // swipe right = previous month
+      else chMonth(1);     // swipe left = next month
+      hap('light');
+    }
+  },{passive:true});
+}
+
+function setupParallax(){
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(ticking)return;ticking=true;
+    requestAnimationFrame(()=>{
+      const sg=document.getElementById('stats-grid');
+      if(!sg){ticking=false;return;}
+      const cards=sg.querySelectorAll('.sc');
+      cards.forEach((card,i)=>{
+        const rect=card.getBoundingClientRect();
+        const center=window.innerHeight/2;
+        const dist=(rect.top+rect.height/2)-center;
+        const shift=dist*0.018*(i%2===0?1:-1);
+        card.style.transform=`translateY(${shift}px)`;
+      });
+      ticking=false;
+    });
+  },{passive:true});
+}
+
+/* ══ PICK DATE FROM CHART ══ */
+function pickDateFromChart(ds){
+  hap('light');
+  showTab('entry');
+  selDate=ds;
+  calY=parseInt(ds.split('-')[0]);
+  calM=parseInt(ds.split('-')[1])-1;
+  renderCal();updDateDisplay();updDayOffBtn();
+  const dayEnts=entries.filter(e=>e.date===ds&&isReal(e));
+  if(dayEnts.length===1)loadEdit(dayEnts[0]);
+  else if(dayEnts.length>1)setTimeout(()=>{closeCal();showDayPicker(ds,dayEnts);},180);
+}
+
+/* ══ DAY DETAIL POPUP ══ */
 let _dayDetailShown=null;
 function showDayDetail(ds){
   hap('light');
@@ -3533,37 +3805,21 @@ function showDayDetail(ds){
   const total=dayEnts.reduce((s,e)=>s+e.total,0);
   const totalClients=dayEnts.reduce((s,e)=>s+(e.clients||0),0);
 
-  let rows=dayEnts.map(e=>{
+  const rows=dayEnts.map(e=>{
     const l=getLocById(e.locId)||{name:'?',icon:'',color:'#888'};
     return`<div style="display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--sep)">
       <div style="width:10px;height:10px;border-radius:50%;background:${l.color};flex-shrink:0"></div>
       <div style="flex:1;min-width:0">
-        <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l.icon} ${l.name}</div>
-        ${e.clients?`<div style="font-size:11px;color:var(--t2);margin-top:1px">${e.clients} kl · ${fmt(e.revenue)} zł ${T.revenue.toLowerCase()}</div>`:''}
+        <div style="font-size:14px;font-weight:700">${l.icon} ${l.name}</div>
+        ${e.clients?`<div style="font-size:11px;color:var(--t2);margin-top:1px">${e.clients} kl · ${fmt(e.revenue)} zł</div>`:''}
       </div>
       <div style="font-size:15px;font-weight:800;color:${l.color};flex-shrink:0">${fmt(e.total)} zł</div>
     </div>`;
   }).join('');
 
-  // Use bottom sheet style — fixed, always visible
   const popup=document.createElement('div');
-  // popup = fixed overlay card, positioned directly on body
   popup.id='day-detail-popup';
-  popup.style.cssText=[
-    'position:fixed',
-    'bottom:calc(env(safe-area-inset-bottom) + 70px)',
-    'left:50%',
-    'transform:translateX(-50%)',
-    'width:calc(100vw - 28px)',
-    'max-width:480px',
-    'background:var(--card)',
-    'border-radius:20px',
-    'box-shadow:0 8px 40px rgba(0,0,0,.22)',
-    'overflow:hidden',
-    'z-index:9000',
-    'animation:fadeUp .28s cubic-bezier(.34,1.2,.64,1)',
-  ].join(';');
-
+  popup.style.cssText='position:fixed;bottom:calc(env(safe-area-inset-bottom)+70px);left:50%;transform:translateX(-50%);width:calc(100vw - 28px);max-width:480px;background:var(--card);border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,.22);overflow:hidden;z-index:9000;animation:fadeUp .28s cubic-bezier(.34,1.2,.64,1)';
   popup.innerHTML=`
     <div style="padding:13px 16px 11px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--sep)">
       <div>
@@ -3572,15 +3828,12 @@ function showDayDetail(ds){
       </div>
       <div style="text-align:right">
         <div style="font-size:19px;font-weight:900;color:var(--green)">${fmt(total)} zł</div>
-        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px">${T.total}</div>
       </div>
     </div>
     ${rows}
     <div style="padding:10px 16px 14px;display:flex;gap:8px">
       <button onclick="document.getElementById('day-detail-popup').remove();_dayDetailShown=null"
-        style="flex:1;padding:11px;border:none;border-radius:12px;background:var(--bg2);color:var(--t2);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">
-        ${T.cancel}
-      </button>
+        style="flex:1;padding:11px;border:none;border-radius:12px;background:var(--bg2);color:var(--t2);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">${T.cancel}</button>
       <button onclick="pickDateFromChart('${ds}');document.getElementById('day-detail-popup')?.remove();_dayDetailShown=null"
         style="flex:2;padding:11px;border:none;border-radius:12px;background:var(--blue);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">
         ✏️ ${lang==='ru'?'Редактировать':lang==='pl'?'Edytuj':'Edit'}
@@ -3588,56 +3841,147 @@ function showDayDetail(ds){
     </div>`;
 
   document.body.appendChild(popup);
-
-  // Close on tap outside
   setTimeout(()=>{
-    function outsideHandler(e){
+    function h(e){
       const p=document.getElementById('day-detail-popup');
-      if(p&&!p.contains(e.target)){
-        p.remove();_dayDetailShown=null;
-        document.removeEventListener('touchstart',outsideHandler);
-        document.removeEventListener('mousedown',outsideHandler);
-      }
+      if(p&&!p.contains(e.target)){p.remove();_dayDetailShown=null;document.removeEventListener('touchstart',h);document.removeEventListener('mousedown',h);}
     }
-    document.addEventListener('touchstart',outsideHandler,{passive:true});
-    document.addEventListener('mousedown',outsideHandler);
+    document.addEventListener('touchstart',h,{passive:true});
+    document.addEventListener('mousedown',h);
   },200);
 }
 
-function pickDateFromChart(ds){
-  hap('light');
-  showTab('entry');
-  selDate=ds;
-  calY=parseInt(ds.split('-')[0]);calM=parseInt(ds.split('-')[1])-1;
-  renderCal();updDateDisplay();
-  const dayEnts=entries.filter(e=>e.date===ds&&isReal(e));
-  if(dayEnts.length===1)loadEdit(dayEnts[0]);
-  else if(dayEnts.length>1)setTimeout(()=>{closeCal();showDayPicker(ds,dayEnts)},180);
-}
+function setupCanvasTouch(){
+  let _touchStartX=null,_touchStartY=null,_timer=null;
 
-/* ══════════════════════════════════════
-   PARALLAX
-══════════════════════════════════════ */
-function setupParallax(){
-  const sg=document.getElementById('stats-grid');
-  if(!sg)return;
-  let ticking=false;
-  window.addEventListener('scroll',()=>{
-    if(ticking)return;ticking=true;
+  function getDay(clientX){
+    const cv=document.getElementById('day-canvas');
+    if(!cv||!cv._data)return null;
+    const sc=document.getElementById('day-chart-scroll');
+    const r=sc?sc.getBoundingClientRect():cv.getBoundingClientRect();
+    const scrollLeft=sc?sc.scrollLeft:0;
+    const px=(clientX-r.left)+scrollLeft;
+    const d=cv._data;
+    const day=Math.round((px-d.PAD.L)/d.DAY_W+0.5);
+    return(day>=1&&day<=d.dim)?day:null;
+  }
+
+  function showTip(clientX){
+    const cv=document.getElementById('day-canvas');
+    if(!cv||!cv._data)return;
+    const day=getDay(clientX);
+    removeTip();
+    if(!day)return;
+    const d=cv._data;
+    const{byDay,activeLocs,dark,dayOffArr}=d;
+    const isOff=dayOffArr.includes(`${stM.y}-${p2(stM.m+1)}-${p2(day)}`);
+    const data=byDay[day];
+    if(!data&&!isOff)return;
+
+    // Build HTML tooltip — fixed position, compact
+    const sc=document.getElementById('day-chart-scroll');
+    const scR=sc?sc.getBoundingClientRect():{top:0,left:0,right:0,bottom:0};
+
+    let rows='';
+    if(isOff){
+      rows=`<div style="color:${dark?'#ff6b6b':'#c83232'};font-weight:700;font-size:12px">${lang==='ru'?'Выходной':lang==='pl'?'Dzień wolny':'Day off'}</div>`;
+    } else if(data){
+      const lHere=activeLocs.filter(l=>data.byLoc[l.id]);
+      rows=lHere.map(l=>`
+        <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+          <div style="width:8px;height:8px;border-radius:50%;background:${l.color};flex-shrink:0"></div>
+          <span style="font-size:12px;color:${dark?'rgba(255,255,255,.75)':'rgba(0,0,0,.65)'}">${l.name.split(' ')[0]}</span>
+          <span style="font-size:12px;font-weight:700;color:${l.color};margin-left:auto">${fmt(data.byLoc[l.id])} zł</span>
+        </div>`).join('');
+      if(lHere.length>1)
+        rows+=`<div style="border-top:1px solid ${dark?'rgba(255,255,255,.1)':'rgba(0,0,0,.08)'};margin-top:5px;padding-top:5px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:${dark?'rgba(255,255,255,.9)':'rgba(0,0,0,.85)'}">
+          <span>${lang==='ru'?'Итого':lang==='pl'?'Łącznie':'Total'}</span>
+          <span>${fmt(data.total)} zł</span></div>`;
+    }
+
+    const tip=document.createElement('div');
+    tip.id='chart-tip';
+    tip.style.cssText=`
+      position:fixed;
+      z-index:9999;
+      background:${dark?'rgba(22,22,30,.97)':'rgba(255,255,255,.98)'};
+      border-radius:12px;
+      padding:9px 12px;
+      box-shadow:0 4px 24px rgba(0,0,0,${dark?.45:.18});
+      border:1px solid ${dark?'rgba(255,255,255,.08)':'rgba(0,0,0,.07)'};
+      min-width:140px;max-width:220px;
+      pointer-events:none;
+      animation:fadeUp .18s cubic-bezier(.34,1.2,.64,1);
+    `;
+    tip.innerHTML=`
+      <div style="font-size:10.5px;font-weight:700;color:${dark?'rgba(255,255,255,.4)':'rgba(0,0,0,.38)'};margin-bottom:2px">${day} ${T.monthsFull[stM.m]}</div>
+      ${rows}`;
+    document.body.appendChild(tip);
+
+    // Position: inside/above the chart area, close to tap point
     requestAnimationFrame(()=>{
-      const scrollY=window.scrollY;
-      const cards=sg.querySelectorAll('.sc');
-      cards.forEach((card,i)=>{
-        const rect=card.getBoundingClientRect();
-        const center=window.innerHeight/2;
-        const dist=(rect.top+rect.height/2)-center;
-        const shift=dist*0.025*(i%2===0?1:-1);
-        card.style.transform=`translateY(${shift}px)`;
-      });
-      ticking=false;
+      const tipH=tip.offsetHeight||80;
+      const tipW=tip.offsetWidth||160;
+      // Horizontal: center on tap, clamp to screen
+      let left=clientX-tipW/2;
+      if(left<8)left=8;
+      if(left+tipW>window.innerWidth-8)left=window.innerWidth-tipW-8;
+      // Vertical: just above bottom of chart, inside chart area
+      const top=scR.bottom-tipH-16;
+      tip.style.left=left+'px';
+      tip.style.top=Math.max(scR.top+8,top)+'px';
     });
+
+    clearTimeout(_timer);
+    _timer=setTimeout(removeTip,3000);
+  }
+
+  function removeTip(){
+    const t=document.getElementById('chart-tip');
+    if(t)t.remove();
+    clearTimeout(_timer);
+  }
+
+  // Tap detection via touchstart+touchend (doesn't block scroll)
+  document.addEventListener('touchstart',function(e){
+    const sc=document.getElementById('day-chart-scroll');
+    if(!sc)return;
+    const r=sc.getBoundingClientRect();
+    const t=e.touches[0];
+    if(t.clientY<r.top-5||t.clientY>r.bottom+5)return;
+    _touchStartX=t.clientX;_touchStartY=t.clientY;
+  },{passive:true});
+
+  document.addEventListener('touchend',function(e){
+    if(_touchStartX===null)return;
+    const t=e.changedTouches[0];
+    const dx=Math.abs(t.clientX-_touchStartX);
+    const dy=Math.abs(t.clientY-_touchStartY);
+    _touchStartX=null;_touchStartY=null;
+    if(dx<12&&dy<12)showTip(t.clientX);
+  },{passive:true});
+
+  // Mouse
+  document.addEventListener('click',function(e){
+    const sc=document.getElementById('day-chart-scroll');
+    if(!sc)return;
+    const r=sc.getBoundingClientRect();
+    if(e.clientY<r.top||e.clientY>r.bottom)return;
+    showTip(e.clientX);
+  });
+
+  // Close on tap outside
+  document.addEventListener('touchstart',function(e){
+    const tip=document.getElementById('chart-tip');
+    if(tip&&!tip.contains(e.target))removeTip();
   },{passive:true});
 }
+
+
+
+
+
+
 
 function hexAlphaJS(hex,a){
   try{const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`}
