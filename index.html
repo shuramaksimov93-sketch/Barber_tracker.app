@@ -497,9 +497,10 @@ input::placeholder,textarea::placeholder{color:var(--t3);-webkit-text-fill-color
 .add-loc-btn:hover{background:var(--bl);border-color:var(--blue)}
 
 /* COLOR PICKER */
-.color-popup{position:fixed;z-index:500;background:var(--card);border-radius:18px;padding:13px;box-shadow:var(--sh-xl);display:none;flex-wrap:wrap;gap:8px;width:196px}
-.color-popup.open{display:flex}
-.cp-dot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .18s cubic-bezier(.34,1.2,.64,1)}
+.color-popup{position:fixed;z-index:9500;background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--sh-xl);display:none;width:248px;max-height:60vh;overflow-y:auto;border:1px solid var(--sep)}
+.color-popup.open{display:block}
+.color-popup-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
+.cp-dot{width:38px;height:38px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .12s,box-shadow .12s;box-shadow:0 2px 6px rgba(0,0,0,.12)}
 .cp-dot:hover{transform:scale(1.15)}
 .cp-dot.sel{border-color:white;transform:scale(1.1);box-shadow:0 3px 10px rgba(0,0,0,.3)}
 
@@ -712,8 +713,44 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
 .dayoff-btn:hover,.dayoff-btn:active{background:var(--bg2);border-color:var(--t3)}
 .dayoff-btn.on{background:var(--rl);border-color:var(--red);color:var(--red)}
 @media(prefers-color-scheme:dark){
-  #cl-fab{background:rgba(60,65,100,.6)!important;color:#7db8f7!important;border-color:rgba(255,255,255,.08)!important;box-shadow:0 4px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1)!important}
-}</style>
+}
+/* Hide FAB when a sheet/modal is open so it never blocks the form */
+/* Client search row — clean, no sticky patch */
+.cl-search-wrap{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.cl-search-box{
+  flex:1;
+  background:var(--card);
+  border-radius:14px;
+  display:flex;align-items:center;gap:9px;
+  padding:12px 15px;
+  min-width:0;
+  box-shadow:var(--sh-s);
+}
+.cl-search-box input{
+  flex:1;border:none;outline:none;background:none;
+  font-family:inherit;font-size:15px;font-weight:500;
+  color:var(--t1);-webkit-text-fill-color:var(--t1);
+  min-width:0;
+}
+.cl-search-box input::placeholder{color:var(--t3);-webkit-text-fill-color:var(--t3)}
+.cl-search-box input::-webkit-search-cancel-button{-webkit-appearance:none}
+.cl-add-btn{
+  flex-shrink:0;
+  width:46px;height:46px;border-radius:14px;
+  border:none;cursor:pointer;
+  background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(37,99,235,.32);
+  transition:transform .15s cubic-bezier(.34,1.3,.64,1);
+}
+.cl-add-btn:active{transform:scale(.9)}
+@media(prefers-color-scheme:dark){
+  .cl-search-box{background:var(--card)}
+}
+</style>
 </head>
 <body>
 <nav class="nav">
@@ -722,6 +759,7 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
     <button class="lang-btn" onclick="cycleLang()" title="PL/RU/EN">🌐</button>
   </div>
 </nav>
+<!-- floating button removed -->
 <!-- BOTTOM TAB BAR -->
 <div class="tab-bar" id="tab-bar">
   <button class="tab-btn active" onclick="showTab('entry')" id="tb-entry">
@@ -890,31 +928,18 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
 
 <div id="tab-clients" style="display:none">
   <!-- search bar -->
-  <div style="position:sticky;top:0;z-index:10;background:var(--bg);padding:0 0 10px">
-    <div style="background:var(--card);border-radius:var(--r-xl);box-shadow:var(--sh-s);display:flex;align-items:center;gap:10px;padding:12px 16px">
-      <span style="font-size:17px;flex-shrink:0;opacity:.5">🔍</span>
-      <input id="cl-search" type="search" placeholder="" style="flex:1;border:none;outline:none;background:none;font-family:inherit;font-size:15px;font-weight:500;color:var(--t1);-webkit-text-fill-color:var(--t1)"
+  <div class="cl-search-wrap">
+    <div class="cl-search-box">
+      <span style="font-size:16px;flex-shrink:0;opacity:.45">🔍</span>
+      <input id="cl-search" type="search" placeholder="" 
         oninput="renderClientList()" autocomplete="off" autocorrect="off" spellcheck="false"/>
-      <button onclick="openClientForm(null)" style="border:none;background:var(--blue);color:white;font-size:20px;font-weight:300;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1">+</button>
     </div>
+    <button onclick="openClientForm(null)" class="cl-add-btn" aria-label="add">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
   </div>
   <div id="cl-list" style="padding-bottom:calc(160px + env(safe-area-inset-bottom))"></div>
-  <!-- Floating + button -->
-  <button onclick="openClientForm(null)" id="cl-fab"
-    style="position:fixed;bottom:calc(env(safe-area-inset-bottom)+68px);right:16px;
-      display:none;align-items:center;gap:8px;
-      padding:0 20px 0 16px;height:48px;
-      border:none;border-radius:28px;cursor:pointer;z-index:80;
-      /* Glass pill like tab bar active */
-      background:rgba(255,255,255,.72);
-      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-      box-shadow:0 4px 24px rgba(37,99,235,.22),0 2px 8px rgba(0,0,0,.08),inset 0 1.5px 0 rgba(255,255,255,.9);
-      border:1px solid rgba(255,255,255,.55);
-      color:var(--blue);font-family:inherit;font-size:15px;font-weight:700;
-      transition:transform .18s cubic-bezier(.34,1.3,.64,1),box-shadow .18s">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    <span id="cl-fab-lbl"></span>
-  </button>
+
 </div>
 
 <div id="tab-settings" style="display:none">
@@ -1053,6 +1078,12 @@ pl:{
   workdays:'Dni pracy',hours:'Godzin',avgDay:'Śr. dziennie',turnover:'Łączny obrót',
   period:['Miesiąc','Rok','Wszystko'],
   chartTypes:['Miesięcznie','Rocznie','Lokalizacje'],
+  cl:{name:'Imię',surname:'Nazwisko',phone:'Telefon',location:'Lokalizacja',style:'Styl / Strzyżenie',prefs:'Preferencje',notes:'Uwagi',
+      newClient:'Nowy klient',editClient:'Edytuj klienta',save:'Zapisz',nameHint:'Jan',surnameHint:'Kowalski',
+      styleHint:'np. Fade + broda, Crop top…',prefsHint:'Co lubi, czego nie lubi, długość…',notesHint:'Dodatkowe informacje…',
+      count:'klientów',noClients:'Brak klientów',notFound:'Nie znaleziono',addHint:'Naciśnij + aby dodać',
+      del:'Usuń klienta?',discard:'Porzucić zmiany?',discardSub:'Niezapisane dane zostaną utracone',
+      discardBtn:'Porzuć zmiany',keepBtn:'Kontynuuj edycję',add:'Dodaj'},
   byloc:'Według lokalizacji',entries:'Wpisy',mchart:'Miesięczny wykres',
   noData:'Brak danych',noEntries:'Brak wpisów w tym miesiącu',
   toInvoice:'Do faktury',toInvoiceNoRef:'Do faktury (bez Reform)',
@@ -1088,6 +1119,12 @@ ru:{
   workdays:'Рабочих дней',hours:'Часов',avgDay:'Ср. в день',turnover:'Общий оборот',
   period:['Месяц','Год','Всё'],
   chartTypes:['По месяцам','По годам','Локации'],
+  cl:{name:'Имя',surname:'Фамилия',phone:'Телефон',location:'Локация',style:'Стиль / Стрижка',prefs:'Предпочтения',notes:'Примечания',
+      newClient:'Новый клиент',editClient:'Редактировать клиента',save:'Сохранить',nameHint:'Иван',surnameHint:'Иванов',
+      styleHint:'напр. Fade + борода, Crop top…',prefsHint:'Что любит, что нет, длина…',notesHint:'Доп. информация…',
+      count:'клиентов',noClients:'Нет клиентов',notFound:'Не найдено',addHint:'Нажми + чтобы добавить',
+      del:'Удалить клиента?',discard:'Отменить изменения?',discardSub:'Несохранённые данные будут потеряны',
+      discardBtn:'Отменить',keepBtn:'Продолжить',add:'Добавить'},
   byloc:'По локациям',entries:'Записи',mchart:'По месяцам',
   noData:'Нет данных',noEntries:'Нет записей за этот месяц',
   toInvoice:'К фактуре',toInvoiceNoRef:'К фактуре (без Reform)',
@@ -1122,6 +1159,12 @@ en:{
   workdays:'Work days',hours:'Hours',avgDay:'Avg/day',turnover:'Total revenue',
   period:['Month','Year','All'],
   chartTypes:['Monthly','Yearly','Locations'],
+  cl:{name:'Name',surname:'Surname',phone:'Phone',location:'Location',style:'Style / Haircut',prefs:'Preferences',notes:'Notes',
+      newClient:'New client',editClient:'Edit client',save:'Save',nameHint:'John',surnameHint:'Smith',
+      styleHint:'e.g. Fade + beard, Crop top…',prefsHint:'Likes, dislikes, length…',notesHint:'Additional info…',
+      count:'clients',noClients:'No clients',notFound:'Not found',addHint:'Tap + to add',
+      del:'Delete client?',discard:'Discard changes?',discardSub:'Unsaved data will be lost',
+      discardBtn:'Discard',keepBtn:'Keep editing',add:'Add'},
   byloc:'By location',entries:'Entries',mchart:'Monthly chart',
   noData:'No data',noEntries:'No entries this month',
   toInvoice:'Invoice',toInvoiceNoRef:'Invoice (excl. ★)',
@@ -1149,7 +1192,7 @@ en:{
 }
 };
 
-const PRESET_COLORS=['#2563eb','#16a34a','#ea580c','#7c3aed','#0891b2','#be185d','#b45309','#374151','#dc2626','#0d9488'];
+const PRESET_COLORS=['#2563eb','#3b82f6','#0891b2','#0d9488','#16a34a','#22c55e','#84cc16','#eab308','#f59e0b','#ea580c','#dc2626','#e11d48','#be185d','#d946ef','#a855f7','#7c3aed','#6366f1','#475569','#374151','#78716c'];
 const LOC_ICONS_DEF=['⚡','🏭','🏙️','🏠','✂️','💈','🪒','🏪','⭐','🔥'];
 const FIELD_BG=['#f0fdf4','#eff6ff','#fef3c7','#eff6ff','#f0fdf4','#fdf4ff','#fff7ed','#f8fafc'];
 
@@ -1353,12 +1396,16 @@ let cKey='';
 // Expression as token array: [num, op, num, op, ...] e.g. [2,'+',3,'*',5]
 let cTokens=[],cCur='0',cNewNum=true,cLastOp=null,cJustEvaled=false;
 
+let cSavedExpr='';
 function openCalc(k){
   cKey=k;
   cTokens=[];cCur=fVals[k]?String(fVals[k]):'0';
   cNewNum=true;cLastOp=null;cJustEvaled=false;
+  // Load saved expression for this field (persists across sessions via entry.exprs)
+  cSavedExpr=(window._fvalExpr&&window._fvalExpr[k])||'';
   document.getElementById('sheet-title').textContent=T.calcTitle;
-  renderCalcBody();openSheet();
+  renderCalcBody();
+  openSheet();
 }
 
 function buildExprStr(){
@@ -1368,16 +1415,32 @@ function buildExprStr(){
     if(typeof cTokens[i]==='number') s+=fmtDisp(String(cTokens[i]));
     else s+=' '+SYM[cTokens[i]]+' ';
   }
-  return s;
+  return s.trim();
+}
+// Full expression including the current number being typed
+function buildFullExpr(){
+  const SYM={'+':'+','-':'−','*':'×','/':'÷'};
+  let s='';
+  const toks=[...cTokens];
+  // Add current number if user is mid-typing
+  if(!cNewNum)toks.push(parseFloat(cCur));
+  for(let i=0;i<toks.length;i++){
+    if(typeof toks[i]==='number')s+=fmtDisp(String(toks[i]));
+    else s+=' '+SYM[toks[i]]+' ';
+  }
+  return s.trim();
 }
 
 function renderCalcBody(){
   const expr=buildExprStr();
+  // Show: live expression if typing, else saved previous calc as hint
+  let histText=expr;
+  if(!expr&&cSavedExpr){histText=cSavedExpr+' = '+fmtDisp(cCur);}
   const sb=document.getElementById('sheet-body');
   if(!sb)return;
   sb.innerHTML=`<div class="calc-wrap">
     <div class="calc-display">
-      <div id="c-hist" style="min-height:20px;font-size:14px;color:#8e8e93;text-align:right;padding:0 4px 2px;overflow-x:auto;white-space:nowrap;scrollbar-width:none">${expr||'&nbsp;'}</div>
+      <div id="c-hist" style="min-height:20px;font-size:14px;color:#8e8e93;text-align:right;padding:0 4px 2px;overflow-x:auto;white-space:nowrap;scrollbar-width:none">${histText||'&nbsp;'}</div>
       <div class="calc-main-num" id="c-num">${fmtDisp(cCur)}</div>
     </div>
     <div class="calc-pad">
@@ -1418,11 +1481,18 @@ function updDispOnly(){
   const en=document.getElementById('c-num');
   const eh=document.getElementById('c-hist');
   if(en)en.textContent=fmtDisp(cCur);
-  if(eh){const s=buildExprStr();eh.textContent=s||'\u00a0';eh.scrollLeft=eh.scrollWidth;}
+  if(eh){
+    const s=buildExprStr();
+    let txt=s;
+    if(!s&&cSavedExpr)txt=cSavedExpr+' = '+fmtDisp(cCur);
+    eh.textContent=txt||'\u00a0';eh.scrollLeft=eh.scrollWidth;
+  }
 }
 
 function cDig(d){
   if(cJustEvaled){cTokens=[];cJustEvaled=false;}
+  // Starting a brand new number clears the old saved-expression hint
+  if(cNewNum&&cTokens.length===0)cSavedExpr='';
   if(cNewNum){cCur=d;cNewNum=false;}
   else cCur=(cCur==='0')?d:(cCur.length<14?cCur+d:cCur);
   updDispOnly();
@@ -1444,7 +1514,7 @@ function cDel(){
   }
   renderCalcBody();
 }
-function cAC(){cTokens=[];cCur='0';cNewNum=true;cLastOp=null;cJustEvaled=false;renderCalcBody();}
+function cAC(){cTokens=[];cCur='0';cNewNum=true;cLastOp=null;cJustEvaled=false;cSavedExpr='';renderCalcBody();}
 function cPct(){cCur=String(Math.round(parseFloat(cCur)/100*1e10)/1e10);updDispOnly();}
 
 function cSetOp(op){
@@ -1491,23 +1561,58 @@ function evalTokens(toks){
 
 function cEquals(){
   if(!cTokens.length)return;
-  const toks=[...cTokens];
-  if(!cNewNum)toks.push(parseFloat(cCur));
-  const exprFull=buildExprStr()+(cNewNum?'':' '+fmtDisp(cCur));
+  let toks=[...cTokens];
+  if(!cNewNum){
+    // There's a pending number — append it (trailing op stays as connector)
+    toks.push(parseFloat(cCur));
+  } else {
+    // No pending number — drop trailing operator(s)
+    while(toks.length&&typeof toks[toks.length-1]==='string')toks.pop();
+  }
+  if(toks.length<2){return}// nothing to compute
+  // Build clean expression string from the cleaned tokens
+  const SYM={'+':'+','-':'−','*':'×','/':'÷'};
+  let exprFull='';
+  for(let i=0;i<toks.length;i++){
+    if(typeof toks[i]==='number')exprFull+=fmtDisp(String(toks[i]));
+    else exprFull+=' '+SYM[toks[i]]+' ';
+  }
   const result=evalTokens(toks);
   const r=Math.round(result*100)/100;
+  // Store the full expression with result as the saved history
+  cSavedExpr=exprFull.trim()+' = '+fmtDisp(String(r));
   cCur=String(r);cTokens=[];cNewNum=true;cLastOp=null;cJustEvaled=true;
   renderCalcBody();
-  const eh=document.getElementById('c-hist');
-  if(eh){eh.textContent=exprFull+' = '+fmtDisp(String(r));eh.scrollLeft=eh.scrollWidth;}
 }
 
 function cDone(){
-  const toks=[...cTokens];
-  if(!cNewNum)toks.push(parseFloat(cCur));
+  let toks=[...cTokens];
+  if(!cNewNum){
+    toks.push(parseFloat(cCur));
+  } else {
+    while(toks.length&&typeof toks[toks.length-1]==='string')toks.pop();
+  }
   let v=toks.length?evalTokens(toks):parseFloat(cCur)||0;
   v=Math.round(v*100)/100;
   if(isNaN(v)||!isFinite(v))v=0;
+
+  if(!window._fvalExpr)window._fvalExpr={};
+  if(toks.length>=2){
+    // Multi-step calc — build clean expression with result
+    const SYM={'+':'+','-':'−','*':'×','/':'÷'};
+    let expr='';
+    for(let i=0;i<toks.length;i++){
+      if(typeof toks[i]==='number')expr+=fmtDisp(String(toks[i]));
+      else expr+=' '+SYM[toks[i]]+' ';
+    }
+    window._fvalExpr[cKey]=expr.trim()+' = '+fmtDisp(String(v));
+  } else if(cJustEvaled&&cSavedExpr){
+    // Just pressed = then OK — keep the equals expression
+    window._fvalExpr[cKey]=cSavedExpr;
+  } else {
+    // Plain single number — no history
+    window._fvalExpr[cKey]='';
+  }
   setFval(cKey,v);closeSheet();
 }
 
@@ -1707,14 +1812,30 @@ function setupSheetSwipe(){
   // Drag activates as soon as finger moves DOWN by just 6px — very easy to trigger.
   let startY=0,startX=0,velY=0,lastY=0,lastT=0,isDragging=false,active=false;
 
+  // Find the scrollable content inside the sheet
+  function getScroller(target){
+    let el=target;
+    while(el&&el!==box){
+      if(el.scrollHeight>el.clientHeight+2){
+        const oy=getComputedStyle(el).overflowY;
+        if(oy==='auto'||oy==='scroll')return el;
+      }
+      el=el.parentElement;
+    }
+    return null;
+  }
+
   ov.addEventListener('touchstart',e=>{
     const r=box.getBoundingClientRect();
     const t=e.touches[0];
-    // Accept touch anywhere on box
     if(t.clientX<r.left||t.clientX>r.right||t.clientY<r.top||t.clientY>r.bottom)return;
     startY=t.clientY;startX=t.clientX;
     lastY=startY;lastT=Date.now();
     velY=0;isDragging=false;active=true;
+    // Remember if touch started in the top grab zone (first 60px = handle area)
+    box._topZone=(t.clientY-r.top)<60;
+    // Remember the scroller and its scroll position
+    box._scroller=getScroller(t.target);
   },{passive:true});
 
   ov.addEventListener('touchmove',e=>{
@@ -1727,12 +1848,21 @@ function setupSheetSwipe(){
     lastY=t.clientY;lastT=Date.now();
 
     if(!isDragging){
-      // Activate on very small downward movement — only 6px, wider than horizontal lock
-      if(dy>6&&dy>dx*0.8){
+      // Only allow swipe-to-close if:
+      // (a) touch started in top grab zone, OR
+      // (b) there's no scroller, OR
+      // (c) the scroller is already scrolled to the very top (can't scroll up more)
+      const scroller=box._scroller;
+      const atTop=!scroller||scroller.scrollTop<=0;
+      const canDismiss=box._topZone||atTop;
+
+      if(dy>10&&dy>dx*1.2&&canDismiss){
         isDragging=true;
         box.style.transition='none';
       } else if(dx>dy+10){
-        // Clearly horizontal swipe — cancel tracking
+        active=false;return;
+      } else if(dy>10&&!canDismiss){
+        // User is scrolling content — don't hijack
         active=false;return;
       } else {
         return;
@@ -1742,7 +1872,6 @@ function setupSheetSwipe(){
     if(dy>0){
       box.style.transform=`translateY(${dy}px)`;
     } else {
-      // Tiny resistance if pulling up
       box.style.transform=`translateY(${dy*0.04}px)`;
     }
   },{passive:true});
@@ -1791,15 +1920,10 @@ function showTab(id){
   if(id==='stats')renderStats();if(id==='invoice')renderInvoice();
   if(id==='clients'){
     renderClientList();
-    const fab=document.getElementById('cl-fab');if(fab){fab.style.display='flex';
-      const fl=document.getElementById('cl-fab-lbl');
-      if(fl)fl.textContent=lang==='ru'?'Добавить':lang==='pl'?'Dodaj':'Add';}
     setTimeout(()=>{
       const s=document.getElementById('cl-search');
-      if(s)s.placeholder=lang==='pl'?'Szukaj po imieniu, nazwisku lub telefonie…':'Поиск по имени, фамилии или телефону…';
+      if(s)s.placeholder=lang==='ru'?'Поиск по имени, фамилии или телефону…':lang==='pl'?'Szukaj po imieniu, nazwisku lub telefonie…':'Search by name, surname or phone…';
     },50);
-  } else {
-    const fab=document.getElementById('cl-fab');if(fab)fab.style.display='none';
   }
   if(id==='settings'){renderLocSettings();const chk=document.getElementById('reform-chk');if(chk)chk.checked=settings.reformSeparate}
   if(id!=='entry')closeCal();
@@ -1989,6 +2113,7 @@ function isReal(e){return(e.revenue||0)>0||(e.tips||0)>0||(e.clients||0)>0||(e.h
 /* FIX #2: Load edit preserves ID and date; date changes on save */
 function loadEdit(e){
   editId=e.id;
+  window._fvalExpr=e.exprs?{...e.exprs}:(e.revenueExpr?{revenue:e.revenueExpr}:{});
   // Set selDate to entry's date so editing works on right date
   selDate=e.date;
   calY=parseInt(e.date.split('-')[0]);calM=parseInt(e.date.split('-')[1])-1;
@@ -2001,7 +2126,7 @@ function loadEdit(e){
   st('save-btn',T.saveEdit);document.getElementById('save-btn').classList.add('emode');
 }
 function cancelEdit(){
-  editId=null;document.getElementById('edit-banner').style.display='none';
+  editId=null;if(window._fvalExpr)window._fvalExpr={};document.getElementById('edit-banner').style.display='none';
   st('save-btn',T.save);document.getElementById('save-btn').classList.remove('emode');
   fVals={hours:0,clients:0,revenue:0,pct:curPct,tips:0,tipsCash:0,vouchers:0,discounts:0,notes:''};
   renderFormGroup();
@@ -2026,6 +2151,7 @@ function saveEntry(){
     myPctAmt:fVals.revenue*curPct/100,total:(fVals.revenue*curPct/100)+fVals.tips,
     realTotal:(fVals.revenue*curPct/100)+fVals.tips+(fVals.tipsCash||0),
     isReform:loc?loc.isReform:false,
+    exprs:window._fvalExpr?{...window._fvalExpr}:{},
   };
   if(editId){
     // Check: if loc changed and another entry already exists for this new loc+date — overwrite that one
@@ -2770,16 +2896,31 @@ function initLocSwipeDelete(){
 }
 
 function openColorPicker(i,btn){
+  // Backdrop + centered popup
+  let backdrop=document.getElementById('color-backdrop');
+  if(!backdrop){
+    backdrop=document.createElement('div');
+    backdrop.id='color-backdrop';
+    backdrop.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(6px);z-index:9400;display:none';
+    document.body.appendChild(backdrop);
+  }
   const p=document.getElementById('color-popup');
-  p.innerHTML=PRESET_COLORS.map(c=>`<div class="cp-dot${locs[i].color===c?' sel':''}" style="background:${c}" onclick="setLocColor(${i},'${c}')"></div>`).join('');
-  const r=btn.getBoundingClientRect();
-  p.style.top=(r.bottom+window.scrollY+8)+'px';
-  p.style.left=Math.min(r.left+window.scrollX-80,window.innerWidth-210)+'px';
+  const title=lang==='ru'?'Выбери цвет':lang==='pl'?'Wybierz kolor':'Pick a color';
+  p.innerHTML=`<div style="font-size:12px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:13px;text-align:center">${title}</div>
+    <div class="color-popup-grid">${PRESET_COLORS.map(col=>`<div class="cp-dot${locs[i].color===col?' sel':''}" style="background:${col}" onclick="setLocColor(${i},'${col}')"></div>`).join('')}</div>`;
+  // Center on screen
+  p.style.top='50%';p.style.left='50%';p.style.transform='translate(-50%,-50%)';
   p.classList.add('open');
-  const close=ev=>{if(!p.contains(ev.target)&&ev.target!==btn){p.classList.remove('open');document.removeEventListener('click',close,true)}};
-  setTimeout(()=>document.addEventListener('click',close,true),10);
+  backdrop.style.display='block';
+  const close=()=>{p.classList.remove('open');backdrop.style.display='none';backdrop.onclick=null;};
+  backdrop.onclick=close;
+  p._closeFn=close;
 }
-function setLocColor(i,color){hap('light');locs[i].color=color;saveAll();renderLocGrid();renderLocSettings();document.getElementById('color-popup').classList.remove('open')}
+function setLocColor(i,color){
+  hap('light');locs[i].color=color;saveAll();renderLocGrid();renderLocSettings();renderStats();renderInvoice();
+  const p=document.getElementById('color-popup');
+  if(p&&p._closeFn)p._closeFn();else if(p)p.classList.remove('open');
+}
 function renameLoc(i,v){if(!v.trim())return;locs[i].name=v.trim();saveAll();renderLocGrid();renderStats();renderInvoice()}
 function toggleReform(i){hap('light');locs[i].isReform=!locs[i].isReform;saveAll();renderLocGrid();renderLocSettings();renderStats();renderInvoice()}
 function deleteLoc(i){
@@ -2805,28 +2946,48 @@ function deleteLoc(i){
   });
 }
 
+let _newLocIcon='⚡',_newLocColor='#2563eb';
 function addLoc(){
-  const placeholder=lang==='pl'?'Nazwa lokalizacji…':'Название локации…';
-  const title=lang==='pl'?'Nowa lokalizacja':'Новая локация';
+  const placeholder=lang==='pl'?'Nazwa lokalizacji…':lang==='ru'?'Название локации…':'Location name…';
+  const title=lang==='pl'?'Nowa lokalizacja':lang==='ru'?'Новая локация':'New location';
+  _newLocIcon=EMOJI_LIST[0]||'⚡';
+  _newLocColor=PRESET_COLORS[locs.length%PRESET_COLORS.length];
   document.getElementById('sheet-title').textContent=title;
   document.getElementById('sheet-body').innerHTML=`
-    <div style="padding:12px 16px 8px;">
+    <div style="padding:12px 16px 8px;max-height:70vh;overflow-y:auto">
       <input id="addloc-input" type="text" placeholder="${placeholder}"
-        style="width:100%;border:none;outline:none;background:var(--bg2);border-radius:12px;padding:13px 16px;font-size:16px;font-family:inherit;font-weight:600;color:var(--t1);-webkit-text-fill-color:var(--t1);"
+        style="width:100%;border:none;outline:none;background:var(--bg2);border-radius:12px;padding:13px 16px;font-size:16px;font-family:inherit;font-weight:600;color:var(--t1);-webkit-text-fill-color:var(--t1);margin-bottom:14px"
         autocomplete="off" autocorrect="off" spellcheck="false"/>
+      <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:8px">${lang==='ru'?'Иконка':lang==='pl'?'Ikona':'Icon'}</div>
+      <div id="addloc-emoji" style="display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-bottom:16px">
+        ${EMOJI_LIST.map(e=>`<button onclick="selNewLocIcon('${e}',this)" class="addloc-emoji-btn" style="border:none;background:${e===_newLocIcon?'var(--bl)':'var(--bg2)'};outline:${e===_newLocIcon?'2px solid var(--blue)':'none'};font-size:22px;padding:7px;border-radius:10px;cursor:pointer;aspect-ratio:1;display:flex;align-items:center;justify-content:center">${e}</button>`).join('')}
+      </div>
+      <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:8px">${lang==='ru'?'Цвет':lang==='pl'?'Kolor':'Color'}</div>
+      <div id="addloc-colors" style="display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-bottom:8px">
+        ${PRESET_COLORS.map(col=>`<button onclick="selNewLocColor('${col}',this)" class="addloc-color-btn" style="border:2.5px solid ${col===_newLocColor?'var(--t1)':'transparent'};background:${col};width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;padding:0"></button>`).join('')}
+      </div>
     </div>
     <div style="display:flex;gap:10px;padding:8px 16px 16px;">
       <button onclick="closeSheet()" style="flex:1;padding:13px;border:none;border-radius:14px;background:var(--bg2);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:var(--t2);">${T.cancel}</button>
-      <button onclick="addLocConfirm()" style="flex:2;padding:13px;border:none;border-radius:14px;background:var(--blue);color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">+ ${lang==='pl'?'Add':lang==='ru'?'Добавить':'Add'}</button>
+      <button onclick="addLocConfirm()" style="flex:2;padding:13px;border:none;border-radius:14px;background:var(--blue);color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">+ ${lang==='pl'?'Dodaj':lang==='ru'?'Добавить':'Add'}</button>
     </div>`;
   openSheet();
   setTimeout(()=>{const inp=document.getElementById('addloc-input');if(inp)inp.focus()},320);
 }
+function selNewLocIcon(e,btn){
+  _newLocIcon=e;
+  document.querySelectorAll('.addloc-emoji-btn').forEach(b=>{b.style.background='var(--bg2)';b.style.outline='none'});
+  btn.style.background='var(--bl)';btn.style.outline='2px solid var(--blue)';
+}
+function selNewLocColor(col,btn){
+  _newLocColor=col;
+  document.querySelectorAll('.addloc-color-btn').forEach(b=>b.style.borderColor='transparent');
+  btn.style.borderColor='var(--t1)';
+}
 function addLocConfirm(){
   const inp=document.getElementById('addloc-input');const n=inp?inp.value.trim():'';
   if(!n){inp&&inp.focus();return}
-  const iconIdx=locs.length%LOC_ICONS_DEF.length,colorIdx=locs.length%PRESET_COLORS.length;
-  locs.push({id:Date.now(),name:n,icon:LOC_ICONS_DEF[iconIdx],color:PRESET_COLORS[colorIdx],isReform:false});
+  locs.push({id:Date.now(),name:n,icon:_newLocIcon,color:_newLocColor,isReform:false});
   hap('medium');saveAll();renderLocGrid();renderLocSettings();closeSheet();showToast('+ '+n);
 }
 
@@ -3191,8 +3352,8 @@ function renderClientList(){
   if(!filtered.length){
     el.innerHTML=`<div class="cl-empty">
       <div class="cl-empty-icon">👤</div>
-      <div class="cl-empty-txt">${q?(pl?'Nie znaleziono':'Не найдено'):(pl?'Brak klientów':'Нет клиентов')}</div>
-      <div class="cl-empty-sub">${q?'':(pl?'Naciśnij + aby dodać':'Нажми + чтобы добавить')}</div>
+      <div class="cl-empty-txt">${q?T.cl.notFound:T.cl.noClients}</div>
+      <div class="cl-empty-sub">${q?'':T.cl.addHint}</div>
     </div>`;
     return;
   }
@@ -3207,7 +3368,7 @@ function renderClientList(){
 
   let html='';
   // Stats bar
-  html+=`<div style="padding:0 4px 8px;font-size:12px;color:var(--t3);font-weight:600">${filtered.length} ${pl?'klientów':'клиентов'}</div>`;
+  html+=`<div style="padding:0 4px 8px;font-size:12px;color:var(--t3);font-weight:600">${filtered.length} ${T.cl.count}</div>`;
 
   Object.keys(groups).sort().forEach(letter=>{
     html+=`<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);padding:0 4px;margin-bottom:6px;margin-top:${letter===Object.keys(groups).sort()[0]?'0':'14px'}">${letter}</div>`;
@@ -3242,7 +3403,8 @@ function openClientForm(id){
   const pl=lang!=='ru';  // pl and en both use latin
   const cl=id?clients.find(c=>c.id===id):null;
 
-  document.getElementById('sheet-title').textContent=cl?(pl?'Edytuj klienta':'Редактировать клиента'):(pl?'Nowy klient':'Новый клиент');
+  const L=T.cl;
+  document.getElementById('sheet-title').textContent=cl?L.editClient:L.newClient;
 
   const locBtns=locs.map(l=>`
     <button class="cf-loc-btn${cl?.locId===l.id?' active':''}" style="${cl?.locId===l.id?'background:'+l.color+';color:white;border-color:'+l.color:''}"
@@ -3251,38 +3413,38 @@ function openClientForm(id){
   document.getElementById('sheet-body').innerHTML=`
     <div style="padding:4px 16px 8px;max-height:70vh;overflow-y:auto">
       <div class="cf-row">
-        <div class="cf-lbl">${lang==='ru'?'Имя':'Name'} *</div>
-        <input id="cf-first" class="cf-input" placeholder="${lang==='ru'?'Иван':'John'}" value="${cl?.first||''}">
+        <div class="cf-lbl">${L.name} *</div>
+        <input id="cf-first" class="cf-input" placeholder="${L.nameHint}" value="${cl?.first||''}">
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${lang==='ru'?'Фамилия':'Surname'}</div>
-        <input id="cf-last" class="cf-input" placeholder="${lang==='ru'?'Иванов':'Smith'}" value="${cl?.last||''}">
+        <div class="cf-lbl">${L.surname}</div>
+        <input id="cf-last" class="cf-input" placeholder="${L.surnameHint}" value="${cl?.last||''}">
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${lang==='ru'?'Телефон':'Phone'}</div>
+        <div class="cf-lbl">${L.phone}</div>
         <input id="cf-phone" class="cf-input" type="tel" placeholder="+48 600 000 000" value="${cl?.phone||''}"
           autocomplete="tel" autocorrect="off" inputmode="tel">
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${lang==='ru'?'Локация':'Location'}</div>
+        <div class="cf-lbl">${L.location}</div>
         <div class="cf-loc-grid" id="cf-locs">${locBtns}</div>
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${lang==='ru'?'Стиль / Стрижка':'Style / Haircut'}</div>
-        <input id="cf-haircut" class="cf-input" placeholder="${pl?'np. Fade + broda, Crop top…':'напр. Fade + борода, Crop top…'}" value="${cl?.haircut||''}">
+        <div class="cf-lbl">${L.style}</div>
+        <input id="cf-haircut" class="cf-input" placeholder="${L.styleHint}" value="${cl?.haircut||''}">
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${lang==='ru'?'Предпочтения и пожелания':'Preferences & likes'}</div>
-        <textarea id="cf-prefs" class="cf-input" placeholder="${pl?'Co lubi, czego nie lubi, długość…':'Что любит, что нет, длина…'}">${cl?.prefs||''}</textarea>
+        <div class="cf-lbl">${L.prefs}</div>
+        <textarea id="cf-prefs" class="cf-input" placeholder="${L.prefsHint}">${cl?.prefs||''}</textarea>
       </div>
       <div class="cf-row">
-        <div class="cf-lbl">${lang==='ru'?'Примечания':'Notes'}</div>
-        <textarea id="cf-notes" class="cf-input" placeholder="${pl?'Dodatkowe informacje…':'Дополнительная информация…'}">${cl?.notes||''}</textarea>
+        <div class="cf-lbl">${L.notes}</div>
+        <textarea id="cf-notes" class="cf-input" placeholder="${L.notesHint}">${cl?.notes||''}</textarea>
       </div>
       <div class="cf-actions">
         <button class="cf-cancel" onclick="cfClose()">${T.cancel}</button>
         ${cl?`<button class="cf-del" onclick="deleteClient(${cl.id})">🗑</button>`:''}
-        <button class="cf-save" onclick="saveClient()">${lang==='ru'?'Сохранить':'Save'}</button>
+        <button class="cf-save" onclick="saveClient()">${L.save}</button>
       </div>
     </div>`;
 
@@ -3309,11 +3471,11 @@ function cfClose(){
     ov.innerHTML=`<div style="width:100%;max-width:460px;margin-bottom:8px;animation:fadeUp .25s cubic-bezier(.34,1.2,.64,1)">
       <div style="background:rgba(28,28,32,.97);border-radius:20px;overflow:hidden;margin-bottom:10px;box-shadow:var(--sh-xl)">
         <div style="padding:18px 20px 14px;text-align:center;border-bottom:1px solid rgba(255,255,255,.08)">
-          <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px">${pl?'Porzucić zmiany?':'Отменить изменения?'}</div>
-          <div style="font-size:13px;color:#8e8e93">${pl?'Niezapisane dane zostaną utracone':'Несохранённые данные будут потеряны'}</div>
+          <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px">${T.cl.discard}</div>
+          <div style="font-size:13px;color:#8e8e93">${T.cl.discardSub}</div>
         </div>
-        <button id="cfc-discard" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;color:#ff453a;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.08)">${pl?'Porzuć zmiany':'Отменить изменения'}</button>
-        <button id="cfc-keep" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:700;color:#0a84ff;cursor:pointer">${pl?'Kontynuuj edycję':'Продолжить редактирование'}</button>
+        <button id="cfc-discard" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;color:#ff453a;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.08)">${T.cl.discardBtn}</button>
+        <button id="cfc-keep" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:700;color:#0a84ff;cursor:pointer">${T.cl.keepBtn}</button>
       </div></div>`;
     document.body.appendChild(ov);
     const close=()=>ov.remove();
