@@ -750,6 +750,75 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
 @media(prefers-color-scheme:dark){
   .cl-search-box{background:var(--card)}
 }
+
+/* ═══════════════════════════════════════════════════════
+   LIQUID GLASS — слой нового дизайна (только визуал)
+   ═══════════════════════════════════════════════════════ */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+   radial-gradient(640px 430px at 85% -8%,rgba(37,99,235,.16),transparent 62%),
+   radial-gradient(520px 380px at -12% 28%,rgba(124,58,237,.13),transparent 62%),
+   radial-gradient(640px 420px at 55% 112%,rgba(22,163,74,.11),transparent 62%);
+}
+:root{
+  --glass:rgba(255,255,255,.6);
+  --glass-bd:rgba(255,255,255,.55);
+  --glass-hi:rgba(255,255,255,.75);
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --glass:rgba(30,30,40,.5);
+    --glass-bd:rgba(255,255,255,.08);
+    --glass-hi:rgba(255,255,255,.08);
+  }
+  body::before{
+    background:
+     radial-gradient(640px 430px at 85% -8%,rgba(59,130,246,.13),transparent 62%),
+     radial-gradient(520px 380px at -12% 28%,rgba(139,92,246,.11),transparent 62%),
+     radial-gradient(640px 420px at 55% 112%,rgba(34,197,94,.08),transparent 62%);
+  }
+}
+/* стеклянные поверхности */
+.card,
+.sc:not(.hero):not(.hero-p),
+.prev-strip,
+.form-group,
+.set-wrap,
+.cl-card,
+.cl-search-box,
+.ptabs,
+.loc-pill,
+.inv-wrap,
+.dayoff-btn,
+.add-loc-btn{
+  background:var(--glass);
+  backdrop-filter:blur(18px) saturate(170%);
+  -webkit-backdrop-filter:blur(18px) saturate(170%);
+  border:1px solid var(--glass-bd);
+  box-shadow:0 8px 28px rgba(0,0,0,.07),inset 0 1px 0 var(--glass-hi);
+}
+.dayoff-btn{border-style:dashed}
+/* внутренние ряды — прозрачные, чтобы стекло карточки просвечивало */
+.frow,.set-row,.loc-set-item,.loc-row,.erow{background:transparent}
+.inv-sh{background:rgba(120,120,140,.1)}
+.inv-total{backdrop-filter:none}
+/* шторки и попапы — более плотное стекло */
+.modal-sheet,.picker-box,.emoji-picker-box,.color-popup{
+  background:var(--glass);
+  backdrop-filter:blur(36px) saturate(185%);
+  -webkit-backdrop-filter:blur(36px) saturate(185%);
+  border:1px solid var(--glass-bd);
+}
+/* анимация переключения вкладок */
+@keyframes tabIn{from{opacity:0;transform:translateY(12px) scale(.992)}to{opacity:1;transform:none}}
+.tab-anim{animation:tabIn .34s cubic-bezier(.34,1.25,.64,1)}
+/* приятные нажатия */
+.set-btn:active,.cl-add-btn:active,.mnav-btn:active,.cal-nav:active{transform:scale(.9)}
+.frow:active,.cl-card:active,.set-row:active{background:rgba(120,120,140,.08)}
+.save-btn:active,.copy-btn:active,.cf-save:active{transform:scale(.97)}
+@media(prefers-reduced-motion:reduce){.tab-anim{animation:none}}
+
 </style>
 </head>
 <body>
@@ -1914,6 +1983,7 @@ function setupSheetSwipe(){
 /* ══ TABS ══ */
 function showTab(id){
   ['entry','stats','invoice','clients','settings'].forEach(t=>{document.getElementById('tab-'+t).style.display=(t===id)?'':'none'});
+  const _at=document.getElementById('tab-'+id);if(_at){_at.classList.remove('tab-anim');void _at.offsetWidth;_at.classList.add('tab-anim')}
   const TABS=['entry','stats','invoice','clients','settings'];
   const activeIdx=TABS.indexOf(id);
   document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',i===activeIdx)});
