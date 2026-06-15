@@ -693,6 +693,13 @@ input.pct-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;backg
 /* ── DAY CHART ── */
 .day-chart{padding:14px 16px 10px;overflow-x:auto;scrollbar-width:none}
 .day-chart::-webkit-scrollbar{display:none}
+.chart-scroll::-webkit-scrollbar{display:none}
+#bk-pager{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -14px;padding:2px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#bk-pager::-webkit-scrollbar{display:none}
+.bk-card{flex:0 0 100%;scroll-snap-align:center;box-sizing:border-box;padding:16px 16px 14px}
+.bk-dot{width:7px;height:7px;border-radius:50%;background:var(--t3);opacity:.3;transition:opacity .2s,width .2s,background .2s}
+.bk-dot.on{opacity:1;width:20px;border-radius:4px;background:var(--blue)}
+#bk-dots{display:flex;justify-content:center;align-items:center;gap:6px;margin:11px 0 2px}
 .day-chart-inner{display:flex;align-items:flex-end;gap:4px;min-width:max-content;height:96px}
 .day-bar{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
 .day-bar-fill{width:18px;border-radius:5px 5px 0 0;min-height:3px;transition:opacity .15s}
@@ -914,6 +921,12 @@ body::before{
 <div id="tab-stats" style="display:none">
   <!-- TODAY widget -->
   <div id="today-widget" style="display:none"></div>
+  <!-- BOOKSY carousel -->
+  <div class="ptabs" id="bk-tabs"></div>
+  <div id="bk-nav"></div>
+  <div id="bk-pager"></div>
+  <div id="bk-dots"></div>
+  <div class="slabel" id="sl-detailed" style="margin-top:22px"></div>
   <div class="ptabs" id="ptabs"></div>
   <div id="sv-month">
     <div class="card" style="margin-bottom:10px"><div class="mnav">
@@ -963,6 +976,18 @@ body::before{
     <div class="sg" id="ystats-grid"></div>
     <div class="slabel" id="sl-mchart"></div>
     <div class="card"><div class="ybars" id="year-bars"></div></div>
+    <div class="slabel" id="sl-tipschart" style="margin-top:16px"></div>
+    <div class="card" style="padding:14px 14px 12px">
+      <div style="display:flex;gap:14px;margin-bottom:12px;justify-content:center">
+        <div style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:var(--blue)"></span><span style="font-size:11px;font-weight:700;color:var(--t2)" id="tips-leg-card">Карта</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;background:var(--green)"></span><span style="font-size:11px;font-weight:700;color:var(--t2)" id="tips-leg-cash">Наличка</span></div>
+      </div>
+      <div id="tips-chart"></div>
+    </div>
+    <div class="slabel" id="sl-clientschart" style="margin-top:16px"></div>
+    <div class="card" style="padding:14px 14px 12px">
+      <div id="clients-chart"></div>
+    </div>
     <div id="year-loc-breakdown"></div>
     <!-- Location × Month explorer -->
     <div class="slabel" id="sl-explorer" style="margin-top:16px"></div>
@@ -2288,7 +2313,7 @@ function chMonth(d){
   renderStats();
 }
 function chYear(d){stY+=d;renderStats()}
-function renderStats(){renderTodayWidget();if(period==='month')renderMonthStats();else if(period==='year')renderYearStats();else renderAllStats()}
+function renderStats(){renderTodayWidget();renderBooksy();if(period==='month')renderMonthStats();else if(period==='year')renderYearStats();else renderAllStats()}
 
 function renderTodayWidget(){
   const el=document.getElementById('today-widget');
@@ -2450,8 +2475,436 @@ function renderYearStats(){
   }).join('');
 
   // Per-location breakdown for the year
+  renderTipsChart(stY);
+  renderClientsChart(stY);
   renderLocBreakdown('year-loc-breakdown',entries.filter(e=>e.date.startsWith(String(stY))&&isReal(e)),stY);
   renderExplorer();
+}
+
+/* Tips by month chart (card vs cash) — animated gradient columns */
+function renderTipsChart(year){
+  const host=document.getElementById('tips-chart');if(!host)return;
+  const sl=document.getElementById('sl-tipschart');
+  if(sl)sl.textContent=lang==='ru'?'Чаевые по месяцам':lang==='pl'?'Napiwki wg miesięcy':'Tips by month';
+  const lc=document.getElementById('tips-leg-card'),lh=document.getElementById('tips-leg-cash');
+  if(lc)lc.textContent=lang==='ru'?'Карта':lang==='pl'?'Karta':'Card';
+  if(lh)lh.textContent=lang==='ru'?'Наличка':lang==='pl'?'Gotówka':'Cash';
+  const card=[],cash=[];
+  for(let m=0;m<12;m++){
+    const me=entries.filter(e=>e.date.startsWith(`${year}-${p2(m+1)}`)&&isReal(e));
+    card.push(S(me,'tips'));cash.push(S(me,'tipsCash'));
+  }
+  const totCard=card.reduce((a,b)=>a+b,0),totCash=cash.reduce((a,b)=>a+b,0);
+  if(totCard+totCash===0){host.innerHTML=`<div style="text-align:center;color:var(--t3);font-size:13px;padding:14px 0">${lang==='ru'?'Нет чаевых за год':lang==='pl'?'Brak napiwków':'No tips yet'}</div>`;return}
+  const monthTot=card.map((c,i)=>c+cash[i]);
+  const bestI=monthTot.reduce((bi,v,i)=>v>monthTot[bi]?i:bi,0);
+  const summary=`<div style="display:flex;justify-content:space-around;margin-top:12px;padding-top:11px;border-top:1px solid var(--sep)">
+      <div style="text-align:center"><div style="font-size:15px;font-weight:900;color:var(--blue)">${fmt(totCard)} zł</div><div style="font-size:10px;color:var(--t3);font-weight:600">${lang==='ru'?'Карта за год':lang==='pl'?'Karta':'Card'}</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:900;color:var(--green)">${fmt(totCash)} zł</div><div style="font-size:10px;color:var(--t3);font-weight:600">${lang==='ru'?'Наличка за год':lang==='pl'?'Gotówka':'Cash'}</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:900;color:var(--blue)">${fmt(totCard+totCash)} zł</div><div style="font-size:10px;color:var(--t3);font-weight:600">${lang==='ru'?'Всего':lang==='pl'?'Razem':'Total'}</div></div>
+    </div>`;
+  const sc=chartScaffold(host,'',summary);
+  const cssH=190;
+  const d=sizeScrollChart(sc,12,46,cssH);
+  const dark=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const txt=dark?'rgba(255,255,255,.45)':'rgba(0,0,0,.4)';
+  const niceMax=niceCeil(Math.max(...card,...cash,1));
+  const blue=cssVar('--blue','#2563eb'),green=cssVar('--green','#16a34a');
+  const ringColor=dark?'#1e1e26':'#fff';
+  const yOf=v=>d.baseY-(v/niceMax)*d.plotH;
+  const drawSeries=(arr,color,prog)=>{
+    const pts=[];for(let m=0;m<12;m++)pts.push([d.px(m),d.baseY-(d.baseY-yOf(arr[m]))*prog]);
+    // area
+    const grad=d.pctx.createLinearGradient(0,d.padT,0,d.baseY);
+    grad.addColorStop(0,hexAlpha(color,.22));grad.addColorStop(.6,hexAlpha(color,.07));grad.addColorStop(1,hexAlpha(color,0));
+    d.pctx.beginPath();smoothPath(d.pctx,pts);
+    d.pctx.lineTo(d.px(11),d.baseY);d.pctx.lineTo(d.px(0),d.baseY);d.pctx.closePath();
+    d.pctx.fillStyle=grad;d.pctx.fill();
+    // line
+    d.pctx.beginPath();smoothPath(d.pctx,pts);
+    d.pctx.strokeStyle=color;d.pctx.lineWidth=2.4;d.pctx.lineJoin='round';d.pctx.lineCap='round';d.pctx.setLineDash([]);d.pctx.stroke();
+  };
+  const draw=(prog)=>{
+    drawAxes(d,niceMax,dark);
+    drawSeries(cash,green,prog);
+    drawSeries(card,blue,prog);
+    // month labels
+    d.pctx.textBaseline='alphabetic';d.pctx.fillStyle=txt;d.pctx.font='9px Outfit,sans-serif';d.pctx.textAlign='center';
+    for(let m=0;m<12;m++)d.pctx.fillText(T.monthsShort[m].slice(0,3),d.px(m),d.cssH-8);
+    if(prog>=1){
+      const pts=[];
+      for(let m=0;m<12;m++){if(card[m]>0||cash[m]>0)pts.push({x:d.px(m),y:yOf(Math.max(card[m],cash[m])),html:`${T.monthsFull[m]}<br><b style="color:#60a5fa">${lang==='ru'?'Карта':lang==='pl'?'Karta':'Card'}:</b> ${fmt(card[m])} zł<br><b style="color:#4ade80">${lang==='ru'?'Наличка':lang==='pl'?'Gotówka':'Cash'}:</b> ${fmt(cash[m])} zł`})}
+      sc.plot._pts=pts;
+    }
+  };
+  animateChart('_tipsAnim',draw);
+  attachChartTip(sc.plot);
+}
+
+/* Clients by month — smooth area line + calm forecast (Booksy style) */
+function renderClientsChart(year){
+  const host=document.getElementById('clients-chart');if(!host)return;
+  const sl=document.getElementById('sl-clientschart');
+  if(sl)sl.textContent=lang==='ru'?'Клиенты по месяцам':lang==='pl'?'Klienci wg miesięcy':'Clients by month';
+  const cl=[];
+  for(let m=0;m<12;m++){
+    const me=entries.filter(e=>e.date.startsWith(`${year}-${p2(m+1)}`)&&isReal(e));
+    cl.push(S(me,'clients'));
+  }
+  const tot=cl.reduce((a,b)=>a+b,0);
+  if(tot===0){host.innerHTML=`<div style="text-align:center;color:var(--t3);font-size:13px;padding:14px 0">${lang==='ru'?'Нет данных за год':lang==='pl'?'Brak danych':'No data yet'}</div>`;return}
+  const bestI=cl.reduce((bi,v,i)=>v>cl[bi]?i:bi,0);
+  const activeMonths=cl.filter(v=>v>0).length;
+  const avg=activeMonths?tot/activeMonths:0;
+
+  // ── CALM FORECAST: ease toward recent average (no runaway growth) ──
+  const nowY=NOW.getFullYear(),nowM=NOW.getMonth();
+  const inProgM=(year===nowY)?nowM:-1;
+  let lastActual=-1;for(let m=0;m<12;m++)if(cl[m]>0)lastActual=m;
+  // recent active months (exclude in-progress), take last 3
+  let recent=[];for(let m=0;m<12;m++){if(cl[m]>0&&m!==inProgM)recent.push(cl[m])}
+  if(recent.length===0)for(let m=0;m<12;m++)if(cl[m]>0)recent.push(cl[m]);
+  const recent3=recent.slice(-3);
+  const base=recent3.reduce((a,b)=>a+b,0)/recent3.length;
+  const lastVal=lastActual>=0?cl[lastActual]:base;
+  const fc={};const fcStart=lastActual+1,fcEnd=Math.min(11,lastActual+3);
+  for(let k=1;k<=fcEnd-fcStart+1;k++){
+    const m=lastActual+k;
+    // ease from last value toward recent average, settle quickly
+    fc[m]=Math.max(0,Math.round(base+(lastVal-base)*Math.pow(0.45,k)));
+  }
+  const hasFc=fcEnd>=fcStart&&lastActual>=0;
+  const nextFcMonth=hasFc?fcStart:-1;
+  const thirdStat=hasFc
+    ?`<div style="text-align:center"><div style="font-size:15px;font-weight:900;color:var(--blue)">~${fc[nextFcMonth]}</div><div style="font-size:10px;color:var(--t3);font-weight:600">${(lang==='ru'?'Прогноз ':lang==='pl'?'Prognoza ':'Forecast ')+T.monthsShort[nextFcMonth]}</div></div>`
+    :`<div style="text-align:center"><div style="font-size:15px;font-weight:900">${cl[bestI]}</div><div style="font-size:10px;color:var(--t3);font-weight:600">${(lang==='ru'?'Топ ':lang==='pl'?'Top ':'Top ')+T.monthsShort[bestI]}</div></div>`;
+
+  const legend=`<div style="display:flex;gap:14px;margin-bottom:10px;justify-content:center">
+      <div style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:3px;border-radius:2px;background:var(--blue)"></span><span style="font-size:11px;font-weight:700;color:var(--t2)">${lang==='ru'?'Факт':lang==='pl'?'Fakt':'Actual'}</span></div>
+      ${hasFc?`<div style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:0;border-top:2px dashed var(--blue);opacity:.6"></span><span style="font-size:11px;font-weight:700;color:var(--t2)">${lang==='ru'?'Прогноз':lang==='pl'?'Prognoza':'Forecast'}</span></div>`:''}
+    </div>`;
+  const summary=`<div style="display:flex;justify-content:space-around;margin-top:12px;padding-top:11px;border-top:1px solid var(--sep)">
+      <div style="text-align:center"><div style="font-size:15px;font-weight:900;color:var(--blue)">${tot}</div><div style="font-size:10px;color:var(--t3);font-weight:600">${lang==='ru'?'Всего':lang==='pl'?'Razem':'Total'}</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:900">${fmt(avg)}</div><div style="font-size:10px;color:var(--t3);font-weight:600">${lang==='ru'?'Ср./месяц':lang==='pl'?'Śr./mies.':'Avg/mo'}</div></div>
+      ${thirdStat}
+    </div>`;
+  const sc=chartScaffold(host,legend,summary);
+  const cssH=190;
+  const d=sizeScrollChart(sc,12,46,cssH);
+  const dark=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const txt=dark?'rgba(255,255,255,.45)':'rgba(0,0,0,.4)';
+  const fcVals=Object.values(fc);
+  const niceMax=niceCeil(Math.max(...cl,...(fcVals.length?fcVals:[0]),1));
+  const blue=cssVar('--blue','#2563eb');
+  const yOf=v=>d.baseY-(v/niceMax)*d.plotH;
+  const upTo=lastActual<0?11:lastActual;
+  const draw=(prog)=>{
+    drawAxes(d,niceMax,dark);
+    const yA=v=>d.baseY-(d.baseY-yOf(v))*prog;
+    const aPts=[];for(let m=0;m<=upTo;m++)aPts.push([d.px(m),yA(cl[m])]);
+    // area fill (soft fade)
+    const grad=d.pctx.createLinearGradient(0,d.padT,0,d.baseY);
+    grad.addColorStop(0,hexAlpha(blue,.34));grad.addColorStop(.55,hexAlpha(blue,.12));grad.addColorStop(1,hexAlpha(blue,0));
+    d.pctx.beginPath();smoothPath(d.pctx,aPts);
+    d.pctx.lineTo(d.px(upTo),d.baseY);d.pctx.lineTo(d.px(0),d.baseY);d.pctx.closePath();
+    d.pctx.fillStyle=grad;d.pctx.fill();
+    // actual smooth line
+    d.pctx.beginPath();smoothPath(d.pctx,aPts);
+    d.pctx.strokeStyle=blue;d.pctx.lineWidth=2.6;d.pctx.lineJoin='round';d.pctx.lineCap='round';d.pctx.setLineDash([]);d.pctx.stroke();
+    // forecast dashed (same color), smooth
+    if(hasFc){
+      const fPts=[[d.px(lastActual),yA(cl[lastActual])]];
+      for(let m=fcStart;m<=fcEnd;m++)fPts.push([d.px(m),yA(fc[m])]);
+      d.pctx.beginPath();smoothPath(d.pctx,fPts);
+      d.pctx.strokeStyle=blue;d.pctx.globalAlpha=.55;d.pctx.lineWidth=2.6;d.pctx.setLineDash([5,5]);d.pctx.stroke();
+      d.pctx.setLineDash([]);d.pctx.globalAlpha=1;
+    }
+    // single dot at transition
+    if(lastActual>=0){
+      const dx=d.px(lastActual),dy=yA(cl[lastActual]);
+      d.pctx.beginPath();d.pctx.arc(dx,dy,4.5,0,Math.PI*2);d.pctx.fillStyle=blue;d.pctx.fill();
+      d.pctx.lineWidth=2.5;d.pctx.strokeStyle=dark?'#1e1e26':'#fff';d.pctx.stroke();
+    }
+    // month labels
+    d.pctx.textBaseline='alphabetic';d.pctx.fillStyle=txt;d.pctx.font='9px Outfit,sans-serif';d.pctx.textAlign='center';
+    for(let m=0;m<12;m++)d.pctx.fillText(T.monthsShort[m].slice(0,3),d.px(m),d.cssH-8);
+    if(prog>=1){
+      const pts=[];
+      for(let m=0;m<=upTo;m++)pts.push({x:d.px(m),y:yA(cl[m]),html:`${T.monthsFull[m]}<br><b>${cl[m]} ${lang==='ru'?'клиентов':lang==='pl'?'klientów':'clients'}</b>`});
+      if(hasFc)for(let m=fcStart;m<=fcEnd;m++)pts.push({x:d.px(m),y:yA(fc[m]),html:`${T.monthsFull[m]} · ${lang==='ru'?'прогноз':lang==='pl'?'prognoza':'forecast'}<br><b>~${fc[m]} ${lang==='ru'?'клиентов':lang==='pl'?'klientów':'clients'}</b>`});
+      sc.plot._pts=pts;
+    }
+  };
+  animateChart('_clientsAnim',draw);
+  attachChartTip(sc.plot);
+}
+
+/* ══════════ BOOKSY-STYLE METRIC CAROUSEL ══════════ */
+let bkPeriod='month',bkMetric=0,bkRef=new Date(NOW);
+function bkIso(d){return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`}
+function bkSameDay(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function bkBuckets(period,ref){
+  let buckets=[],selIdx=0,horizon=3,isCur=false,navLabel='';
+  if(period==='day'){
+    const r=new Date(ref);r.setHours(0,0,0,0);
+    isCur=bkSameDay(r,NOW);
+    for(let i=13;i>=0;i--){const d=new Date(r);d.setDate(r.getDate()-i);const ds=bkIso(d);buckets.push({label:d.getDate()+' '+T.monthsShort[d.getMonth()],test:x=>x===ds})}
+    selIdx=13;
+    if(isCur)for(let k=1;k<=3;k++){const d=new Date(r);d.setDate(r.getDate()+k);buckets.push({label:d.getDate()+' '+T.monthsShort[d.getMonth()],future:true,test:()=>false})}
+    horizon=3;
+    navLabel=r.getDate()+' '+T.monthsFull[r.getMonth()]+(r.getFullYear()!==NOW.getFullYear()?' '+r.getFullYear():'');
+  }else if(period==='week'){
+    const r=new Date(ref);r.setHours(0,0,0,0);const dow=(r.getDay()+6)%7;const mon=new Date(r);mon.setDate(r.getDate()-dow);
+    const curDow=(NOW.getDay()+6)%7;const curMon=new Date(NOW);curMon.setDate(NOW.getDate()-curDow);curMon.setHours(0,0,0,0);
+    isCur=bkSameDay(mon,curMon);
+    for(let i=7;i>=0;i--){const s=new Date(mon);s.setDate(mon.getDate()-i*7);const e=new Date(s);e.setDate(s.getDate()+6);const ss=bkIso(s),es=bkIso(e);buckets.push({label:s.getDate()+' '+T.monthsShort[s.getMonth()],test:x=>x>=ss&&x<=es})}
+    selIdx=7;
+    if(isCur)for(let k=1;k<=2;k++){const s=new Date(mon);s.setDate(mon.getDate()+k*7);buckets.push({label:s.getDate()+' '+T.monthsShort[s.getMonth()],future:true,test:()=>false})}
+    horizon=2;
+    const we=new Date(mon);we.setDate(mon.getDate()+6);
+    navLabel=mon.getDate()+'–'+we.getDate()+' '+T.monthsShort[we.getMonth()];
+  }else if(period==='year'){
+    const yrs=entries.map(e=>+e.date.slice(0,4));const refY=ref.getFullYear();
+    const minY=Math.min(NOW.getFullYear(),refY,...(yrs.length?yrs:[NOW.getFullYear()]));
+    const maxY=Math.max(NOW.getFullYear(),refY);
+    for(let y=minY;y<=maxY;y++)buckets.push({label:''+y,test:x=>x.startsWith(''+y)});
+    selIdx=refY-minY;
+    isCur=(refY===NOW.getFullYear());
+    if(isCur)for(let k=1;k<=2;k++)buckets.push({label:''+(NOW.getFullYear()+k),future:true,test:()=>false});
+    horizon=2;
+    navLabel=''+refY;
+  }else{ // month — 12 months of ref's year
+    const y=ref.getFullYear();
+    for(let m=0;m<12;m++){const mm=p2(m+1);buckets.push({label:T.monthsShort[m],test:x=>x.startsWith(`${y}-${mm}`)})}
+    selIdx=ref.getMonth();
+    isCur=(y===NOW.getFullYear()&&ref.getMonth()===NOW.getMonth());
+    horizon=3;
+    navLabel=T.monthsFull[ref.getMonth()]+' '+y;
+  }
+  return{buckets,selIdx,horizon,isCur,navLabel};
+}
+function bkSum(buckets,getter){
+  const real=entries.filter(isReal);
+  return buckets.map(b=>b.future?0:real.reduce((s,e)=>s+(b.test(e.date)?(getter(e)||0):0),0));
+}
+function bkForecast(values,horizon,len){
+  let lastActual=-1;for(let i=0;i<len;i++)if(values[i]>0&&!isNaN(values[i]))lastActual=i;
+  const out={fromIdx:lastActual,map:{}};
+  if(lastActual<0)return out;
+  let recent=[];for(let i=0;i<=lastActual;i++)if(values[i]>0)recent.push(values[i]);
+  const r3=recent.slice(-3);const base=r3.reduce((a,b)=>a+b,0)/r3.length;const lastVal=values[lastActual];
+  const end=Math.min(len-1,lastActual+horizon);
+  for(let k=1;lastActual+k<=end;k++)out.map[lastActual+k]=Math.max(0,base+(lastVal-base)*Math.pow(0.45,k));
+  return out;
+}
+const BK_METRICS=()=>[
+  {key:'turnover',title:lang==='ru'?'Оборот':lang==='pl'?'Obrót':'Turnover',color:cssVar('--blue','#2563eb'),money:true,get:e=>e.revenue||0},
+  {key:'income',title:lang==='ru'?'Доход':lang==='pl'?'Przychód':'Income',color:cssVar('--green','#16a34a'),money:true,get:e=>(e.realTotal!=null?e.realTotal:e.total)},
+  {key:'clients',title:lang==='ru'?'Клиенты':lang==='pl'?'Klienci':'Clients',color:cssVar('--orange','#ea580c'),money:false,get:e=>e.clients||0},
+  {key:'tips',title:lang==='ru'?'Чаевые':lang==='pl'?'Napiwki':'Tips',color:cssVar('--purple','#7c3aed'),money:true,get:e=>(e.tips||0)+(e.tipsCash||0)},
+];
+function renderBooksy(){
+  const tabsEl=document.getElementById('bk-tabs');if(!tabsEl)return;
+  st('sl-detailed',lang==='ru'?'Подробнее':lang==='pl'?'Szczegóły':'Details');
+  const periods=[['day',lang==='ru'?'День':lang==='pl'?'Dzień':'Day'],['week',lang==='ru'?'Неделя':lang==='pl'?'Tydzień':'Week'],['month',lang==='ru'?'Месяц':lang==='pl'?'Miesiąc':'Month'],['year',lang==='ru'?'Год':lang==='pl'?'Rok':'Year']];
+  tabsEl.innerHTML=periods.map(([p,l])=>`<button class="ptab${bkPeriod===p?' active':''}" onclick="setBkPeriod('${p}')">${l}</button>`).join('');
+  const {buckets,selIdx,horizon,isCur,navLabel}=bkBuckets(bkPeriod,bkRef);
+  // nav row ‹ label ›
+  const nav=document.getElementById('bk-nav');
+  const canFwd=!isCur;
+  nav.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;gap:14px;margin:2px 0 11px">
+    <button onclick="bkNav(-1)" class="mnav-btn" style="width:30px;height:30px">‹</button>
+    <span style="font-size:14px;font-weight:800;min-width:130px;text-align:center">${navLabel}${isCur?' ·<span style="color:var(--blue)"> '+(lang==='ru'?'сейчас':'now')+'</span>':''}</span>
+    <button onclick="bkNav(1)" class="mnav-btn" style="width:30px;height:30px;${canFwd?'':'opacity:.3;pointer-events:none'}">›</button>
+  </div>`;
+  const metrics=BK_METRICS();
+  const pager=document.getElementById('bk-pager');
+  pager.innerHTML=metrics.map((mt,mi)=>`<div class="bk-card card"><div id="bk-card-${mi}"></div></div>`).join('');
+  metrics.forEach((mt,mi)=>{
+    const vals=bkSum(buckets,mt.get);
+    const cur=vals[selIdx]||0;const prev=selIdx>0?(vals[selIdx-1]||0):0;
+    const pct=(prev>0&&cur>0)?Math.round((cur-prev)/prev*100):null;
+    const fcast=isCur?bkForecast(vals,horizon,buckets.length):{fromIdx:-1,map:{}};
+    const host=document.getElementById('bk-card-'+mi);
+    const pctHtml=pct===null?'':`<span style="font-size:13px;font-weight:800;color:${pct>=0?'var(--green)':'var(--red)'};margin-left:8px">${pct>=0?'▲':'▼'} ${Math.abs(pct)}%</span>`;
+    const valStr=mt.money?fmt(cur)+' zł':String(Math.round(cur));
+    host.innerHTML=`<div style="font-size:13px;font-weight:700;color:var(--t2)">${mt.title}</div>
+      <div style="display:flex;align-items:baseline;margin:2px 0 12px"><span style="font-size:27px;font-weight:900;letter-spacing:-1px;color:${mt.color}">${valStr}</span>${pctHtml}</div>
+      <canvas class="bk-canvas" style="display:block;width:100%"></canvas>`;
+    const cv=host.querySelector('.bk-canvas');
+    drawMetricChart(cv,buckets,vals,selIdx,fcast,mt);
+  });
+  const dots=document.getElementById('bk-dots');
+  dots.innerHTML=metrics.map((_,i)=>`<span class="bk-dot${i===bkMetric?' on':''}"></span>`).join('');
+  requestAnimationFrame(()=>{const cw=pager.clientWidth||pager.offsetWidth||1;pager.scrollLeft=bkMetric*cw;});
+  pager.onscroll=()=>{const cw=pager.clientWidth||1;const idx=Math.round(pager.scrollLeft/cw);if(idx!==bkMetric){bkMetric=Math.max(0,Math.min(metrics.length-1,idx));[...dots.children].forEach((dd,i)=>dd.classList.toggle('on',i===bkMetric))}};
+}
+function setBkPeriod(p){bkPeriod=p;renderBooksy();hap('selection')}
+function bkNav(dir){
+  const r=new Date(bkRef);
+  if(bkPeriod==='day')r.setDate(r.getDate()+dir);
+  else if(bkPeriod==='week')r.setDate(r.getDate()+dir*7);
+  else if(bkPeriod==='month')r.setMonth(r.getMonth()+dir);
+  else r.setFullYear(r.getFullYear()+dir);
+  if(dir>0&&r>NOW)return; // don't go into the future
+  bkRef=r;renderBooksy();hap('selection');
+}
+function drawMetricChart(cv,buckets,values,selIdx,fcast,mt){
+  const n=buckets.length;
+  const dpr=window.devicePixelRatio||1;
+  const cssW=cv.clientWidth||cv.offsetWidth||320,cssH=170;
+  cv.width=cssW*dpr;cv.height=cssH*dpr;cv.style.height=cssH+'px';
+  const ctx=cv.getContext('2d');ctx.scale(dpr,dpr);
+  const dark=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const grid=dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.045)';
+  const txt=dark?'rgba(255,255,255,.45)':'rgba(0,0,0,.4)';
+  const padL=30,padR=12,padT=14,padB=22;
+  const plotW=cssW-padL-padR,plotH=cssH-padT-padB,baseY=padT+plotH;
+  const fcVals=Object.values(fcast.map);
+  const niceMax=niceCeil(Math.max(...values.filter(v=>!isNaN(v)),...(fcVals.length?fcVals:[0]),1));
+  const color=mt.color;
+  const px=i=>padL+(plotW/(n-1))*i;
+  const yOf=v=>baseY-(v/niceMax)*plotH;
+  let lastData=-1;for(let i=0;i<n;i++)if((values[i]||0)>0&&!buckets[i].future)lastData=i;
+  const upTo=lastData<0?0:lastData;
+  const labelStep=Math.ceil(n/8);
+  const draw=(prog)=>{
+    ctx.clearRect(0,0,cssW,cssH);
+    ctx.font='9px Outfit,sans-serif';ctx.textBaseline='middle';
+    for(let i=0;i<=4;i++){const val=niceMax/4*i,y=baseY-(val/niceMax)*plotH;
+      ctx.strokeStyle=grid;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(cssW-padR,y);ctx.stroke();
+      ctx.fillStyle=txt;ctx.textAlign='right';ctx.fillText(fmtShort(val),padL-4,y);}
+    const yA=v=>baseY-(baseY-yOf(v))*prog;
+    const aPts=[];for(let i=0;i<=upTo;i++)aPts.push([px(i),yA(values[i]||0)]);
+    if(aPts.length>1){
+      const grad=ctx.createLinearGradient(0,padT,0,baseY);
+      grad.addColorStop(0,hexAlpha(color,.32));grad.addColorStop(.55,hexAlpha(color,.1));grad.addColorStop(1,hexAlpha(color,0));
+      ctx.beginPath();smoothPath(ctx,aPts);ctx.lineTo(px(upTo),baseY);ctx.lineTo(px(0),baseY);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+      ctx.beginPath();smoothPath(ctx,aPts);ctx.strokeStyle=color;ctx.lineWidth=2.6;ctx.lineJoin='round';ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();
+    }
+    const fIdx=Object.keys(fcast.map).map(Number).sort((a,b)=>a-b);
+    if(fIdx.length&&lastData>=0){
+      const fPts=[[px(lastData),yA(values[lastData]||0)]];
+      fIdx.forEach(i=>fPts.push([px(i),yA(fcast.map[i])]));
+      ctx.beginPath();smoothPath(ctx,fPts);ctx.strokeStyle=color;ctx.globalAlpha=.5;ctx.lineWidth=2.6;ctx.setLineDash([5,5]);ctx.stroke();
+      ctx.setLineDash([]);ctx.globalAlpha=1;
+    }
+    // dot at selected period (or last data if empty)
+    const dotIdx=(selIdx>=0&&(values[selIdx]||0)>0)?selIdx:upTo;
+    if(dotIdx>=0&&(values[dotIdx]||0)>0){const dx=px(dotIdx),dy=yA(values[dotIdx]||0);
+      ctx.beginPath();ctx.arc(dx,dy,5,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.lineWidth=2.5;ctx.strokeStyle=dark?'#1e1e26':'#fff';ctx.stroke();}
+    ctx.textBaseline='alphabetic';ctx.fillStyle=txt;ctx.font='9px Outfit,sans-serif';ctx.textAlign='center';
+    for(let i=0;i<n;i++){if(i%labelStep===0||i===n-1)ctx.fillText(buckets[i].label,px(i),cssH-7);}
+    if(prog>=1){
+      const pts=[];
+      for(let i=0;i<=upTo;i++)pts.push({x:px(i),y:yA(values[i]||0),html:`${buckets[i].label}<br><b>${mt.money?fmt(values[i]||0)+' zł':Math.round(values[i]||0)+(lang==='ru'?' клиентов':'')}</b>`});
+      fIdx.forEach(i=>pts.push({x:px(i),y:yA(fcast.map[i]),html:`${buckets[i].label} · ${lang==='ru'?'прогноз':'forecast'}<br><b>~${mt.money?fmt(fcast.map[i])+' zł':Math.round(fcast.map[i])}</b>`}));
+      cv._pts=pts;
+    }
+  };
+  animateChart('_bk'+mt.key,draw);
+  attachChartTip(cv);
+}
+
+
+/* chart helpers */
+function niceCeil(v){const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;let m;if(n<=1)m=1;else if(n<=2)m=2;else if(n<=5)m=5;else m=10;return m*p}
+function cssVar(name,fb){try{const v=getComputedStyle(document.documentElement).getPropertyValue(name).trim();return v||fb}catch(e){return fb}}
+/* scroll chart scaffold: sticky Y axis + horizontally scrollable plot */
+function chartScaffold(host,legendHtml,summaryHtml){
+  host.innerHTML=`${legendHtml||''}
+    <div style="display:flex;align-items:stretch">
+      <canvas class="chart-yaxis" style="flex-shrink:0;display:block"></canvas>
+      <div class="chart-scroll" style="flex:1;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none">
+        <canvas class="chart-plot" style="display:block"></canvas>
+      </div>
+    </div>${summaryHtml||''}`;
+  return{y:host.querySelector('.chart-yaxis'),plot:host.querySelector('.chart-plot'),scroll:host.querySelector('.chart-scroll')};
+}
+function sizeScrollChart(sc,points,perPoint,cssH){
+  const dpr=window.devicePixelRatio||1;
+  const yW=30,padL=10,padR=14,padT=16,padB=22;
+  const avail=sc.scroll.clientWidth||330;
+  const contentW=Math.max(avail,points*perPoint);
+  sc.plot.style.width=contentW+'px';sc.plot.style.height=cssH+'px';
+  sc.plot.width=contentW*dpr;sc.plot.height=cssH*dpr;
+  sc.y.style.width=yW+'px';sc.y.style.height=cssH+'px';
+  sc.y.width=yW*dpr;sc.y.height=cssH*dpr;
+  const pctx=sc.plot.getContext('2d');pctx.scale(dpr,dpr);
+  const yctx=sc.y.getContext('2d');yctx.scale(dpr,dpr);
+  const plotH=cssH-padT-padB;
+  const px=m=>padL+(contentW-padL-padR)/(points-1)*m;
+  return{dpr,yW,padL,padR,padT,padB,cssH,contentW,plotH,px,pctx,yctx,baseY:padT+plotH};
+}
+function drawAxes(d,niceMax,dark){
+  const grid=dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.045)';
+  const txt=dark?'rgba(255,255,255,.45)':'rgba(0,0,0,.4)';
+  d.pctx.clearRect(0,0,d.contentW,d.cssH);d.yctx.clearRect(0,0,d.yW,d.cssH);
+  d.pctx.font='9px Outfit,sans-serif';d.yctx.font='9px Outfit,sans-serif';
+  d.pctx.textBaseline='middle';d.yctx.textBaseline='middle';
+  for(let i=0;i<=4;i++){
+    const val=niceMax/4*i,y=d.baseY-(val/niceMax)*d.plotH;
+    d.pctx.strokeStyle=grid;d.pctx.lineWidth=1;d.pctx.beginPath();d.pctx.moveTo(0,y);d.pctx.lineTo(d.contentW,y);d.pctx.stroke();
+    d.yctx.fillStyle=txt;d.yctx.textAlign='right';d.yctx.fillText(fmtShort(val),d.yW-4,y);
+  }
+}
+/* smooth curve through points (Catmull-Rom → bezier); appends to current path */
+function smoothPath(ctx,pts){
+  if(!pts.length)return;
+  ctx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;
+    const c1x=p1[0]+(p2[0]-p0[0])/6,c1y=p1[1]+(p2[1]-p0[1])/6;
+    const c2x=p2[0]-(p3[0]-p1[0])/6,c2y=p2[1]-(p3[1]-p1[1])/6;
+    ctx.bezierCurveTo(c1x,c1y,c2x,c2y,p2[0],p2[1]);
+  }
+}
+/* chart tooltip (single shared element) */
+function _chartTip(){
+  let el=document.getElementById('chart-tip');
+  if(!el){el=document.createElement('div');el.id='chart-tip';
+    el.style.cssText='position:fixed;z-index:9999;pointer-events:none;opacity:0;transform:translate(-50%,-115%);transition:opacity .15s;background:rgba(24,24,27,.94);backdrop-filter:blur(10px);color:#fff;padding:7px 11px;border-radius:11px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.3);font-family:inherit';
+    document.body.appendChild(el);}
+  return el;
+}
+function showChartTip(x,y,html){const el=_chartTip();el.innerHTML=html;el.style.left=x+'px';el.style.top=y+'px';el.style.opacity='1';clearTimeout(window._tipT);window._tipT=setTimeout(hideChartTip,2200)}
+function hideChartTip(){const el=document.getElementById('chart-tip');if(el)el.style.opacity='0'}
+function attachChartTip(cv){
+  const handler=ev=>{
+    if(!cv._pts||!cv._pts.length)return;
+    const rect=cv.getBoundingClientRect();
+    const cx=(ev.touches?ev.touches[0].clientX:ev.clientX)-rect.left;
+    let best=null,bd=1e9;
+    cv._pts.forEach(p=>{const d=Math.abs(p.x-cx);if(d<bd){bd=d;best=p}});
+    if(best&&bd<28){showChartTip(rect.left+best.x,rect.top+best.y,best.html);hap('selection')}
+    else hideChartTip();
+  };
+  cv.addEventListener('touchstart',handler,{passive:true});
+  cv.addEventListener('click',handler);
+}
+function gradBar(ctx,x,y,w,h,color,glow){
+  if(h<=0)return;
+  const g=ctx.createLinearGradient(0,y,0,y+h);
+  g.addColorStop(0,color);g.addColorStop(1,hexAlpha(color,.55));
+  if(glow){ctx.save();ctx.shadowColor=hexAlpha(color,.5);ctx.shadowBlur=8}
+  ctx.fillStyle=g;roundRect(ctx,x,y,w,h,3);ctx.fill();
+  // glossy top highlight
+  ctx.fillStyle=hexAlpha('#ffffff',.22);roundRect(ctx,x,y,w,Math.min(h,5),3);ctx.fill();
+  if(glow)ctx.restore();
+}
+function animateChart(key,draw){
+  if(window[key])cancelAnimationFrame(window[key]);
+  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(reduce){draw(1);return}
+  const dur=600,t0=(window.performance&&performance.now())?performance.now():Date.now();
+  const tick=()=>{
+    const now=(window.performance&&performance.now())?performance.now():Date.now();
+    let p=Math.min(1,(now-t0)/dur);
+    const e=1-Math.pow(1-p,3); // easeOutCubic
+    draw(e);
+    if(p<1)window[key]=requestAnimationFrame(tick);else window[key]=null;
+  };
+  window[key]=requestAnimationFrame(tick);
 }
 
 /* Location × Month explorer state */
