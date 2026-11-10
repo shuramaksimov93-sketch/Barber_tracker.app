@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Barber Stats</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f0f0f5;--bg2:#e4e4ec;--card:#fff;
@@ -113,15 +113,35 @@ input::placeholder,textarea::placeholder{color:var(--t3);-webkit-text-fill-color
 
 /* FORM */
 .form-group{border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh)}
-.frow{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--card);border-bottom:1px solid var(--sep);transition:background .15s;cursor:pointer;-webkit-user-select:none;user-select:none}
+.frow{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:var(--card);border-bottom:1px solid var(--sep);transition:background .15s;cursor:pointer;-webkit-user-select:none;user-select:none}
 .frow:last-child{border-bottom:none}
 .frow:active{background:var(--sep2)}
 .frow-l{display:flex;align-items:center;gap:9px;flex:1;pointer-events:none}
 .fi{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
 .frow-lbl{font-size:15px;font-weight:500}
+
+.ana-seg{display:flex;gap:4px;background:var(--bg2);border-radius:11px;padding:3px}
+.ana-seg button{border:none;background:none;font-family:inherit;font-size:11.5px;font-weight:700;color:var(--t2);padding:5px 9px;border-radius:8px;cursor:pointer}
+.ana-seg button.on{background:var(--card);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.ana-cols{display:flex;gap:6px;align-items:flex-end;height:118px;padding:0 2px}
+.ana-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.ana-col .v{font-size:10.5px;font-weight:800;color:var(--t2);margin-bottom:3px;white-space:nowrap}
+.ana-col .b{width:100%;max-width:34px;border-radius:7px 7px 3px 3px;background:var(--blue);min-height:3px;transition:height .5s cubic-bezier(.2,.8,.2,1)}
+.ana-col.best .b{background:var(--green)}.ana-col.weak .b{background:var(--orange)}
+.ana-col.few .b{opacity:.35}.ana-col.few .v{opacity:.5}
+.ana-lab{display:flex;gap:6px;padding:6px 2px 0}
+.ana-lab div{flex:1;text-align:center;min-width:0}
+.ana-lab b{display:block;font-size:11.5px;font-weight:800}
+.ana-lab span{display:block;font-size:10px;color:var(--t3);font-weight:600;margin-top:1px}
+.ana-note{display:flex;gap:10px;margin-top:12px}
+.ana-note div{flex:1;background:var(--bg2);border-radius:12px;padding:9px 11px;font-size:11px;font-weight:600;color:var(--t3)}
+.ana-note b{display:block;font-size:13.5px;font-weight:800;color:var(--t1);margin-top:2px}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .65s cubic-bezier(.2,.8,.2,1)}
+.rv.rv-in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 .frow-r{display:flex;align-items:center;gap:4px;pointer-events:none}
 .fval{font-size:15px;font-weight:700;color:var(--t1);min-width:50px;text-align:right}
-.fval.empty{color:var(--t3);font-weight:400}
+.fval.empty{color:var(--t3);font-weight:400;padding:0;text-align:right}
 .funit{font-size:12px;color:var(--t3);font-weight:600}
 .frow-note{align-items:flex-start;padding-top:13px;padding-bottom:13px;cursor:default}
 .fnote-input{border:none;outline:none;background:none;font-size:14px;font-weight:400;color:var(--t1);-webkit-text-fill-color:var(--t1);width:175px;resize:none;height:38px;line-height:1.4;text-align:right;cursor:text;pointer-events:all}
@@ -133,6 +153,21 @@ input::placeholder,textarea::placeholder{color:var(--t3);-webkit-text-fill-color
 .eb-btns{display:flex;gap:5px}
 .eb-btn{font-size:12px;font-weight:700;border:none;border-radius:8px;padding:5px 11px;cursor:pointer;font-family:inherit;transition:all .15s}
 .eb-reset{background:var(--rl);color:var(--red)}
+.eb-move{background:var(--sep);color:var(--t1)}
+.bk-ban{display:flex;align-items:center;gap:12px;margin:0 0 14px;padding:12px 14px;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh-s);border-left:4px solid var(--orange)}
+.bk-ban .bk-t{flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.35;color:var(--t1)}
+.bk-ban .bk-t small{display:block;font-size:11.5px;font-weight:600;color:var(--t3);margin-top:2px}
+.bk-ban button{border:none;font-family:inherit;font-size:13px;font-weight:800;border-radius:12px;padding:9px 13px;cursor:pointer;flex:none}
+.bk-ban .bk-go{background:var(--btn);color:var(--btn-fg);box-shadow:var(--btn-ring)}
+.bk-ban .bk-x{background:none;color:var(--t3);padding:9px 6px}
+.date-row{display:flex;align-items:center}
+.date-row .date-field{flex:1;min-width:0}
+.date-row .df-lbl{display:none}
+.date-row .df-val{white-space:nowrap}
+.date-row .date-field{padding-left:6px;padding-right:6px}
+.dnav{flex:none;width:46px;height:50px;border:none;background:none;color:var(--t2);font-size:28px;font-weight:300;font-family:inherit;cursor:pointer;line-height:1;-webkit-tap-highlight-color:transparent}
+.dnav:active{color:var(--t1);background:var(--sep2)}
+.lp-rec{font-size:10.5px;font-weight:800;color:var(--green);margin-top:3px;white-space:nowrap}
 .eb-cancel{background:var(--sep);color:var(--t2)}
 
 /* PREVIEW */
@@ -217,6 +252,46 @@ input::placeholder,textarea::placeholder{color:var(--t3);-webkit-text-fill-color
 .ybar-empty{font-size:10.5px;color:var(--t3);line-height:25px;padding-left:6px}
 
 /* INVOICE */
+
+.inv-sw{display:flex;gap:4px;background:var(--bg2);border-radius:12px;padding:3px;margin:0 0 12px}
+.inv-sw button{flex:1;border:none;background:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--t2);padding:7px 10px;border-radius:9px;cursor:pointer}
+.inv-sw button.on{background:var(--card);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+/* ── receipt (modern ticket) ── */
+.rc{position:relative;margin:4px 2px 16px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.12))}
+.rc-paper{position:relative;background:var(--card);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:22px 20px 40px;color:var(--t1);
+  -webkit-mask:radial-gradient(circle 7px at 50% 100%,transparent 98%,#000) 0 0/18px 100%;mask:radial-gradient(circle 7px at 50% 100%,transparent 98%,#000) 0 0/18px 100%}
+.rc.rc-anim .rc-paper{animation:rcPrint .8s cubic-bezier(.3,.7,.2,1) both}
+@keyframes rcPrint{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.rc-top{display:flex;align-items:center;justify-content:space-between}
+.rc-brand{font-size:26px;font-weight:900;letter-spacing:-1px}
+.rc-brand i{font-style:normal;color:var(--blue)}
+.rc-chip{font-size:11.5px;font-weight:800;color:var(--blue);background:var(--bl);border-radius:20px;padding:5px 11px;letter-spacing:.2px;font-variant-numeric:tabular-nums}
+.rc-title{font-size:15px;font-weight:800;margin-top:14px;letter-spacing:-.2px}
+.rc-meta2{font-size:12.5px;color:var(--t3);font-weight:600;margin-top:3px}
+.rc-div{border:0;border-top:1.5px dashed rgba(128,128,140,.35);margin:16px 0}
+.rc-sec{font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:8px;margin:0 0 6px}
+.rc-sec s{width:10px;height:10px;border-radius:50%;flex:none;text-decoration:none}
+.rc-ln{display:flex;align-items:baseline;gap:7px;font-size:14px;padding:3px 0;font-variant-numeric:tabular-nums}
+.rc-ln span:first-child{flex:none;max-width:62%;color:var(--t2);font-weight:500}
+.rc-ln i{flex:1;min-width:10px;border-bottom:1.5px dotted rgba(128,128,140,.4);transform:translateY(-3px)}
+.rc-ln b{flex:none;font-weight:700;white-space:nowrap}
+.rc-gap{height:14px}
+.rc-total{position:relative;margin-top:18px;padding:14px 2px 50px;border-top:4px double rgba(128,128,140,.45);border-bottom:1.5px dashed rgba(128,128,140,.35)}
+.rc-total span{display:block;font-size:11.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--t3)}
+.rc-total b{display:block;font-size:34px;font-weight:900;letter-spacing:-1.4px;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.1}
+.rc-stamp{position:absolute;right:2px;bottom:-12px;transform:rotate(-9deg);color:#c0392b;border:2.5px solid currentColor;border-radius:9px;padding:6px 11px 5px;text-align:center;
+  box-shadow:inset 0 0 0 2px var(--card),inset 0 0 0 3.5px currentColor;opacity:.86;pointer-events:none;line-height:1.15}
+.rc-stamp i{display:block;font-style:normal;font-size:15px;font-weight:900;letter-spacing:2.2px;padding-left:2px}
+.rc-stamp small{display:block;font-size:9.5px;font-weight:800;letter-spacing:1.6px;margin-top:2px;opacity:.9}
+@media(prefers-color-scheme:dark){.rc-stamp{color:#ff6f61}}
+.rc-cut{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;letter-spacing:1.5px;color:var(--t3);margin:20px 0 14px}
+.rc-cut::before,.rc-cut::after{content:'';flex:1;border-top:1.5px dashed rgba(128,128,140,.35)}
+.rc-note{font-size:12.5px;line-height:1.5;padding:2px 0;color:var(--t2)}
+.rc-note b{font-weight:800;color:var(--t1);margin-right:6px}
+.rc-bar{height:30px;width:62%;margin:24px auto 7px;opacity:.5;background:repeating-linear-gradient(90deg,var(--t1) 0 2px,transparent 2px 4px,var(--t1) 4px 5px,transparent 5px 8px,var(--t1) 8px 11px,transparent 11px 13px,var(--t1) 13px 14px,transparent 14px 16px)}
+.rc-code{text-align:center;font-size:10.5px;letter-spacing:2.5px;color:var(--t3);font-weight:600;font-variant-numeric:tabular-nums}
+.rc-thx{text-align:center;font-size:14px;font-weight:800;margin-top:14px}
+.rc-print{text-align:center;font-size:11px;color:var(--t3);font-weight:600;margin-top:3px}
 .inv-wrap{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--sh);overflow:hidden}
 .inv-head{padding:18px 20px 14px}
 .inv-title{font-size:21px;font-weight:900;letter-spacing:-.6px}
@@ -506,20 +581,33 @@ input::placeholder,textarea::placeholder{color:var(--t3);-webkit-text-fill-color
 .loc-emoji-input{width:34px;height:34px;border:1.5px solid var(--sep);border-radius:9px;background:var(--bg2);font-size:19px;text-align:center;padding:0;font-family:inherit;color:var(--t1);-webkit-text-fill-color:var(--t1);flex-shrink:0;outline:none;caret-color:transparent}
 .loc-emoji-input:focus{border-color:var(--t2)}
 .cp-custom{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--sep);font-size:13px;font-weight:700;color:var(--t2)}
-.cp-custom input[type=color]{width:44px;height:30px;border:none;border-radius:8px;padding:0;background:none;cursor:pointer}
-.loc-name-input{flex:1;border:none;outline:none;background:transparent;font-family:inherit;font-size:14px;font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1)}
+.cp-wheel{position:relative;width:40px;height:40px;border-radius:50%;background:conic-gradient(#f43f5e,#f59e0b,#eab308,#22c55e,#06b6d4,#3b82f6,#a855f7,#f43f5e);flex:none;display:block;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.cp-wheel i{position:absolute;inset:8px;border-radius:50%;background:var(--c,#2563eb);border:2px solid #fff;box-sizing:border-box}
+.cp-wheel input[type=color]{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;padding:0;cursor:pointer}
+.cp-done{display:none;width:100%;margin-top:14px;padding:13px;border:none;border-radius:14px;background:var(--btn);color:var(--btn-fg);box-shadow:var(--btn-ring);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.cp-done.show{display:block}
+.loc-name-input{flex:1;min-width:0;border:none;outline:none;background:transparent;font-family:inherit;font-size:14px;font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1)}
 .loc-reform-toggle{font-size:9.5px;font-weight:800;border:none;border-radius:6px;padding:3px 7px;cursor:pointer;font-family:inherit;background:var(--bg2);color:var(--t2);flex-shrink:0}
 .loc-reform-toggle.on{background:var(--pl);color:var(--purple)}
+.loc-chev{border:none;background:none;color:var(--t3);font-size:20px;line-height:1;padding:4px 7px;cursor:pointer;flex:none;transition:transform .22s;font-family:inherit}
+.loc-set-item.lo .loc-chev{transform:rotate(180deg)}
+.loc-panel{display:none;border-top:1px solid var(--sep2)}
+.loc-set-item.lo .loc-panel{display:block}
+.loc-my{font-size:9px;font-weight:800;color:#fff;border-radius:6px;padding:2px 5px;flex:none}
+.loc-pdel{display:block;width:100%;text-align:left;border:none;border-top:1px solid var(--sep2);background:none;color:var(--red);font-family:inherit;font-size:12.5px;font-weight:700;padding:11px 14px 12px 42px;cursor:pointer}
+.set-h{display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.set-h::after{content:'⌄';font-size:17px;font-weight:600;letter-spacing:0;transition:transform .22s;transform:translateY(-3px);padding:0 6px}
+.set-h.closed::after{transform:rotate(-90deg) translateX(3px)}
 .loc-del{border:none;background:none;color:var(--t3);font-size:15px;cursor:pointer;padding:3px 5px;border-radius:6px;transition:all .15s;line-height:1;flex-shrink:0}
 .loc-del:hover{background:var(--rl);color:var(--red)}
 .add-loc-btn{width:100%;padding:13px;border:none;border-radius:var(--r-xl);background:var(--card);box-shadow:var(--sh-s);color:var(--blue);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;border:1.5px dashed rgba(37,99,235,.3);margin-top:8px;display:block}
 .add-loc-btn:hover{background:var(--bl);border-color:var(--blue)}
 
 /* COLOR PICKER */
-.color-popup{position:fixed;z-index:9500;background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--sh-xl);display:none;width:248px;max-height:60vh;overflow-y:auto;border:1px solid var(--sep)}
+.color-popup{position:fixed;z-index:9500;background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--sh-xl);display:none;width:min(340px,calc(100vw - 32px));max-height:86vh;overflow-y:auto;border:1px solid var(--sep);box-sizing:border-box}
 .color-popup.open{display:block}
-.color-popup-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
-.cp-dot{width:38px;height:38px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .12s,box-shadow .12s;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.color-popup-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px 8px;padding:6px 4px 4px}
+.cp-dot{width:100%;max-width:46px;aspect-ratio:1/1;justify-self:center;box-sizing:border-box;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .12s,box-shadow .12s;box-shadow:0 2px 6px rgba(0,0,0,.12)}
 .cp-dot:hover{transform:scale(1.15)}
 .cp-dot.sel{border-color:white;transform:scale(1.1);box-shadow:0 3px 10px rgba(0,0,0,.3)}
 
@@ -546,7 +634,8 @@ input::placeholder,textarea::placeholder{color:var(--t3);-webkit-text-fill-color
 .m-edit-btn{flex:1;padding:12px;border:none;border-radius:var(--r-lg);background:var(--btn);color:var(--btn-fg);font-family:inherit;font-size:14px;font-weight:800;cursor:pointer}
 .m-del-btn{padding:12px 15px;border:none;border-radius:var(--r-lg);background:var(--rl);color:var(--red);font-family:inherit;font-size:14px;font-weight:800;cursor:pointer}
 
-.copy-btn{width:100%;padding:14px;border:none;border-radius:var(--r-xl);background:var(--green);color:white;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:all .22s;box-shadow:0 4px 18px rgba(22,163,74,.28);margin-top:10px}
+.copy-btn{width:100%;padding:14px;border:1.5px solid var(--sep);border-radius:var(--r-xl);background:var(--card);color:var(--t1);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:var(--sh-s);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:9px}
+.copy-btn svg{color:var(--blue);flex:none}
 .copy-btn:hover{transform:translateY(-1px)}
 
 .empty{text-align:center;padding:48px 20px}
@@ -1023,6 +1112,62 @@ body::before{
 .cl-rb:active{transform:scale(.9)}
 .cl-duechip{border:none;font-family:inherit;font-size:12px;font-weight:800;padding:6px 12px;border-radius:14px;background:var(--bg2);color:var(--t2);cursor:pointer}
 .cl-duechip.on{background:var(--btn);color:var(--btn-fg)}
+@media(max-width:360px){.tab-lbl-out{font-size:8.5px;letter-spacing:-.4px}}
+/* TODAY */
+#tab-today .td-hd{display:flex;justify-content:space-between;align-items:flex-end;margin:4px 2px 14px}
+.td-dow{font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--t3)}
+.td-date{font-size:30px;font-weight:800;letter-spacing:-.6px;line-height:1.1}
+.td-gr{font-size:13.5px;font-weight:700;color:var(--t2);padding-bottom:4px}
+.td-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.td-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:99px;font-size:13.5px;font-weight:700}
+.td-chip b{font-weight:800;font-variant-numeric:tabular-nums}
+.td-chip-n{background:var(--card);color:var(--t2);box-shadow:var(--sh)}
+.td-dot{width:8px;height:8px;border-radius:50%}
+.td-next{border-radius:24px;padding:18px 20px 18px;color:#fff;margin-bottom:14px;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.18);transition:transform .15s}
+.td-next:active{transform:scale(.985)}
+.td-next-done{background:var(--card);color:var(--t1);text-align:center;box-shadow:var(--sh);cursor:default;padding:22px}
+.td-nx-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;opacity:.92}
+.td-when{background:rgba(255,255,255,.22);padding:4px 10px;border-radius:99px;letter-spacing:0;text-transform:none;font-size:12.5px}
+.td-nx-time{font-size:44px;font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-top:10px;font-variant-numeric:tabular-nums}
+.td-nx-time small{font-size:17px;font-weight:700;opacity:.75;letter-spacing:0;margin-left:8px}
+.td-nx-name{font-size:21px;font-weight:800;margin-top:6px;letter-spacing:-.3px}
+.td-nx-sub{font-size:14.5px;opacity:.92;margin-top:2px;font-weight:600}
+.td-nx-act{display:flex;gap:9px;margin-top:14px}
+.td-nxb{flex:1;text-align:center;text-decoration:none;color:#fff;background:rgba(255,255,255,.22);padding:11px 8px;border-radius:14px;font-weight:800;font-size:14.5px}
+.td-money{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.td-m1,.td-m2{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--sh);padding:14px 15px;display:flex;flex-direction:column;gap:2px}
+.td-money span{font-size:11.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:var(--t3)}
+.td-money b{font-size:24px;font-weight:800;letter-spacing:-.5px}
+.td-m1 b.pos{color:var(--green)}
+.td-money i{font-style:normal;font-size:11.5px;color:var(--t3);font-weight:600;line-height:1.3}
+.td-goal{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--sh);padding:13px 15px;margin-bottom:6px;cursor:pointer}
+.td-goal-t{display:flex;justify-content:space-between;font-size:13.5px;font-weight:800}
+.td-bar-bg{height:8px;border-radius:99px;background:var(--bg2);margin:9px 0 7px;overflow:hidden}
+.td-bar-fg{height:100%;border-radius:99px;background:var(--blue);transition:width .6s cubic-bezier(.34,1.2,.64,1)}
+.td-goal-s{font-size:12.5px;color:var(--t2);font-weight:600}
+.td-sec{font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--t3);margin:20px 4px 9px}
+.td-list{padding:4px 0;overflow:hidden}
+.td-row{display:flex;align-items:center;gap:11px;padding:11px 15px;cursor:pointer;border-bottom:1px solid var(--sep)}
+.td-row:last-child{border-bottom:none}
+.td-row.td-now{background:var(--bl)}
+.td-row.td-past{opacity:.5}
+.td-t{width:42px;flex:none;display:flex;flex-direction:column;line-height:1.25;font-variant-numeric:tabular-nums}
+.td-t b{font-size:14.5px}.td-t span{font-size:11.5px;color:var(--t3)}
+.td-vbar{width:4px;align-self:stretch;border-radius:4px;flex:none}
+.td-mm{flex:1;min-width:0}
+.td-n{font-size:15.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.td-s{font-size:12.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.td-p{font-size:14.5px;font-weight:800;white-space:nowrap}
+.td-empty{text-align:center;padding:22px;color:var(--t3);font-weight:600;font-size:14px}
+.td-tm{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;padding:13px 15px}
+.td-tm-t{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--t3)}
+.td-tm-s{font-size:15px;font-weight:700;margin-top:1px}
+.td-btn-s{border:none;background:var(--bl);color:var(--blue);font-weight:800;font-size:13.5px;padding:10px 13px;border-radius:12px;cursor:pointer;white-space:nowrap}
+.td-ok{font-size:12.5px;font-weight:700;color:var(--green)}
+.td-acts{display:flex;gap:10px;margin-top:16px}
+.td-btn-p,.td-btn-g{flex:1;padding:15px 8px;border:none;border-radius:var(--r-xl);font-weight:800;font-size:15px;cursor:pointer}
+.td-btn-p{background:var(--btn);color:var(--btn-fg);box-shadow:var(--btn-ring)}
+.td-btn-g{background:var(--card);color:var(--t1);box-shadow:var(--sh)}
 </style>
 </head>
 <body>
@@ -1035,7 +1180,13 @@ body::before{
 <!-- floating button removed -->
 <!-- BOTTOM TAB BAR -->
 <div class="tab-bar" id="tab-bar">
-  <button class="tab-btn active" onclick="showTab('entry')" id="tb-entry">
+  <button class="tab-btn active" onclick="showTab('today')" id="tb-today">
+    <div class="tab-icon-wrap">
+      <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
+    </div>
+    <span class="tab-lbl tab-lbl-out" id="tb-today-lbl2"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('entry')" id="tb-entry">
     <div class="tab-icon-wrap">
       <span class="tab-icon"><svg width="22" height="22" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
     </div>
@@ -1074,11 +1225,15 @@ body::before{
 </div>
 
 <div class="main">
-<div id="tab-entry">
+<div id="tab-today"><div id="today-host"></div></div>
+
+<div id="tab-entry" style="display:none">
+  <div id="bk-banner"></div>
   <div id="edit-banner" style="display:none">
     <div class="eb">
       <div class="eb-l">✏️ <span id="eb-txt"></span></div>
       <div class="eb-btns">
+        <button class="eb-btn eb-move" id="eb-move" onclick="openEntryCal(true)"></button>
         <button class="eb-btn eb-reset" id="eb-reset" onclick="resetEntry()"></button>
         <button class="eb-btn eb-cancel" id="eb-cancel" onclick="cancelEdit()"></button>
       </div>
@@ -1088,9 +1243,13 @@ body::before{
   <div class="loc-grid au" id="loc-grid"></div>
   <div class="slabel au2" id="sl-date" style="margin-top:18px"></div>
   <div class="card au2">
+    <div class="date-row">
+    <button type="button" class="dnav" onclick="stepDay(-1)" aria-label="prev">‹</button>
     <div class="date-field" id="df" onclick="toggleCal()">
       <div class="df-l"><div class="df-icon">📅</div><span class="df-lbl" id="df-lbl"></span></div>
       <div class="df-r"><span class="df-dot" id="df-dot"></span><span id="df-val" class="df-val">--</span><span class="df-chev">▾</span></div>
+    </div>
+    <button type="button" class="dnav" onclick="stepDay(1)" aria-label="next">›</button>
     </div>
     <div class="cal-drop" id="cal-drop">
       <div class="cal-inner">
@@ -1183,6 +1342,7 @@ body::before{
     <div class="slabel" id="sl-byloc"></div>
     <div class="card"><div class="loc-rows" id="loc-brkd"></div></div>
     <div id="month-hourly"></div>
+    <div class="ana-host"></div>
     <div class="slabel" id="sl-entries"></div>
     <div class="card" id="entries-list"></div>
   </div>
@@ -1205,6 +1365,7 @@ body::before{
     </div>
     <div id="year-loc-breakdown"></div>
     <div id="year-hourly"></div>
+    <div class="ana-host"></div>
     <!-- Location × Month explorer -->
     <div class="slabel" id="sl-explorer" style="margin-top:16px"></div>
     <div class="card" style="margin-bottom:12px;padding:14px">
@@ -1221,6 +1382,7 @@ body::before{
     <button class="mnav-title" id="inv-lbl" onclick="openPicker('invoice')"></button>
     <button class="mnav-btn" onclick="chInvMonth(1)">›</button>
   </div></div>
+  <div class="inv-sw" id="inv-sw"></div>
   <div id="invoice-content"></div>
 </div>
 
@@ -1249,7 +1411,7 @@ body::before{
   <button class="add-loc-btn" id="add-svc-btn" onclick="openSvcForm(null)" style="margin-top:10px"></button>
   <div id="rem-set"></div>
   <div class="slabel" id="sl-setdata" style="margin-top:20px"></div>
-  <div class="set-wrap">
+  <div class="set-wrap" id="data-wrap">
     <div class="set-row">
       <div class="set-l"><div class="set-icon" style="background:var(--gl)">💾</div><div><div class="set-lbl" id="sl-exp"></div><div class="set-sub" id="sl-exp-s"></div></div></div>
       <button class="set-btn set-btn-green" onclick="exportSmart()" id="btn-exp"></button>
@@ -1265,21 +1427,8 @@ body::before{
     </div>
   </div>
   <div class="slabel" id="sl-install" style="margin-top:20px"></div>
-  <div class="card" style="padding:16px 18px"><div id="install-txt" style="font-size:13.5px;line-height:1.75;color:var(--t2)"></div></div>
+  <div class="card" id="install-card" style="padding:16px 18px"><div id="install-txt" style="font-size:13.5px;line-height:1.75;color:var(--t2)"></div></div>
 </div>
-</div>
-
-<!-- MONTH PICKER -->
-<div class="picker-ov" id="picker-ov" onclick="closePicker(event)">
-  <div class="picker-box" onclick="event.stopPropagation()">
-    <div class="py-row">
-      <button class="py-nav" onclick="pyChg(-1)">‹</button>
-      <span class="py-lbl" id="py-lbl">2025</span>
-      <button class="py-nav" onclick="pyChg(1)">›</button>
-    </div>
-    <div class="pm-grid" id="pm-grid"></div>
-    <button class="picker-close" id="picker-close-btn" onclick="closePicker()"></button>
-  </div>
 </div>
 
 <!-- BOTTOM SHEET -->
@@ -1291,8 +1440,6 @@ body::before{
   </div>
 </div>
 
-<!-- COLOR POPUP -->
-<div class="color-popup" id="color-popup"></div>
 
 <!-- ENTRY MODAL -->
 <div class="modal-bg" id="modal-bg" onclick="closeModal()"></div>
@@ -1318,6 +1465,7 @@ body::before{
     localStorage.setItem('bSettings',JSON.stringify({"reformSeparate":true,"defaultPct":45}));
     localStorage.setItem('bClients',JSON.stringify([{"id":1776504648558,"first":"Bartosz","last":"Koziński","phone":"+48660432165","locId":1,"haircut":"kombi, zwykla","prefs":"krócej brode","notes":"ma córkę приятный всегда разговор","updatedAt":1776504648558},{"id":1776534242411,"first":"Jakub","last":"Rodziewicz","phone":"+48 697 778 641","locId":1,"haircut":"удлиненка","prefs":"","notes":"тренер сборной польши парусный спорт","updatedAt":1776534242411},{"id":1776783811088,"first":"Artem","last":"Puszko","phone":"+48787442246","locId":1,"haircut":"классика простая","prefs":"темпер не короткий","notes":"девушка ходит к кате на ресницы, програмист","updatedAt":1776783811088},{"id":1780222664534,"first":"Przemysław","last":"Sękowski","phone":"+48791279312","locId":1,"haircut":"full","prefs":"обычная классика, жена блонда","notes":"занимается деревом","updatedAt":1780222703050},{"id":1780238285764,"first":"Michał","last":"Lejk","phone":"+48693889784","locId":1,"haircut":"разные стрижки скорее удлиненка","prefs":"","notes":"сказал что похвалил какой-то парикмахер что очень ровно я делаю, нравится как стигу очень","updatedAt":1780238294962},{"id":1780238706515,"first":"Zaur","last":"Baghirov","phone":"+447921039009","locId":1,"haircut":"taper classic","prefs":"","notes":"опаздывает норм мужик родом из кавказа","updatedAt":1781474847873},{"id":1780238821384,"first":"Bro Anthony","last":"","phone":"+33688364358","locId":1,"haircut":"удлиненка","prefs":"немного длиннее чем короткие","notes":"француз","updatedAt":1781474842276}]));
     localStorage.setItem('bDayOff',JSON.stringify(["2026-04-22","2026-04-25","2026-05-03","2026-06-04","2026-05-12","2026-05-11","2026-06-09","2026-06-16","2026-06-19","2026-06-20","2026-06-23","2026-07-13","2026-07-16","2026-07-27","2026-09-01","2026-09-07","2026-09-06","2026-09-13","2026-09-14","2026-09-17","2026-10-15","2026-10-22"]));
+    localStorage.setItem('bLastBackup','2026-11-07T12:00:00.000Z');
     localStorage.setItem('bLang',"pl");
     localStorage.setItem('bAppName',"Alma");
   }
@@ -1398,7 +1546,7 @@ pl:{
       start:'Początek',duration:'Czas trwania',notes:'Uwagi',del:'Usunąć wizytę?',
       empty:'Brak wizyt tego dnia',addHint:'Stuknij + aby dodać wizytę',minUnit:'min',
       today:'Dziś'},
-  svc:{taxT:'Podatek i ZUS',taxBase:'Do faktury',taxRy:'Ryczałt',taxZus:'ZUS',taxNet:'Zostaje po podatku i ZUS',taxHint:'Szacunek: ryczałt od kwoty do faktury minus składki społeczne i połowa zdrowotnej. Sprawdź z księgową.',taxRate:'Stawka ryczałtu, %',taxSoc:'ZUS społeczne, zł',taxHealth:'Składka zdrowotna, zł',taxEst:'szacunek',goalT:'Cel miesiąca',goalSet:'Ustaw cel na miesiąc',goalLeft:'Zostało',goalFc:'prognoza',goalNeed:'potrzeba ok.',goalPerDay:'zł / dzień roboczy',goalDays:'dni rob.',goalDone:'Cel osiągnięty',goalMiss:'Zabrakło',goalAvg:'średnia 3 mies.',goalClear:'Usuń cel',goalHint:'Liczy się Twój łączny dochód (wszystkie lokalizacje)',freeBtn:'Wolne terminy',freeTitle:'Wolne terminy',freeDaysU:'dni',freeHead:'Wolne terminy w najbliższych dniach:',freeTail:'Napisz, który termin Ci pasuje 🙂',freeNone:'W tym okresie nie ma wolnych terminów.',freeCopy:'Kopiuj',freeCopied:'Skopiowano',freeHint:'Tekst możesz poprawić przed wysłaniem. Lista powstaje ze zmian i wizyt.',iconHint:'Wpisz emoji z klawiatury',colorCustom:'Własny kolor',remCopied:'Tekst skopiowany — wklej go w SMS',remTextL:'Treść przypomnienia',remPreview:'Podgląd',colsNote:'',hourU:'zł/godz.',hourOf:'z',hourAvg:'średnio',visL:'Wizyty',lastVisit:'Ostatnia wizyta',cycleL:'Przychodzi co (tyg.)',autoL:'auto',wk:'tyg.',rebook:'Umów ponownie',dueTag:'Czas umówić',nextBook:'Umówiony na',noVisits:'Brak wizyt',visitsN:'Wizyt',noShowN:'Nie przyszedł',dueFilter:'Czas umówić',remBtn:'Przypomnij klientom',remTitle:'Przypomnienia dla klientów',remWa:'WhatsApp',remSms:'SMS',remNoPhone:'Brak numeru telefonu',remDone:'przypomniano',remEdit:'Zmień treść',remReset:'Przywróć domyślną',remHint:'Zmienne: {name} {date} {time} {place} {service}. Wiadomość otworzy się gotowa — wysyłasz ją sam.',remNone:'Brak wizyt do przypomnienia',remTplDef:'Cześć {name}! Przypominam o wizycie: {date} o {time}, {place}. Do zobaczenia!',today2:'dzisiaj',tomorrow2:'jutro',stL:'Status',stPlan:'⏳ Oczekuje',stPaid:'✓ Opłacona',stNo:'✗ Nie przyszedł',stCan:'⊘ Odwołał',markPaid:'Wszystkie opłacone',pendingL:'Nieoznaczone',noShowL:'nie przyszedł',canL:'odwołał',toCal:'Dodaj do kalendarza iPhone',dayToCal:'Dzień do kalendarza iPhone',calNone:'Brak wizyt do eksportu',title:'Usługi',add:'+ Dodaj usługę',newT:'Nowa usługa',editT:'Edytuj usługę',name:'Nazwa',nameHint:'np. Strzyżenie klasyczne',
+  svc:{rcStyle:'Paragon',rcClassic:'Klasyczna',rcPay:'DO ZAPŁATY',rcThanks:'Dziękuję!',rcPrint:'Wydruk',rcRazem:'RAZEM',rcCut:'ODDZIELNIE',anaT:'Analityka',anaP3:'3 mies.',anaP12:'12 mies.',anaPAll:'Wszystko',anaDow:'Dni tygodnia',anaDowSub:'średnio na dzień pracy',anaLoc:'Lokalizacje',anaBest:'Najlepszy dzień',anaWeak:'Najsłabszy dzień',anaDays:'dni',anaPerH:'zł/h',anaPerCl:'zł / klient',anaPerDay:'zł / dzień',anaFew:'mało danych',anaNone:'Za mało danych w tym okresie',anaOf:'z',anaShare:'udział',pickMonth:'Wybierz miesiąc',locDel:'Usuń lokalizację',bkNever:'Kopia zapasowa jeszcze nie była zapisana',bkAgo:'Ostatnia kopia sprzed {n} dni',bkLast:'Ostatnia kopia',bkToday:'dziś',bkYest:'wczoraj',bkDaysAgo:'{n} dni temu',bkSave:'Zapisz kopię',bkLater:'Później',bkHint:'Wybierz „Zapisz w Plikach”',bkDone:'Kopia zapisana ✓',bkSub:'Plik trafia do aplikacji Pliki',moveBtn:'Przenieś',moveTitle:'Przenieś wpis na…',moved:'Data zmieniona — zapisz zmiany',prevDay:'Poprzedni dzień',nextDay:'Następny dzień',taxT:'Podatek i ZUS',taxBase:'Do faktury',taxRy:'Ryczałt',taxZus:'ZUS',taxNet:'Zostaje po podatku i ZUS',taxHint:'Szacunek: ryczałt od kwoty do faktury minus składki społeczne i połowa zdrowotnej. Sprawdź z księgową.',taxRate:'Stawka ryczałtu, %',taxSoc:'ZUS społeczne, zł',taxHealth:'Składka zdrowotna, zł',taxEst:'szacunek',hourT:'Zarobek na godzinę',goalT:'Cel miesiąca',goalSet:'Ustaw cel na miesiąc',goalLeft:'Zostało',goalFc:'prognoza',goalNeed:'potrzeba ok.',goalPerDay:'zł / dzień roboczy',goalDays:'dni rob.',goalDone:'Cel osiągnięty',goalMiss:'Zabrakło',goalAvg:'średnia 3 mies.',goalClear:'Usuń cel',goalHint:'Liczy się Twój łączny dochód (wszystkie lokalizacje)',freeBtn:'Wolne terminy',freeTitle:'Wolne terminy',freeDaysU:'dni',freeHead:'Wolne terminy w najbliższych dniach:',freeTail:'Napisz, który termin Ci pasuje 🙂',freeNone:'W tym okresie nie ma wolnych terminów.',freeCopy:'Kopiuj',freeCopied:'Skopiowano',freeHint:'Tekst możesz poprawić przed wysłaniem. Lista powstaje ze zmian i wizyt.',iconHint:'Wpisz emoji z klawiatury',colorCustom:'Własny kolor',remCopied:'Tekst skopiowany — wklej go w SMS',remTextL:'Treść przypomnienia',remPreview:'Podgląd',colsNote:'',hourU:'zł/godz.',hourOf:'z',hourAvg:'średnio',visL:'Wizyty',lastVisit:'Ostatnia wizyta',cycleL:'Przychodzi co (tyg.)',autoL:'auto',wk:'tyg.',rebook:'Umów ponownie',dueTag:'Czas umówić',nextBook:'Umówiony na',noVisits:'Brak wizyt',visitsN:'Wizyt',noShowN:'Nie przyszedł',dueFilter:'Czas umówić',remBtn:'Przypomnij klientom',remTitle:'Przypomnienia dla klientów',remWa:'WhatsApp',remSms:'SMS',remNoPhone:'Brak numeru telefonu',remDone:'przypomniano',remEdit:'Zmień treść',remReset:'Przywróć domyślną',remHint:'Zmienne: {name} {date} {time} {place} {service}. Wiadomość otworzy się gotowa — wysyłasz ją sam.',remNone:'Brak wizyt do przypomnienia',remTplDef:'Cześć {name}! Przypominam o wizycie: {date} o {time}, {place}. Do zobaczenia!',today2:'dzisiaj',tomorrow2:'jutro',stL:'Status',stPlan:'⏳ Oczekuje',stPaid:'✓ Opłacona',stNo:'✗ Nie przyszedł',stCan:'⊘ Odwołał',markPaid:'Wszystkie opłacone',pendingL:'Nieoznaczone',noShowL:'nie przyszedł',canL:'odwołał',toCal:'Dodaj do kalendarza iPhone',dayToCal:'Dzień do kalendarza iPhone',calNone:'Brak wizyt do eksportu',title:'Usługi',add:'+ Dodaj usługę',newT:'Nowa usługa',editT:'Edytuj usługę',name:'Nazwa',nameHint:'np. Strzyżenie klasyczne',
       price:'Cena',duration:'Czas',where:'Gdzie dostępna',all:'Wszędzie',whereHint:'Nic nie wybrano = we wszystkich lokalizacjach',
       empty:'Brak usług',emptySub:'Dodaj usługi, aby wybierać je w grafiku',del:'Usunąć usługę?',
       base:'Mój % liczony od',basePaid:'Ceny po rabacie',baseList:'Ceny usługi',min:'min',save:'Zapisz',needName:'Podaj nazwę usługi',when:'Kiedy',ownSvc:'Własna usługa…',noSvcLoc:'Brak usług dla tej lokalizacji — dodaj w Ustawieniach',listPrice:'Cena usługi',discount:'Rabat',discNone:'Brak',discOwn:'Własny',youPay:'Klient płaci',myBase:'Mój % liczony od',overlap:'Nakłada się na inną wizytę. Zapisać mimo to?',overlapShort:'Nakłada się na inną wizytę',moved:'Przeniesiono na',dragHint:'Przytrzymaj wizytę, aby ją przesunąć',saveAnyway:'Zapisz mimo to',dateL:'Data',startL:'Początek',fromSched:'Z grafiku',fillBtn:'Uzupełnij',synced:'Zgodne z grafikiem',filled:'Uzupełniono z grafiku',hUnit:'h',visitsOf:'wizyt',shiftTitle:'Grafik dnia',addShift:'+ Dodaj zmianę',from:'Od',to:'Do',travel:'Dojazd',travelSet:'Czas dojazdu między lokalizacjami',gap:'Przerwa',tooShort:'Za mało czasu na dojazd',overlapShift:'Zmiany nakładają się',swap:'⇅ Zamień lokalizacje',repeat:'Powtarzaj',repOnce:'Tylko ten dzień',repWeekly:'Co tydzień (12 tyg.)',clearDay:'Usunąć grafik dnia?',badTime:'Koniec musi być po początku',noShift:'Dodaj zmianę, np. 9:00–15:00 w jednej lokalizacji i 16:00–21:00 w drugiej',shiftSaved:'Grafik zapisany',hShort:'h',daysL:'Dni tygodnia',wkdays:'Pn–Pt',allDays:'Wszystkie',period:'Okres',p7:'7 dni',p28:'4 tyg.',p84:'12 tyg.',p182:'Pół roku',applyTo:'Zastosuje się do',daysU:'dni',willReplace:'zastąpi grafik w',fromD:'od',noDays:'Wybierz co najmniej jeden dzień',pickClient:'Wybierz klienta',replaceClient:'Zmień klienta',pickSvc:'Wybierz usługę',searchClient:'Imię, nazwisko lub telefon',searchSvc:'Szukaj usługi…',newClient:'Dodaj nowego klienta',newClientT:'Nowy klient',addBtn:'Dodaj',back:'Wstecz',removeClient:'Usuń klienta z wizyty',noClients:'Nie znaleziono klientów',customSvc:'Własna usługa',noSvcOpt:'Bez usługi',endL:'Koniec',book:'Zapisz wizytę',close:'Zamknij',cancelBooking:'Usuń wizytę',cancelQ:'Usunąć wizytę?',needClientOrSvc:'Wybierz klienta lub usługę',clientAdded:'Klient dodany',needClientName:'Podaj imię klienta',dateT:'Wybierz datę',svcT:'Usługa'},
@@ -1448,7 +1596,7 @@ ru:{
       start:'Начало',duration:'Длительность',notes:'Примечания',del:'Удалить запись?',
       empty:'Нет записей на этот день',addHint:'Нажми + чтобы добавить запись',minUnit:'мин',
       today:'Сегодня'},
-  svc:{taxT:'Налог и ZUS',taxBase:'К фактуре',taxRy:'Рычалт',taxZus:'ZUS',taxNet:'Остаётся после налога и ZUS',taxHint:'Оценка: рычалт от суммы к фактуре минус социальные взносы и половина здоровотной. Сверь с бухгалтером.',taxRate:'Ставка рычалта, %',taxSoc:'ZUS социальные (społeczne), zł',taxHealth:'Здоровотная (zdrowotna), zł',taxEst:'оценка',goalT:'Цель месяца',goalSet:'Поставить цель на месяц',goalLeft:'Осталось',goalFc:'прогноз',goalNeed:'нужно примерно',goalPerDay:'zł за рабочий день',goalDays:'раб. дн.',goalDone:'Цель достигнута',goalMiss:'Не хватило',goalAvg:'среднее за 3 мес.',goalClear:'Убрать цель',goalHint:'Считается твой общий доход (все локации)',freeBtn:'Свободные окна',freeTitle:'Свободные окна',freeDaysU:'дн.',freeHead:'Свободные окна на ближайшие дни:',freeTail:'Напиши, какое время тебе подходит 🙂',freeNone:'В этот период свободных окон нет.',freeCopy:'Копировать',freeCopied:'Скопировано',freeHint:'Текст можно поправить перед отправкой. Окна считаются по сменам и записям.',iconHint:'Введи эмодзи с клавиатуры',colorCustom:'Свой цвет',remCopied:'Текст скопирован — вставь его в SMS',remTextL:'Текст напоминания',remPreview:'Так будет выглядеть',colsNote:'',hourU:'zł/ч',hourOf:'за',hourAvg:'в среднем',visL:'Визиты',lastVisit:'Последний визит',cycleL:'Приходит раз в (нед.)',autoL:'авто',wk:'нед.',rebook:'Записать снова',dueTag:'Пора записать',nextBook:'Записан на',noVisits:'Визитов ещё нет',visitsN:'Визитов',noShowN:'Не пришёл',dueFilter:'Пора записать',remBtn:'Напомнить клиентам',remTitle:'Напоминания клиентам',remWa:'WhatsApp',remSms:'SMS',remNoPhone:'Нет номера телефона',remDone:'напомнено',remEdit:'Изменить текст',remReset:'Вернуть стандартный',remHint:'Подстановки: {name} {date} {time} {place} {service}. Сообщение откроется готовым — отправляешь его сам.',remNone:'Нет записей для напоминания',remTplDef:'Привет, {name}! Напоминаю о записи: {date} в {time}, {place}. До встречи!',today2:'сегодня',tomorrow2:'завтра',stL:'Статус',stPlan:'⏳ Ожидается',stPaid:'✓ Оплачено',stNo:'✗ Не пришёл',stCan:'⊘ Отменил',markPaid:'Все оплачены',pendingL:'Не отмечено',noShowL:'не пришёл',canL:'отменил',toCal:'В календарь iPhone',dayToCal:'День в календарь iPhone',calNone:'Нет записей для экспорта',title:'Услуги',add:'+ Добавить услугу',newT:'Новая услуга',editT:'Редактировать услугу',name:'Название',nameHint:'напр. Классическая стрижка',
+  svc:{rcStyle:'Чек',rcClassic:'Классика',rcPay:'К ОПЛАТЕ',rcThanks:'Спасибо!',rcPrint:'Печать',rcRazem:'ИТОГО',rcCut:'ОТДЕЛЬНО',anaT:'Аналитика',anaP3:'3 мес.',anaP12:'12 мес.',anaPAll:'Всё',anaDow:'Дни недели',anaDowSub:'в среднем за рабочий день',anaLoc:'Локации',anaBest:'Лучший день',anaWeak:'Слабый день',anaDays:'дн.',anaPerH:'zł/ч',anaPerCl:'zł / клиент',anaPerDay:'zł / день',anaFew:'мало данных',anaNone:'За этот период мало данных',anaOf:'из',anaShare:'доля',pickMonth:'Выбери месяц',locDel:'Удалить локацию',bkNever:'Резервная копия ещё не сохранялась',bkAgo:'Последней копии {n} дн. назад',bkLast:'Последняя копия',bkToday:'сегодня',bkYest:'вчера',bkDaysAgo:'{n} дн. назад',bkSave:'Сохранить копию',bkLater:'Позже',bkHint:'Выбери «Сохранить в Файлы»',bkDone:'Копия сохранена ✓',bkSub:'Файл попадает в приложение «Файлы»',moveBtn:'Перенести',moveTitle:'Перенести запись на…',moved:'Дата изменена — нажми «Сохранить изменения»',prevDay:'Предыдущий день',nextDay:'Следующий день',taxT:'Налог и ZUS',taxBase:'К фактуре',taxRy:'Рычалт',taxZus:'ZUS',taxNet:'Остаётся после налога и ZUS',taxHint:'Оценка: рычалт от суммы к фактуре минус социальные взносы и половина здоровотной. Сверь с бухгалтером.',taxRate:'Ставка рычалта, %',taxSoc:'ZUS социальные (społeczne), zł',taxHealth:'Здоровотная (zdrowotna), zł',taxEst:'оценка',hourT:'Заработок в час',goalT:'Цель месяца',goalSet:'Поставить цель на месяц',goalLeft:'Осталось',goalFc:'прогноз',goalNeed:'нужно примерно',goalPerDay:'zł за рабочий день',goalDays:'раб. дн.',goalDone:'Цель достигнута',goalMiss:'Не хватило',goalAvg:'среднее за 3 мес.',goalClear:'Убрать цель',goalHint:'Считается твой общий доход (все локации)',freeBtn:'Свободные окна',freeTitle:'Свободные окна',freeDaysU:'дн.',freeHead:'Свободные окна на ближайшие дни:',freeTail:'Напиши, какое время тебе подходит 🙂',freeNone:'В этот период свободных окон нет.',freeCopy:'Копировать',freeCopied:'Скопировано',freeHint:'Текст можно поправить перед отправкой. Окна считаются по сменам и записям.',iconHint:'Введи эмодзи с клавиатуры',colorCustom:'Свой цвет',remCopied:'Текст скопирован — вставь его в SMS',remTextL:'Текст напоминания',remPreview:'Так будет выглядеть',colsNote:'',hourU:'zł/ч',hourOf:'за',hourAvg:'в среднем',visL:'Визиты',lastVisit:'Последний визит',cycleL:'Приходит раз в (нед.)',autoL:'авто',wk:'нед.',rebook:'Записать снова',dueTag:'Пора записать',nextBook:'Записан на',noVisits:'Визитов ещё нет',visitsN:'Визитов',noShowN:'Не пришёл',dueFilter:'Пора записать',remBtn:'Напомнить клиентам',remTitle:'Напоминания клиентам',remWa:'WhatsApp',remSms:'SMS',remNoPhone:'Нет номера телефона',remDone:'напомнено',remEdit:'Изменить текст',remReset:'Вернуть стандартный',remHint:'Подстановки: {name} {date} {time} {place} {service}. Сообщение откроется готовым — отправляешь его сам.',remNone:'Нет записей для напоминания',remTplDef:'Привет, {name}! Напоминаю о записи: {date} в {time}, {place}. До встречи!',today2:'сегодня',tomorrow2:'завтра',stL:'Статус',stPlan:'⏳ Ожидается',stPaid:'✓ Оплачено',stNo:'✗ Не пришёл',stCan:'⊘ Отменил',markPaid:'Все оплачены',pendingL:'Не отмечено',noShowL:'не пришёл',canL:'отменил',toCal:'В календарь iPhone',dayToCal:'День в календарь iPhone',calNone:'Нет записей для экспорта',title:'Услуги',add:'+ Добавить услугу',newT:'Новая услуга',editT:'Редактировать услугу',name:'Название',nameHint:'напр. Классическая стрижка',
       price:'Цена',duration:'Время',where:'Где доступна',all:'Везде',whereHint:'Ничего не выбрано = во всех локациях',
       empty:'Услуг пока нет',emptySub:'Добавь услуги, чтобы выбирать их в расписании',del:'Удалить услугу?',
       base:'Мой % считать от',basePaid:'Цены со скидкой',baseList:'Цены услуги',min:'мин',save:'Сохранить',needName:'Введи название услуги',when:'Когда',ownSvc:'Своя услуга…',noSvcLoc:'Нет услуг для этой локации — добавь в Настройках',listPrice:'Цена услуги',discount:'Скидка',discNone:'Нет',discOwn:'Своя',youPay:'Клиент платит',myBase:'Мой % считается от',overlap:'Пересекается с другой записью. Сохранить всё равно?',overlapShort:'Пересекается с другой записью',moved:'Перенесено на',dragHint:'Удерживай запись, чтобы перетащить',saveAnyway:'Сохранить всё равно',dateL:'Дата',startL:'Начало',fromSched:'Из расписания',fillBtn:'Подставить',synced:'Совпадает с расписанием',filled:'Подставлено из расписания',hUnit:'ч',visitsOf:'записей',shiftTitle:'График дня',addShift:'+ Добавить смену',from:'С',to:'До',travel:'Переезд',travelSet:'Время на переезд между локациями',gap:'Перерыв',tooShort:'Мало времени на переезд',overlapShift:'Смены пересекаются',swap:'⇅ Поменять локации местами',repeat:'Повторять',repOnce:'Только этот день',repWeekly:'Каждую неделю (12 нед.)',clearDay:'Удалить график дня?',badTime:'Конец должен быть позже начала',noShift:'Добавь смену, например 9:00–15:00 в одной локации и 16:00–21:00 в другой',shiftSaved:'График сохранён',hShort:'ч',daysL:'Дни недели',wkdays:'Пн–Пт',allDays:'Все дни',period:'Период',p7:'7 дней',p28:'4 нед.',p84:'12 нед.',p182:'Полгода',applyTo:'Применится к',daysU:'дн.',willReplace:'заменит график в',fromD:'с',noDays:'Выбери хотя бы один день',pickClient:'Выбрать клиента',replaceClient:'Заменить клиента',pickSvc:'Выбрать услугу',searchClient:'Имя, фамилия или телефон',searchSvc:'Поиск услуги…',newClient:'Добавить нового клиента',newClientT:'Новый клиент',addBtn:'Добавить',back:'Назад',removeClient:'Убрать клиента из записи',noClients:'Клиентов не найдено',customSvc:'Своя услуга',noSvcOpt:'Без услуги',endL:'Конец',book:'Записать',close:'Закрыть',cancelBooking:'Удалить',cancelQ:'Удалить запись?',needClientOrSvc:'Выбери клиента или услугу',clientAdded:'Клиент добавлен',needClientName:'Введи имя клиента',dateT:'Выбор даты',svcT:'Услуга'},
@@ -1497,7 +1645,7 @@ en:{
       start:'Start',duration:'Duration',notes:'Notes',del:'Delete appointment?',
       empty:'No appointments this day',addHint:'Tap + to add an appointment',minUnit:'min',
       today:'Today'},
-  svc:{taxT:'Tax & ZUS',taxBase:'To invoice',taxRy:'Flat tax (ryczałt)',taxZus:'ZUS',taxNet:'Left after tax and ZUS',taxHint:'Estimate: flat tax on the invoiced amount minus social contributions and half of the health one. Check with your accountant.',taxRate:'Flat tax rate, %',taxSoc:'ZUS social, zł',taxHealth:'Health contribution, zł',taxEst:'estimate',goalT:'Monthly goal',goalSet:'Set a goal for this month',goalLeft:'Left',goalFc:'forecast',goalNeed:'need about',goalPerDay:'zł per work day',goalDays:'work days',goalDone:'Goal reached',goalMiss:'Missed by',goalAvg:'3-mo average',goalClear:'Remove goal',goalHint:'Counts your total income (all locations)',freeBtn:'Free slots',freeTitle:'Free slots',freeDaysU:'days',freeHead:'Free slots for the next days:',freeTail:'Let me know which time suits you 🙂',freeNone:'No free slots in this period.',freeCopy:'Copy',freeCopied:'Copied',freeHint:'You can edit the text before sending. Slots come from your shifts and bookings.',iconHint:'Type an emoji from the keyboard',colorCustom:'Custom color',remCopied:'Text copied — paste it into the SMS',remTextL:'Reminder text',remPreview:'Preview',colsNote:'',hourU:'zł/h',hourOf:'over',hourAvg:'average',visL:'Visits',lastVisit:'Last visit',cycleL:'Comes every (weeks)',autoL:'auto',wk:'wk',rebook:'Book again',dueTag:'Time to rebook',nextBook:'Booked for',noVisits:'No visits yet',visitsN:'Visits',noShowN:'No-shows',dueFilter:'Time to rebook',remBtn:'Remind clients',remTitle:'Client reminders',remWa:'WhatsApp',remSms:'SMS',remNoPhone:'No phone number',remDone:'reminded',remEdit:'Edit text',remReset:'Restore default',remHint:'Placeholders: {name} {date} {time} {place} {service}. The message opens ready to go — you press send.',remNone:'No bookings to remind',remTplDef:'Hi {name}! Reminder of your appointment: {date} at {time}, {place}. See you!',today2:'today',tomorrow2:'tomorrow',stL:'Status',stPlan:'⏳ Pending',stPaid:'✓ Paid',stNo:'✗ No-show',stCan:'⊘ Cancelled',markPaid:'Mark all paid',pendingL:'Not marked',noShowL:'no-show',canL:'cancelled',toCal:'Add to iPhone Calendar',dayToCal:'Day to iPhone Calendar',calNone:'No bookings to export',title:'Services',add:'+ Add service',newT:'New service',editT:'Edit service',name:'Name',nameHint:'e.g. Classic haircut',
+  svc:{rcStyle:'Receipt',rcClassic:'Classic',rcPay:'TO PAY',rcThanks:'Thank you!',rcPrint:'Printed',rcRazem:'TOTAL',rcCut:'SEPARATE',anaT:'Insights',anaP3:'3 mo',anaP12:'12 mo',anaPAll:'All',anaDow:'Days of the week',anaDowSub:'average per work day',anaLoc:'Locations',anaBest:'Best day',anaWeak:'Weakest day',anaDays:'days',anaPerH:'zł/h',anaPerCl:'zł / client',anaPerDay:'zł / day',anaFew:'few data',anaNone:'Not enough data for this period',anaOf:'of',anaShare:'share',pickMonth:'Pick a month',locDel:'Delete location',bkNever:'No backup saved yet',bkAgo:'Last backup was {n} days ago',bkLast:'Last backup',bkToday:'today',bkYest:'yesterday',bkDaysAgo:'{n} days ago',bkSave:'Save backup',bkLater:'Later',bkHint:'Choose “Save to Files”',bkDone:'Backup saved ✓',bkSub:'The file goes to the Files app',moveBtn:'Move',moveTitle:'Move entry to…',moved:'Date changed — save the changes',prevDay:'Previous day',nextDay:'Next day',taxT:'Tax & ZUS',taxBase:'To invoice',taxRy:'Flat tax (ryczałt)',taxZus:'ZUS',taxNet:'Left after tax and ZUS',taxHint:'Estimate: flat tax on the invoiced amount minus social contributions and half of the health one. Check with your accountant.',taxRate:'Flat tax rate, %',taxSoc:'ZUS social, zł',taxHealth:'Health contribution, zł',taxEst:'estimate',hourT:'Earnings per hour',goalT:'Monthly goal',goalSet:'Set a goal for this month',goalLeft:'Left',goalFc:'forecast',goalNeed:'need about',goalPerDay:'zł per work day',goalDays:'work days',goalDone:'Goal reached',goalMiss:'Missed by',goalAvg:'3-mo average',goalClear:'Remove goal',goalHint:'Counts your total income (all locations)',freeBtn:'Free slots',freeTitle:'Free slots',freeDaysU:'days',freeHead:'Free slots for the next days:',freeTail:'Let me know which time suits you 🙂',freeNone:'No free slots in this period.',freeCopy:'Copy',freeCopied:'Copied',freeHint:'You can edit the text before sending. Slots come from your shifts and bookings.',iconHint:'Type an emoji from the keyboard',colorCustom:'Custom color',remCopied:'Text copied — paste it into the SMS',remTextL:'Reminder text',remPreview:'Preview',colsNote:'',hourU:'zł/h',hourOf:'over',hourAvg:'average',visL:'Visits',lastVisit:'Last visit',cycleL:'Comes every (weeks)',autoL:'auto',wk:'wk',rebook:'Book again',dueTag:'Time to rebook',nextBook:'Booked for',noVisits:'No visits yet',visitsN:'Visits',noShowN:'No-shows',dueFilter:'Time to rebook',remBtn:'Remind clients',remTitle:'Client reminders',remWa:'WhatsApp',remSms:'SMS',remNoPhone:'No phone number',remDone:'reminded',remEdit:'Edit text',remReset:'Restore default',remHint:'Placeholders: {name} {date} {time} {place} {service}. The message opens ready to go — you press send.',remNone:'No bookings to remind',remTplDef:'Hi {name}! Reminder of your appointment: {date} at {time}, {place}. See you!',today2:'today',tomorrow2:'tomorrow',stL:'Status',stPlan:'⏳ Pending',stPaid:'✓ Paid',stNo:'✗ No-show',stCan:'⊘ Cancelled',markPaid:'Mark all paid',pendingL:'Not marked',noShowL:'no-show',canL:'cancelled',toCal:'Add to iPhone Calendar',dayToCal:'Day to iPhone Calendar',calNone:'No bookings to export',title:'Services',add:'+ Add service',newT:'New service',editT:'Edit service',name:'Name',nameHint:'e.g. Classic haircut',
       price:'Price',duration:'Duration',where:'Available at',all:'Everywhere',whereHint:'None selected = all locations',
       empty:'No services yet',emptySub:'Add services to pick them in the schedule',del:'Delete service?',
       base:'My % is based on',basePaid:'Price after discount',baseList:'Service list price',min:'min',save:'Save',needName:'Enter a service name',when:'When',ownSvc:'Custom service…',noSvcLoc:'No services for this location — add them in Settings',listPrice:'List price',discount:'Discount',discNone:'None',discOwn:'Custom',youPay:'Client pays',myBase:'My % is based on',overlap:'Overlaps another appointment. Save anyway?',overlapShort:'Overlaps another appointment',moved:'Moved to',dragHint:'Press and hold an appointment to move it',saveAnyway:'Save anyway',dateL:'Date',startL:'Start',fromSched:'From schedule',fillBtn:'Fill in',synced:'Matches the schedule',filled:'Filled from schedule',hUnit:'h',visitsOf:'bookings',shiftTitle:'Day schedule',addShift:'+ Add shift',from:'From',to:'To',travel:'Travel',travelSet:'Travel time between locations',gap:'Break',tooShort:'Not enough time to travel',overlapShift:'Shifts overlap',swap:'⇅ Swap locations',repeat:'Repeat',repOnce:'This day only',repWeekly:'Every week (12 weeks)',clearDay:'Clear this day schedule?',badTime:'End must be after start',noShift:'Add a shift, e.g. 9:00–15:00 at one location and 16:00–21:00 at another',shiftSaved:'Schedule saved',hShort:'h',daysL:'Weekdays',wkdays:'Mon–Fri',allDays:'Every day',period:'Period',p7:'7 days',p28:'4 weeks',p84:'12 weeks',p182:'Half a year',applyTo:'Applies to',daysU:'days',willReplace:'replaces schedule on',fromD:'from',noDays:'Select at least one day',pickClient:'Choose client',replaceClient:'Replace client',pickSvc:'Choose service',searchClient:'Name, surname or phone',searchSvc:'Search service…',newClient:'Add new client',newClientT:'New client',addBtn:'Add',back:'Back',removeClient:'Remove client from booking',noClients:'No clients found',customSvc:'Custom service',noSvcOpt:'No service',endL:'End',book:'Book',close:'Close',cancelBooking:'Delete',cancelQ:'Delete this booking?',needClientOrSvc:'Choose a client or a service',clientAdded:'Client added',needClientName:'Enter the client name',dateT:'Choose date',svcT:'Service'},
@@ -1533,6 +1681,10 @@ const LOC_ICONS_DEF=['⚡','🏭','🏙️','🏠','✂️','💈','🪒','🏪'
 const FIELD_BG=['#f0fdf4','#eff6ff','#fef3c7','#eff6ff','#f0fdf4','#fdf4ff','#fff7ed','#f8fafc'];
 
 let lang=localStorage.getItem('bLang')||'pl';
+function L3(pl,ru,en){return lang==='ru'?ru:lang==='en'?en:pl}
+function nDays(n){n=Math.abs(Math.round(n||0));if(lang==='ru'){const a=n%10,b=n%100;return n+' '+(a===1&&b!==11?'день':(a>=2&&a<=4&&(b<10||b>=20))?'дня':'дней')}if(lang==='en')return n+(n===1?' day':' days');return n+(n===1?' dzień':' dni')}
+function uKl(){return L3('kl','кл.','cl')}
+function uH(){return L3('h','ч','h')}
 let T=TR[lang];
 let appName=localStorage.getItem('bAppName')||'Barber';
 let locs=JSON.parse(localStorage.getItem('bLocs')||'null')||[
@@ -1555,8 +1707,9 @@ let pickerTarget='stats',pickerY=NOW.getFullYear();
 let fVals={hours:0,clients:0,revenue:0,pct:curPct,tips:0,tipsCash:0,vouchers:0,discounts:0,notes:''};
 
 document.addEventListener('DOMContentLoaded',()=>{
-  applyLang();renderLocGrid();updDateDisplay();renderCal();renderStats();renderInvoice();setupSheetSwipe();setupModalSwipe();setupPullToRefresh();setupParallax();updDayOffBtn();setupCanvasTouch();setupStatsSwipe();
+  applyLang();renderBackupInfo();renderLocGrid();updDateDisplay();setTimeout(revealScan,250);renderCal();renderStats();renderInvoice();setupSheetSwipe();setupModalSwipe();setupPullToRefresh();setupParallax();updDayOffBtn();setupCanvasTouch();setupStatsSwipe();
   autoFillFromSchedule();
+  showTab('today');
 });
 
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`}
@@ -1572,15 +1725,15 @@ function saveSettings(){settings.reformSeparate=document.getElementById('reform-
 
 function cycleLang(){
   lang=lang==='pl'?'ru':lang==='ru'?'en':'pl';
-  T=TR[lang];applyLang();saveAll();renderLocGrid();renderStats();renderInvoice();renderLocSettings();renderSchedule();
+  T=TR[lang];applyLang();renderBackupInfo();saveAll();renderLocGrid();renderStats();renderInvoice();renderLocSettings();renderSchedule();tdRefresh();
 }
 function st(id,txt){const e=document.getElementById(id);if(e)e.textContent=txt}
 function applyLang(){
   document.title=appName+' Stats';
   document.getElementById('nav-logo').innerHTML=appName+'<em>.</em>';
   // Bottom tab labels — inner (active pill) + outer (below icon)
-  ['entry','sched','stats','invoice','clients','settings'].forEach((id,i)=>{
-    const lbl=T.tabs[i];
+  ['today','entry','sched','stats','invoice','clients','settings'].forEach((id,i)=>{
+    const lbl=i===0?TD().tab:T.tabs[i-1];
     const el=document.getElementById('tb-'+id+'-lbl');if(el)el.textContent=lbl;
     const el2=document.getElementById('tb-'+id+'-lbl2');if(el2)el2.textContent=lbl;
   });
@@ -1588,7 +1741,7 @@ function applyLang(){
   st('df-lbl',T.pickDate);
   st('pv-l1',T.mypct);st('pv-l2',T.tips);st('pv-l3',T.total);
   st('save-btn',editId?T.saveEdit:T.save);
-  st('eb-txt',T.editMode);st('eb-reset',T.wipe);st('eb-cancel',T.cancel);
+  st('eb-txt',T.editMode);st('eb-move',T.svc.moveBtn);st('eb-reset',T.wipe);st('eb-cancel',T.cancel);
   st('sl-byloc',T.byloc);st('sl-entries',T.entries);st('sl-mchart',T.mchart);
   st('sl-setloc',T.setLoc);st('sl-setreform',T.setReform);st('sl-setdata',T.setData);
   st('sl-exp',T.export);st('sl-exp-s',T.exportSub);
@@ -1597,12 +1750,11 @@ function applyLang(){
   st('btn-exp',T.export);st('btn-imp',T.import);st('btn-del',T.delAll.split(' ')[0]);
   st('add-loc-btn',T.addLoc);st('sl-install',T.install);
   st('sl-reform-title',T.reformSep);st('sl-reform-sub',T.reformSepSub);
-  st('picker-close-btn',T.close);
   const it=document.getElementById('install-txt');if(it)it.innerHTML=T.installTxt;
   renderFormGroup();updDayOffBtn();
 }
 function editAppName(){
-  const n=prompt(lang==='pl'?'Nazwa aplikacji:':'Название приложения:',appName);
+  const n=prompt(L3('Nazwa aplikacji:','Название приложения:','App name:'),appName);
   if(n&&n.trim()){appName=n.trim();saveAll();applyLang()}
 }
 
@@ -2133,6 +2285,7 @@ function closeSheet(){
     cfClose(); return;
   }
   window._inClientForm=false;
+  if(window._sheetCloseHook){const f=window._sheetCloseHook;window._sheetCloseHook=null;try{f()}catch(e){}}
   const ov=document.getElementById('sheet-ov');
   const box=document.getElementById('sheet-box');
   box.style.transition='transform .36s cubic-bezier(.4,0,1,1)';
@@ -2256,13 +2409,132 @@ function setupSheetSwipe(){
 }
 
 /* ══ TABS ══ */
+/* things below the fold glide up as they scroll into view (entry tab) */
+function revealScan(){
+  if(!('IntersectionObserver' in window))return;
+  try{if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}
+  if(!window._rvIO)window._rvIO=new IntersectionObserver(es=>es.forEach(en=>{
+    if(!en.isIntersecting)return;
+    const el=en.target;window._rvIO.unobserve(el);
+    el.style.transitionDelay=(Math.min(window._rvN||0,4)*45)+'ms';window._rvN=(window._rvN||0)+1;
+    requestAnimationFrame(()=>{el.classList.add('rv-in');setTimeout(()=>{el.classList.remove('rv','rv-in');el.style.transitionDelay='';window._rvN=0},900)});
+  }),{rootMargin:'0px 0px -48px 0px',threshold:.04});
+  const vh=window.innerHeight||800;
+  document.querySelectorAll('#tab-entry .frow,#tab-entry .prev-strip,#tab-entry .dayoff-btn,#tab-entry .save-btn').forEach(el=>{
+    if(el.classList.contains('rv'))return;
+    if(el.getBoundingClientRect().top>vh-70){el.classList.add('rv');window._rvIO.observe(el)}
+  });
+}
+/* ══ TODAY screen ══ */
+const TODT={
+pl:{tab:'Dziś',gm:'Dzień dobry',gd:'Dzień dobry',ge:'Dobry wieczór',noShift:'Brak zmiany w grafiku',dayOff:'Dzień wolny',setShift:'+ zmiana',
+ next:'Następny klient',cur:'Aktualny klient',now:'trwa teraz',inn:'za',min:'min',hr:'godz.',left:'do końca',allDone:'To już wszystkie wizyty na dziś',
+ earned:'Zarobione dziś',noEntry:'podsumowanie dnia jeszcze nie dodane',booked:'W zapisach',goal:'Cel miesiąca',goalLeft:'zostało',
+ list:'Dzisiejsze wizyty',none:'Dziś brak wizyt',add:'+ Wizyta',sum:'Podsumuj dzień',tmrw:'Jutro',tmrwNone:'Jutro brak wizyt',from:'od',
+ remind:'Przypomnij',reminded:'przypomnienia wysłane',open:'Otwórz',call:'Zadzwoń',
+ ap:['wizyta','wizyty','wizyt']},
+ru:{tab:'Сегодня',gm:'Доброе утро',gd:'Добрый день',ge:'Добрый вечер',noShift:'Смена не запланирована',dayOff:'Выходной',setShift:'+ смена',
+ next:'Следующий клиент',cur:'Текущий клиент',now:'идёт сейчас',inn:'через',min:'мин',hr:'ч',left:'до конца',allDone:'Записи на сегодня закончились',
+ earned:'Заработано сегодня',noEntry:'итог дня ещё не записан',booked:'В записях',goal:'Цель месяца',goalLeft:'осталось',
+ list:'Записи на сегодня',none:'Сегодня записей нет',add:'+ Запись клиента',sum:'Итог дня',tmrw:'Завтра',tmrwNone:'Завтра записей нет',from:'с',
+ remind:'Напомнить',reminded:'напоминания отправлены',open:'Открыть',call:'Позвонить',
+ ap:['запись','записи','записей']},
+en:{tab:'Today',gm:'Good morning',gd:'Good afternoon',ge:'Good evening',noShift:'No shift planned',dayOff:'Day off',setShift:'+ shift',
+ next:'Next client',cur:'Current client',now:'in progress',inn:'in',min:'min',hr:'h',left:'left',allDone:'No more appointments today',
+ earned:'Earned today',noEntry:'day summary not added yet',booked:'Booked',goal:'Month goal',goalLeft:'left',
+ list:"Today's appointments",none:'No appointments today',add:'+ Appointment',sum:'Day summary',tmrw:'Tomorrow',tmrwNone:'Nothing booked tomorrow',from:'from',
+ remind:'Remind',reminded:'reminders sent',open:'Open',call:'Call',
+ ap:['appointment','appointments','appointments']}
+};
+const TDMON={pl:['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'],ru:['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],en:['January','February','March','April','May','June','July','August','September','October','November','December']};
+const TDDOW={pl:['poniedziałek','wtorek','środa','czwartek','piątek','sobota','niedziela'],ru:['понедельник','вторник','среда','четверг','пятница','суббота','воскресенье'],en:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']};
+function TD(){return TODT[lang]||TODT.pl}
+function tdN(n){const f=TD().ap;if(lang==='en')return n+' '+(n===1?f[0]:f[1]);
+  if(lang==='ru'){const a=n%10,b=n%100;return n+' '+(a===1&&b!==11?f[0]:(a>=2&&a<=4&&(b<10||b>=20))?f[1]:f[2])}
+  return n+' '+(n===1?f[0]:(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?f[1]:f[2])}
+function tdName(a){const c=a.clientId?clients.find(x=>x.id===a.clientId):null;return(c?((c.first||'')+' '+(c.last||'')).trim():'')||a.clientName||a.service||'—'}
+function tdDur(m){const P=TD();return m<60?`${m} ${P.min}`:`${Math.floor(m/60)} ${P.hr}`+(m%60?` ${m%60} ${P.min}`:'')}
+function tdAfter(){const d=new Date();d.setDate(d.getDate()+1);return bkIso(d)}
+function renderToday(){
+  const host=document.getElementById('today-host');if(!host)return;
+  const P=TD(),ts=todayStr(),n=new Date(),nm=n.getHours()*60+n.getMinutes();
+  const dow=TDDOW[lang][(n.getDay()+6)%7],dfull=lang==='en'?`${TDMON.en[n.getMonth()]} ${n.getDate()}`:`${n.getDate()} ${TDMON[lang][n.getMonth()]}`;
+  const hr=n.getHours(),greet=hr>=5&&hr<12?P.gm:hr>=12&&hr<18?P.gd:P.ge;
+  const all=appointments.filter(a=>a.date===ts).sort((a,b)=>a.start.localeCompare(b.start));
+  const live=all.filter(apLive);
+  const endM=a=>a.end?apMinutes(a.end):apMinutes(a.start)+30;
+  const sh=shifts.filter(s=>s.date===ts).sort((a,b)=>String(a.start).localeCompare(String(b.start)));
+  const off=dayOffDates.includes(ts);
+  /* shifts */
+  let shHtml='';
+  if(sh.length)shHtml=sh.map(s=>{const l=getLocById(s.locId);if(!l)return'';return`<div class="td-chip" style="background:${hexAlphaJS(l.color,.14)};color:${l.color}"><span class="td-dot" style="background:${l.color}"></span>${apEsc(l.name)} <b>${apEsc(s.start)}–${apEsc(s.end)}</b></div>`}).join('');
+  else if(off)shHtml=`<div class="td-chip td-chip-n">🌴 ${apEsc(P.dayOff)}</div>`;
+  else shHtml=`<div class="td-chip td-chip-n" onclick="showTab('sched')" style="cursor:pointer">${apEsc(P.noShift)} <b style="color:var(--blue)">${apEsc(P.setShift)}</b></div>`;
+  /* next / current */
+  const cur=live.find(a=>apMinutes(a.start)<=nm&&nm<endM(a)&&a.status!=='paid');
+  const nxt=cur||live.find(a=>apMinutes(a.start)>nm&&a.status!=='paid');
+  let nextHtml='';
+  if(nxt){
+    const l=getLocById(nxt.locId)||{color:'#2563eb',name:''},c=remClient(nxt),ph=c?remPhone(c.phone):'';
+    const isNow=nxt===cur,d=apMinutes(nxt.start)-nm;
+    const when=isNow?`${P.now} · ${P.left} ${tdDur(endM(nxt)-nm)}`:`${P.inn} ${tdDur(d)}`;
+    const pr=apPricing(nxt);
+    nextHtml=`<div class="td-next" style="background:linear-gradient(155deg,rgba(255,255,255,.2),rgba(0,0,0,.2)),${l.color}" onclick="openApptForm(${nxt.id})">
+      <div class="td-nx-top"><span>${apEsc(isNow?P.cur:P.next)}</span><span class="td-when">${apEsc(when)}</span></div>
+      <div class="td-nx-time">${apEsc(nxt.start)}<small>${nxt.end?'– '+apEsc(nxt.end):''}</small></div>
+      <div class="td-nx-name">${apEsc(tdName(nxt))}</div>
+      <div class="td-nx-sub">${apEsc([nxt.service,l.name].filter(Boolean).join(' · '))}${pr.paid>0?` · <b>${apEsc(fmtZl(pr.paid))}</b>`:''}</div>
+      ${ph?`<div class="td-nx-act"><a class="td-nxb" href="tel:+${ph}" onclick="event.stopPropagation()">📞 ${apEsc(P.call)}</a><a class="td-nxb" href="https://wa.me/${ph}" target="_blank" rel="noopener" onclick="event.stopPropagation()">💬 WhatsApp</a></div>`:''}
+    </div>`;
+  } else if(live.length){
+    nextHtml=`<div class="td-next td-next-done"><div style="font-size:30px">✓</div><div class="td-nx-name" style="margin-top:4px">${apEsc(P.allDone)}</div></div>`;
+  }
+  /* money */
+  const ents=entries.filter(e=>e.date===ts&&isReal(e));
+  const earned=S(ents,'myPctAmt')+S(ents,'tips')+S(ents,'tipsCash');
+  const booked=live.reduce((s,a)=>s+apPricing(a).paid,0);
+  const doneN=live.filter(a=>a.status==='paid'||endM(a)<=nm).length;
+  const g=Number(settings.monthGoal)||0;
+  let goalHtml='';
+  if(g>0){
+    const me=mEnts({y:n.getFullYear(),m:n.getMonth()},false);
+    const mt=S(me,'myPctAmt')+S(me,'tips')+S(me,'tipsCash'),pc=Math.min(100,Math.round(mt/g*100));
+    goalHtml=`<div class="td-goal" onclick="showTab('stats')"><div class="td-goal-t"><span>🎯 ${apEsc(P.goal)}</span><b>${pc}%</b></div><div class="td-bar-bg"><div class="td-bar-fg" style="width:${pc}%"></div></div><div class="td-goal-s">${apEsc(fmtZl(Math.round(mt)))} / ${apEsc(fmtZl(g))}${mt<g?` · ${apEsc(P.goalLeft)} ${apEsc(fmtZl(Math.round(g-mt)))}`:' ✓'}</div></div>`;
+  }
+  const money=`<div class="td-money"><div class="td-m1"><span>${apEsc(P.earned)}</span><b class="${earned>0?'pos':''}">${earned>0?apEsc(fmtZl(Math.round(earned*100)/100)):'—'}</b>${earned>0?'':`<i>${apEsc(P.noEntry)}</i>`}</div>
+    <div class="td-m2"><span>${apEsc(P.booked)}</span><b>${booked>0?apEsc(fmtZl(booked)):'—'}</b><i>${live.length?doneN+' / '+live.length:''}</i></div></div>${goalHtml}`;
+  /* timeline */
+  const rows=all.map(a=>{
+    const l=getLocById(a.locId)||{color:'#888',name:''},dead=!apLive(a),past=!dead&&(a.status==='paid'||endM(a)<=nm),isNow=a===cur,pr=apPricing(a);
+    const ic=a.status==='paid'?'<span style="color:var(--green)">✓ </span>':a.status==='noshow'?'✗ ':a.status==='cancelled'?'⊘ ':'';
+    return`<div class="td-row${past||dead?' td-past':''}${isNow?' td-now':''}" onclick="openApptForm(${a.id})">
+      <div class="td-t"><b>${apEsc(a.start)}</b><span>${apEsc(a.end||'')}</span></div><div class="td-vbar" style="background:${l.color}"></div>
+      <div class="td-mm"><div class="td-n"${dead?' style="text-decoration:line-through"':''}>${ic}${apEsc(tdName(a))}</div><div class="td-s">${apEsc([a.service,l.name].filter(Boolean).join(' · '))}</div></div>
+      <div class="td-p">${pr.paid>0&&!dead?apEsc(fmtZl(pr.paid)):''}</div></div>`}).join('');
+  const list=`<div class="td-sec">${apEsc(P.list)}</div><div class="sc td-list">${rows||`<div class="td-empty">${apEsc(P.none)}</div>`}</div>`;
+  /* tomorrow */
+  const tm=tdAfter(),ta=appointments.filter(a=>a.date===tm&&apLive(a)).sort((a,b)=>a.start.localeCompare(b.start));
+  const toRem=ta.filter(a=>{const c=remClient(a);return c&&remPhone(c.phone)&&!a.remindedAt}).length;
+  const tmr=`<div class="sc td-tm"><div><div class="td-tm-t">${apEsc(P.tmrw)}</div><div class="td-tm-s">${ta.length?apEsc(tdN(ta.length)+' · '+P.from+' '+ta[0].start):apEsc(P.tmrwNone)}</div></div>
+    ${toRem?`<button class="td-btn-s" onclick="tdRemind()">💬 ${apEsc(P.remind)} (${toRem})</button>`:(ta.length&&ta.every(a=>a.remindedAt)?`<span class="td-ok">✓ ${apEsc(P.reminded)}</span>`:'')}</div>`;
+  host.innerHTML=`<div class="td-hd"><div><div class="td-dow">${apEsc(dow)}</div><div class="td-date">${apEsc(dfull)}</div></div><div class="td-gr">${apEsc(greet)} 👋</div></div>
+    <div class="td-chips">${shHtml}</div>${nextHtml}${money}${list}${tmr}
+    <div class="td-acts"><button class="td-btn-p" onclick="openApptForm(null,{date:todayStr()})">${apEsc(P.add)}</button><button class="td-btn-g" onclick="showTab('entry')">✏️ ${apEsc(P.sum)}</button></div>`;
+}
+function tdRemind(){
+  const keep=schedDate;schedDate=new Date(tdAfter()+'T12:00:00');
+  openRemind();
+  window._sheetCloseHook=()=>{schedDate=keep;renderToday()};
+}
+setInterval(()=>{const t=document.getElementById('tab-today');if(t&&t.style.display!=='none'&&!document.hidden)renderToday()},60000);
+
 function showTab(id){
-  ['entry','sched','stats','invoice','clients','settings'].forEach(t=>{document.getElementById('tab-'+t).style.display=(t===id)?'':'none'});
+  ['today','entry','sched','stats','invoice','clients','settings'].forEach(t=>{document.getElementById('tab-'+t).style.display=(t===id)?'':'none'});
   const _at=document.getElementById('tab-'+id);if(_at){_at.classList.remove('tab-anim');void _at.offsetWidth;_at.classList.add('tab-anim')}
-  const TABS=['entry','sched','stats','invoice','clients','settings'];
+  const TABS=['today','entry','sched','stats','invoice','clients','settings'];
   const activeIdx=TABS.indexOf(id);
   document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',i===activeIdx)});
-  if(id==='stats')renderStats();if(id==='invoice')renderInvoice();if(id==='sched')renderSchedule();
+  if(id==='today')renderToday();if(id==='stats')renderStats();if(id==='invoice'){window._rcAnim=true;renderInvoice()}if(id==='sched')renderSchedule();
   if(id==='clients'){
     renderClientList();
     setTimeout(()=>{
@@ -2271,7 +2543,8 @@ function showTab(id){
     },50);
   }
   if(id==='settings'){renderLocSettings();const chk=document.getElementById('reform-chk');if(chk)chk.checked=settings.reformSeparate}
-  if(id==='entry'){autoFillFromSchedule();renderSchedLink()}
+  if(id==='entry'){autoFillFromSchedule();renderSchedLink();renderBackupInfo();setTimeout(revealScan,60)}
+  if(id==='settings')renderBackupInfo();
   if(id!=='entry')closeCal();
 }
 
@@ -2284,6 +2557,7 @@ function renderLocGrid(){
       ${l.isReform?'<div class="reform-badge" style="background:'+l.color+'">MY</div>':''}
       <div class="lp-icon">${l.icon}</div>
       <div class="lp-name" style="color:${i===curLoc?l.color:'var(--t2)'}">${l.name}</div>
+      ${(()=>{const r=selDate&&entries.find(e=>e.date===selDate&&e.locId===l.id&&isReal(e));return r?`<div class="lp-rec">✓ ${fmt(r.total)}</div>`:''})()}
     </div>`).join('');
   updPrevColor();
 }
@@ -2473,9 +2747,11 @@ function closeCal(){
   if(_ecOpen){_ecOpen=false;closeSheet()}
 }
 /* Entry tab date picker = same popup calendar as the schedule */
-function openEntryCal(){
+let _moveMode=false;
+function openEntryCal(move){
+  _moveMode=move===true&&!!editId;
   if(selDate){calY=parseInt(selDate.split('-')[0]);calM=parseInt(selDate.split('-')[1])-1}
-  document.getElementById('sheet-title').textContent=T.svc.dateL;
+  document.getElementById('sheet-title').textContent=_moveMode?T.svc.moveTitle:T.svc.dateL;
   _ecOpen=true;ecRender();openSheet();hap('light');
 }
 function ecNav(d){calM+=d;if(calM<0){calM=11;calY--}else if(calM>11){calM=0;calY++}hap('light');ecRender()}
@@ -2546,31 +2822,31 @@ function renderCal(){
   document.getElementById('cal-days').innerHTML=h;
 }
 
+function stepDay(d){
+  const t=new Date((selDate||todayStr())+'T12:00:00');t.setDate(t.getDate()+d);
+  pickDate(t.getFullYear()+'-'+p2(t.getMonth()+1)+'-'+p2(t.getDate()));
+}
 function pickDate(ds){
   hap('light');
-
-  // If editing — just move entry to new date, keep all form data
-  if(editId){
-    selDate=ds;updDateDisplay();renderCal();
-    setTimeout(closeCal,160);
-    return;
+  // explicit "move this entry to another date": keep the form, only change the date
+  if(_moveMode&&editId){
+    _moveMode=false;selDate=ds;updDateDisplay();renderCal();showToast(T.svc.moved);
+    setTimeout(closeCal,160);return;
   }
-
-  selDate=ds;updDateDisplay();renderCal();
+  _moveMode=false;
+  // going to another day = looking at that day: unsaved typing is parked, the day's own record (or an empty form) is shown
+  if(ds!==selDate)stashDraft(curLoc);
+  selDate=ds;
+  calY=parseInt(ds.split('-')[0]);calM=parseInt(ds.split('-')[1])-1;
   const dayEnts=entries.filter(e=>e.date===ds&&isReal(e));
-
-  if(dayEnts.length===0){
-    // Empty day — clear form, keep loc selection
-    cancelEdit();
-    autoFillFromSchedule();
-    setTimeout(closeCal,160);
-  } else {
-    // One or more entries: load the one matching current loc, or first one
-    const loc=locs[curLoc];
-    const matched=loc?dayEnts.find(e=>e.locId===loc.id):null;
-    loadEdit(matched||dayEnts[0]);
-    setTimeout(closeCal,160);
+  let i=curLoc;const loc=locs[curLoc];
+  if(dayEnts.length&&!(loc&&dayEnts.some(e=>e.locId===loc.id))){
+    const li=locs.findIndex(l=>l.id===dayEnts[0].locId);if(li>=0)i=li;
   }
+  curLoc=i;
+  selLoc(i,true);
+  renderCal();updDateDisplay();
+  if(_ecOpen)setTimeout(closeCal,160);
 }
 
 function showDayPicker(ds,dayEnts){
@@ -2602,7 +2878,7 @@ function pickDayEntry(id){
   if(e){loadEdit(e)}
 }
 function updDateDisplay(){
-  renderSchedLink();
+  renderSchedLink();renderLocGrid();
   const el=document.getElementById('df-val');const dot=document.getElementById('df-dot');
   if(!selDate){if(el)el.textContent='--';dot&&dot.classList.remove('on');return}
   const[y,m,d]=selDate.split('-');
@@ -2900,7 +3176,7 @@ function renderMonthStats(){
   const tReal=tTot+tTC;
   document.getElementById('stats-grid').innerHTML=goalCardHtml(tPersonal,wD,allMonthEnts)+taxCardHtml(tTot,tPersonal)+`
     <div class="sc hero full"><div class="sc-val">${fmt(tTot)} zł</div><div class="sc-lbl">${T.toInvoice}</div></div>
-    ${sep?`<div class="sc full" style="background:linear-gradient(135deg,#15803d,#16a34a,#22c55e)"><div class="sc-val" style="color:white">${fmt(tPersonal)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.75)">${lang==='pl'?'💰 Mój łączny dochód (wszystkie lokacje)':'💰 Мой общий доход (все локации)'}</div></div>`:(tTC>0?`<div class="sc full" style="background:linear-gradient(135deg,#15803d,#16a34a,#22c55e)"><div class="sc-val" style="color:white">${fmt(tReal)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.75)">${lang==='pl'?'Mój realny dochód':'Мой реальный доход'}</div></div>`:'')}
+    ${sep?`<div class="sc full" style="background:linear-gradient(135deg,#15803d,#16a34a,#22c55e)"><div class="sc-val" style="color:white">${fmt(tPersonal)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.75)">${L3('💰 Mój łączny dochód (wszystkie lokacje)','💰 Мой общий доход (все локации)','💰 My total income (all locations)')}</div></div>`:(tTC>0?`<div class="sc full" style="background:linear-gradient(135deg,#15803d,#16a34a,#22c55e)"><div class="sc-val" style="color:white">${fmt(tReal)} zł</div><div class="sc-lbl" style="color:rgba(255,255,255,.75)">${L3('Mój realny dochód','Мой реальный доход','My real income')}</div></div>`:'')}
     <div class="sc"><div class="sc-val cb">${fmt(tR)} zł</div><div class="sc-lbl">${T.revenue}</div></div>
     <div class="sc"><div class="sc-val cb">${fmt(tP)} zł</div><div class="sc-lbl">${T.mypct}</div></div>
     <div class="sc"><div class="sc-val">${fmt(tT)} zł</div><div class="sc-lbl">${T.fields[4]}</div></div>
@@ -2917,6 +3193,7 @@ function renderMonthStats(){
   const lb=document.getElementById('loc-brkd');
   lb.innerHTML=allE.length?locs.map(l=>{const le=allE.filter(e=>e.locId===l.id);if(!le.length)return'';return`<div class="loc-row"><div class="lr-l"><div class="lr-badge" style="background:${l.color}"></div><div><div class="lr-name">${l.icon} ${l.name}</div><div class="lr-sub">${le.length} · ${S(le,'clients')} kl · ${fmt(S(le,'revenue'))} zł</div></div></div><div class="lr-amt" style="color:${l.color}">${fmt(S(le,'total'))} zł</div></div>`}).join(''):emptyH();
   const mh=document.getElementById('month-hourly');if(mh)mh.innerHTML=hourlyHtml(allE);
+  renderAnalytics();
   const el=document.getElementById('entries-list');
   if(!allE.length){el.innerHTML=`<div class="empty"><div class="empty-icon">✂️</div><div class="empty-txt">${T.noEntries}</div></div>`;return}
   el.innerHTML=`<div class="etbl-hdr"><span>Data</span><span>Lok.</span><span style="text-align:right">${T.revenue}</span><span style="text-align:right">${T.total}</span><span style="text-align:right">Kl.</span></div>`
@@ -2963,6 +3240,7 @@ function renderYearStats(){
   renderClientsChart(stY);
   renderLocBreakdown('year-loc-breakdown',entries.filter(e=>e.date.startsWith(String(stY))&&isReal(e)),stY);
   {const yh=document.getElementById('year-hourly');if(yh)yh.innerHTML=hourlyHtml(entries.filter(e=>e.date.startsWith(String(stY))&&isReal(e)))}
+  renderAnalytics();
   renderExplorer();
 }
 
@@ -3209,7 +3487,7 @@ function renderBooksy(){
   const canFwd=!isCur;
   nav.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;gap:14px;margin:2px 0 11px">
     <button onclick="bkNav(-1)" class="mnav-btn" style="width:30px;height:30px">‹</button>
-    <span style="font-size:14px;font-weight:800;min-width:130px;text-align:center">${navLabel}${isCur?' ·<span style="color:var(--blue)"> '+(lang==='ru'?'сейчас':'now')+'</span>':''}</span>
+    <span style="font-size:14px;font-weight:800;min-width:130px;text-align:center">${navLabel}${isCur?' ·<span style="color:var(--blue)"> '+L3('teraz','сейчас','now')+'</span>':''}</span>
     <button onclick="bkNav(1)" class="mnav-btn" style="width:30px;height:30px;${canFwd?'':'opacity:.3;pointer-events:none'}">›</button>
   </div>`;
   const metrics=BK_METRICS();
@@ -3291,8 +3569,8 @@ function drawMetricChart(cv,buckets,values,selIdx,fcast,mt){
     for(let i=0;i<n;i++){if(i%labelStep===0||i===n-1)ctx.fillText(buckets[i].label,px(i),cssH-7);}
     if(prog>=1){
       const pts=[];
-      for(let i=0;i<=upTo;i++)pts.push({x:px(i),y:yA(values[i]||0),html:`${buckets[i].label}<br><b>${mt.money?fmt(values[i]||0)+' zł':Math.round(values[i]||0)+(lang==='ru'?' клиентов':'')}</b>`});
-      fIdx.forEach(i=>pts.push({x:px(i),y:yA(fcast.map[i]),html:`${buckets[i].label} · ${lang==='ru'?'прогноз':'forecast'}<br><b>~${mt.money?fmt(fcast.map[i])+' zł':Math.round(fcast.map[i])}</b>`}));
+      for(let i=0;i<=upTo;i++)pts.push({x:px(i),y:yA(values[i]||0),html:`${buckets[i].label}<br><b>${mt.money?fmt(values[i]||0)+' zł':Math.round(values[i]||0)+L3(' klientów',' клиентов',' clients')}</b>`});
+      fIdx.forEach(i=>pts.push({x:px(i),y:yA(fcast.map[i]),html:`${buckets[i].label} · ${L3('prognoza','прогноз','forecast')}<br><b>~${mt.money?fmt(fcast.map[i])+' zł':Math.round(fcast.map[i])}</b>`}));
       cv._pts=pts;
     }
   };
@@ -3575,6 +3853,7 @@ function chInvMonth(d){invM.m+=d;if(invM.m<0){invM.m=11;invM.y--}if(invM.m>11){i
 function renderInvoice(){
   const sep=settings.reformSeparate;
   st('inv-lbl',T.monthsFull[invM.m]+' '+invM.y);
+  renderInvSwitch();
   const allReal=entries.filter(e=>e.date.startsWith(`${invM.y}-${p2(invM.m+1)}`)&&isReal(e));
   const ents=allReal.filter(e=>!(sep&&isSepEntry(e)));
   const re=sep?allReal.filter(e=>isSepEntry(e)):[];
@@ -3582,8 +3861,7 @@ function renderInvoice(){
   if(!allReal.length){el.innerHTML=`<div class="empty"><div class="empty-icon">🧾</div><div class="empty-txt">${T.noData}</div></div>`;return}
   const tR=S(ents,'revenue'),tP=S(ents,'myPctAmt'),tT=S(ents,'tips'),tTot=S(ents,'total'),tCl=S(ents,'clients'),tH=S(ents,'hours');
   // Unique working days (same day can have multiple location entries)
-  const allE_forDays=mEnts(stM,false);
-  const wD=new Set(allE_forDays.map(e=>e.date)).size;
+  const wD=new Set(allReal.map(e=>e.date)).size;   // working days of the INVOICE month
   const actLocs=locs.filter(l=>ents.some(e=>e.locId===l.id));
   let locHtml='';
   actLocs.forEach(l=>{
@@ -3594,7 +3872,7 @@ function renderInvoice(){
       <div class="inv-line"><span class="inv-ll">${T.tips}</span><span class="inv-lr">${fmt(S(le,'tips'))} zł</span></div>`;
   });
   if(actLocs.length>1){
-    locHtml+=`<div class="inv-sh" style="background:rgba(37,99,235,.07)"><span class="inv-sh-icon">📋</span><span class="inv-sh-name">${lang==='pl'?'Razem':'Итого'}</span></div>
+    locHtml+=`<div class="inv-sh" style="background:rgba(37,99,235,.07)"><span class="inv-sh-icon">📋</span><span class="inv-sh-name">${L3('Razem','Итого','Total')}</span></div>
       <div class="inv-line"><span class="inv-ll">${T.turnover}</span><span class="inv-lr">${fmt(tR)} zł</span></div>
       <div class="inv-line"><span class="inv-ll">${T.mypct}</span><span class="inv-lr cb">${fmt(tP)} zł</span></div>
       <div class="inv-line"><span class="inv-ll">${T.tips}</span><span class="inv-lr">${fmt(tT)} zł</span></div>`;
@@ -3611,14 +3889,66 @@ function renderInvoice(){
     reformHtml+=`<div class="inv-reform-row" style="margin-top:9px"><span class="inv-reform-lbl">Reform</span><span class="inv-reform-amt">${fmt(S(re,'total'))} zł</span></div></div>`;
   }
   const notesHtml=buildNotesHtml([...actLocs,...(sep?locs.filter(l=>l.isReform&&re.some(e=>e.locId===l.id)):[])],allReal);
+  if(invStyle()==='receipt'){
+    const anim=window._rcAnim;window._rcAnim=false;
+    el.innerHTML=receiptHtml({ents,re,allReal,actLocs,sep,tR,tP,tT,tTot,tCl,tH,wD,anim})+`<button class="copy-btn" onclick="copyInvoice()">${COPY_ICO}${lang==='pl'?'Kopiuj fakturę':lang==='ru'?'Скопировать фактуру':'Copy invoice'}</button>`;
+    return;
+  }
   el.innerHTML=`<div class="inv-wrap">
-    <div class="inv-head"><div class="inv-title">${T.invTitle}</div><div class="inv-sub">${T.monthsFull[invM.m]+' '+invM.y} · ${wD} dni · ${tCl} kl · ${fmtH(tH)}h</div></div>
+    <div class="inv-head"><div class="inv-title">${T.invTitle}</div><div class="inv-sub">${T.monthsFull[invM.m]+' '+invM.y} · ${nDays(wD)} · ${tCl} ${uKl()} · ${fmtH(tH)}${uH()}</div></div>
     ${locHtml}
     <div class="inv-total"><div class="inv-total-row"><span class="inv-total-lbl">${T.toInvoice}</span><span class="inv-total-amt">${fmt(tTot)} zł</span></div></div>
     ${reformHtml}
     ${notesHtml?`<div class="inv-notes"><div class="inv-notes-title">${T.notes}</div>${notesHtml}</div>`:''}
   </div>
-  <button class="copy-btn" onclick="copyInvoice()">${lang==='pl'?'📋 Kopiuj fakturę':'📋 Скопировать фактуру'}</button>`;
+  <button class="copy-btn" onclick="copyInvoice()">${COPY_ICO}${lang==='pl'?'Kopiuj fakturę':lang==='ru'?'Скопировать фактуру':'Copy invoice'}</button>`;
+}
+
+
+/* ══ Invoice as a vintage receipt (the classic look stays one tap away) ══ */
+const COPY_ICO='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="3"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
+function invStyle(){return settings.invStyle==='classic'?'classic':'receipt'}
+function setInvStyle(s){settings.invStyle=s;saveAll();hap('light');window._rcAnim=(s==='receipt');renderInvoice()}
+function renderInvSwitch(){
+  const host=document.getElementById('inv-sw');if(!host)return;const V=T.svc,s=invStyle();
+  host.innerHTML=`<button class="${s==='receipt'?'on':''}" onclick="setInvStyle('receipt')">🧾 ${V.rcStyle}</button><button class="${s==='classic'?'on':''}" onclick="setInvStyle('classic')">📄 ${V.rcClassic}</button>`;
+}
+function receiptHtml(c){
+  const V=T.svc,mon=T.monthsFull[invM.m],yr=invM.y;
+  const ln=(l,v)=>`<div class="rc-ln"><span>${l}</span><i></i><b>${v}</b></div>`;
+  const locBlock=(l,le)=>`<div class="rc-sec"><s style="background:${l.color}"></s>${apEsc(l.name)}</div>`+
+    ln(T.revenue,fmt(S(le,'revenue'))+' zł')+ln(`${T.mypct} (${le[0].pct}%)`,fmt(S(le,'myPctAmt'))+' zł')+ln(T.tips,fmt(S(le,'tips'))+' zł');
+  let body=c.actLocs.map(l=>locBlock(l,c.ents.filter(e=>e.locId===l.id))).join('<hr class="rc-div" style="margin:12px 0">');
+  if(c.actLocs.length>1){
+    body+=`<hr class="rc-div"><div class="rc-sec">${V.rcRazem}</div>`+ln(T.turnover,fmt(c.tR)+' zł')+ln(T.mypct,fmt(c.tP)+' zł')+ln(T.tips,fmt(c.tT)+' zł');
+  }
+  let reform='';
+  if(c.sep&&c.re.length){
+    const rLocs=locs.filter(l=>l.isReform&&c.re.some(e=>e.locId===l.id));
+    reform=`<div class="rc-cut">✂ ${V.rcCut}</div>`+rLocs.map(l=>{const le=c.re.filter(e=>e.locId===l.id);
+      return `<div class="rc-sec"><s style="background:${l.color}"></s>${apEsc(l.name)}</div>`+ln(T.mypct,fmt(S(le,'myPctAmt'))+' zł')+ln(T.tips,fmt(S(le,'tips'))+' zł')}).join('<div class="rc-gap"></div>')+
+      `<hr class="rc-div" style="margin:12px 0 8px">`+ln('<b>Reform</b>','<span style="color:var(--purple)">'+fmt(S(c.re,'total'))+' zł</span>');
+  }
+  let notes='';
+  const nl=[...c.actLocs,...(c.sep?locs.filter(l=>l.isReform&&c.re.some(e=>e.locId===l.id)):[])];
+  const nrows=[];nl.forEach(l=>c.allReal.filter(e=>e.locId===l.id&&e.notes).forEach(e=>nrows.push(`<div class="rc-note"><b>${e.date.slice(8)}.${e.date.slice(5,7)}</b>${apEsc(l.name.split(' ')[0])}: ${apEsc(e.notes)}</div>`)));
+  if(nrows.length)notes=`<hr class="rc-div"><div class="rc-sec">${T.notes}</div>`+nrows.join('');
+  const code=String(yr)+p2(invM.m+1)+String(Math.round(c.tTot*100)).padStart(8,'0');
+  const now=new Date(),pr=p2(now.getDate())+'.'+p2(now.getMonth()+1)+'.'+now.getFullYear()+' · '+p2(now.getHours())+':'+p2(now.getMinutes());
+  const nm=apEsc(String(appName||'Alma'));
+  return `<div class="rc${c.anim?' rc-anim':''}"><div class="rc-paper">
+    <div class="rc-top"><div class="rc-brand">${nm}<i>.</i></div><div class="rc-chip">№ ${yr}-${p2(invM.m+1)}</div></div>
+    <div class="rc-title">${T.invTitle} · ${mon} ${yr}</div>
+    <div class="rc-meta2">${nDays(c.wD)} · ${c.tCl} ${uKl()} · ${fmtH(c.tH)} ${uH()}</div>
+    <hr class="rc-div">
+    ${body}
+    <div class="rc-total"><span>${T.toInvoice}</span><b>${fmt(c.tTot)} zł</b>
+      <div class="rc-stamp"><i>${V.rcPay}</i><small>${mon.toUpperCase()} ${yr}</small></div></div>
+    ${reform}${notes}
+    <div class="rc-bar"></div><div class="rc-code">${code}</div>
+    <div class="rc-thx">${V.rcThanks}</div>
+    <div class="rc-print">${V.rcPrint}: ${pr}</div>
+  </div></div>`;
 }
 
 function buildNotesHtml(locsList,allE){
@@ -3644,21 +3974,25 @@ function copyInvoice(){
   });
   txt+=`\n${T.toInvoice}: ${fmt(S(ents,'total'))} zł`;
   actLocs.forEach(l=>{const le=allReal.filter(e=>e.locId===l.id&&e.notes);if(le.length){txt+=`\n\n${T.notes} -- ${l.name}:\n`;le.forEach(e=>{txt+=`  ${fmtDFull(e.date)}: ${e.notes}\n`})}});
-  navigator.clipboard.writeText(txt).then(()=>showToast(lang==='pl'?'Faktura skopiowana':'Фактура скопирована'));
+  navigator.clipboard.writeText(txt).then(()=>showToast(L3('Faktura skopiowana','Фактура скопирована','Invoice copied')));
 }
 
 /* ══ MONTH PICKER ══ */
-function openPicker(t){pickerTarget=t;pickerY=(t==='stats'?stM.y:invM.y);renderPicker();document.getElementById('picker-ov').classList.add('open')}
-function closePicker(e){if(!e||e.target===document.getElementById('picker-ov'))document.getElementById('picker-ov').classList.remove('open')}
-function pyChg(d){pickerY+=d;renderPicker()}
+function openPicker(t){
+  pickerTarget=t;pickerY=(t==='stats'?stM.y:invM.y);
+  document.getElementById('sheet-title').textContent=T.svc.pickMonth;
+  renderPicker();openSheet();hap('light');
+}
+function closePicker(){closeSheet()}
+function pyChg(d){pickerY+=d;hap('light');renderPicker()}
 function renderPicker(){
-  st('py-lbl',pickerY);
   const am=pickerTarget==='stats'?stM.m:invM.m;const ay=pickerTarget==='stats'?stM.y:invM.y;
-  document.getElementById('pm-grid').innerHTML=T.monthsShort.map((n,i)=>{
-    const pfx=`${pickerY}-${p2(i+1)}`;const hd=entries.some(e=>e.date.startsWith(pfx)&&isReal(e));const act=pickerY===ay&&i===am;
-    return`<button class="pm${act?' active':''}${hd?' hd':''}" onclick="pickerSel(${i})">${n}</button>`;
-  }).join('');
-  st('picker-close-btn',T.close);
+  document.getElementById('sheet-body').innerHTML=`<div class="mf-wrap">
+    <div class="ap-cal-h"><button type="button" onclick="pyChg(-1)">‹</button><b>${pickerY}</b><button type="button" onclick="pyChg(1)">›</button></div>
+    <div class="pm-grid" style="margin-top:6px">${T.monthsShort.map((n,i)=>{
+      const pfx=`${pickerY}-${p2(i+1)}`;const hd=entries.some(e=>e.date.startsWith(pfx)&&isReal(e));const act=pickerY===ay&&i===am;
+      return`<button class="pm${act?' active':''}${hd?' hd':''}" onclick="pickerSel(${i})">${n}</button>`;
+    }).join('')}</div></div>`;
 }
 function pickerSel(m){hap('light');if(pickerTarget==='stats'){stM={y:pickerY,m};renderStats()}else{invM={y:pickerY,m};renderInvoice()}closePicker()}
 
@@ -3710,12 +4044,12 @@ function delEntry(id){
     <div style="background:var(--card);border-radius:20px;overflow:hidden;margin-bottom:10px;box-shadow:var(--sh-xl)">
       <div style="padding:20px 20px 14px;text-align:center;border-bottom:1px solid var(--sep)">
         <div style="width:52px;height:52px;border-radius:50%;background:var(--rl);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px">🗑</div>
-        <div style="font-size:16px;font-weight:800;margin-bottom:4px">${lang==='pl'?'Usunąć ten wpis?':'Удалить эту запись?'}</div>
+        <div style="font-size:16px;font-weight:800;margin-bottom:4px">${L3('Usunąć ten wpis?','Удалить эту запись?','Delete this entry?')}</div>
         <div style="font-size:13px;color:var(--t2)">${l.icon} ${l.name} · ${fmtDFull(e.date)}</div>
         <div style="font-size:13px;font-weight:700;color:var(--red);margin-top:6px">${fmt(e.total)} zł</div>
       </div>
       <button id="del-confirm-btn" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:600;color:var(--red);cursor:pointer;border-bottom:1px solid var(--sep)">
-        ${lang==='pl'?'Usuń wpis':'Удалить запись'}
+        ${L3('Usuń wpis','Удалить запись','Delete entry')}
       </button>
       <button id="del-cancel-btn" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:700;color:var(--blue);cursor:pointer">
         ${T.cancel}
@@ -3800,16 +4134,18 @@ function renderLocSettings(){
   st('add-loc-btn',T.addLoc);
   const list=document.getElementById('loc-set-list');if(!list)return;
   list.innerHTML=locs.map((l,i)=>`
-    <div class="loc-set-item" id="lsi-${i}" style="flex-direction:column;align-items:stretch;gap:0;padding:0">
+    <div class="loc-set-item${(window._locOpen||(window._locOpen=new Set())).has(l.id)?' lo':''}" id="lsi-${i}" style="flex-direction:column;align-items:stretch;gap:0;padding:0">
       <div class="loc-del-bg" onclick="deleteLoc(${i})">🗑</div>
-      <div style="display:flex;align-items:center;gap:7px;padding:10px 15px">
+      <div style="display:flex;align-items:center;gap:7px;padding:10px 12px 10px 15px">
         <div class="loc-drag-handle" id="ldh-${i}">⠿</div>
         <div class="loc-color-btn" style="background:${l.color}" onclick="openColorPicker(${i},this)"></div>
         <input class="loc-emoji-input" value="${l.icon}" aria-label="emoji" autocomplete="off" onfocus="this.select()" oninput="locIconInput(${i},this)"/>
         <input class="loc-name-input" value="${l.name}" onchange="renameLoc(${i},this.value)" style="color:${l.color};-webkit-text-fill-color:${l.color}"/>
-        <button class="loc-del" onclick="deleteLoc(${i})">✕</button>
+        ${l.isReform?`<span class="loc-my" style="background:${l.color}">MY</span>`:''}
+        <button class="loc-chev" onclick="toggleLocOpen(${i})" aria-label="more">⌄</button>
       </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px 9px 42px;border-top:1px solid var(--sep2)">
+      <div class="loc-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px 9px 42px">
         <span style="font-size:11.5px;color:var(--t2);font-weight:500">${lang==='ru'?'Отдельно от фактуры':lang==='pl'?'Oddzielona od faktury':'Separate from invoice'}</span>
         <label class="ios-toggle" style="transform:scale(.82);transform-origin:right center">
           <input type="checkbox" ${l.isReform?'checked':''} onchange="toggleReform(${i})">
@@ -3823,12 +4159,46 @@ function renderLocSettings(){
           <button class="${locPctBase(l)==='list'?'on':''}" onclick="setLocBase(${i},'list')">${T.svc.baseList}</button>
         </div>
       </div>
+      <button class="loc-pdel" onclick="deleteLoc(${i})">🗑 ${T.svc.locDel}</button>
+      </div>
     </div>`).join('');
   renderSvcSettings();
+  applySetSections();
   setTimeout(initLocDrag,50);
   setTimeout(initLocSwipeDelete,60);
 }
 
+function toggleLocOpen(i){
+  const l=locs[i];if(!l)return;hap('light');
+  const s=window._locOpen||(window._locOpen=new Set());
+  const el=document.getElementById('lsi-'+i);
+  if(s.has(l.id)){s.delete(l.id);el&&el.classList.remove('lo')}else{s.add(l.id);el&&el.classList.add('lo')}
+}
+/* settings sections fold away; the state is remembered */
+const SET_SECS={
+  loc:{h:()=>document.getElementById('sl-setloc'),b:()=>[document.getElementById('loc-set-list'),document.getElementById('add-loc-btn')],open:true},
+  svc:{h:()=>document.getElementById('sl-svc'),b:()=>[document.getElementById('svc-list'),document.getElementById('add-svc-btn')],open:true},
+  rem:{h:()=>document.querySelector('#rem-set .slabel'),b:()=>[document.querySelector('#rem-set .set-wrap')],open:false},
+  data:{h:()=>document.getElementById('sl-setdata'),b:()=>[document.getElementById('data-wrap')],open:true},
+  inst:{h:()=>document.getElementById('sl-install'),b:()=>[document.getElementById('install-card')],open:false}
+};
+function setSecState(){try{return JSON.parse(localStorage.getItem('bSetOpen')||'{}')||{}}catch(e){return{}}}
+function applySetSections(){
+  const st=setSecState();
+  Object.keys(SET_SECS).forEach(k=>{
+    const S=SET_SECS[k],hd=S.h();if(!hd)return;
+    const open=st[k]===undefined?S.open:!!st[k];
+    hd.classList.add('set-h');hd.classList.toggle('closed',!open);
+    hd.onclick=()=>toggleSetSec(k);
+    S.b().forEach(el=>{if(el)el.style.display=open?'':'none'});
+  });
+}
+function toggleSetSec(k){
+  const st=setSecState(),S=SET_SECS[k];
+  const cur=st[k]===undefined?S.open:!!st[k];
+  st[k]=!cur;try{localStorage.setItem('bSetOpen',JSON.stringify(st))}catch(e){}
+  hap('light');applySetSections();
+}
 function initLocDrag(){
   const list=document.getElementById('loc-set-list');if(!list)return;
   let dragEl=null,ghostEl=null,dragIdx=-1,overIdx=-1,startY=0,longPressTimer=null,isDragging=false;
@@ -3900,11 +4270,11 @@ function initLocSwipeDelete(){
   list.querySelectorAll('.loc-set-item').forEach(item=>{
     let sx=0,sy=0,tx=0;
     item.addEventListener('touchstart',e=>{
-      if(e.target.closest('.loc-drag-handle,.loc-del,.loc-reform-toggle,.loc-color-btn,.loc-name-input'))return;
+      if(e.target.closest('.loc-drag-handle,.loc-del,.loc-chev,.loc-emoji-input,.loc-reform-toggle,.loc-color-btn,.loc-name-input'))return;
       sx=e.touches[0].clientX;sy=e.touches[0].clientY;tx=0;
     },{passive:true});
     item.addEventListener('touchmove',e=>{
-      if(e.target.closest('.loc-drag-handle,.loc-del,.loc-reform-toggle,.loc-color-btn,.loc-name-input'))return;
+      if(e.target.closest('.loc-drag-handle,.loc-del,.loc-chev,.loc-emoji-input,.loc-reform-toggle,.loc-color-btn,.loc-name-input'))return;
       const dx=e.touches[0].clientX-sx;
       const dy=Math.abs(e.touches[0].clientY-sy);
       if(dy>Math.abs(dx)+8)return;
@@ -3921,26 +4291,17 @@ function initLocSwipeDelete(){
 }
 
 function openColorPicker(i,btn){
-  // Backdrop + centered popup
-  let backdrop=document.getElementById('color-backdrop');
-  if(!backdrop){
-    backdrop=document.createElement('div');
-    backdrop.id='color-backdrop';
-    backdrop.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(6px);z-index:9400;display:none';
-    document.body.appendChild(backdrop);
-  }
-  const p=document.getElementById('color-popup');
   const title=lang==='ru'?'Выбери цвет':lang==='pl'?'Wybierz kolor':'Pick a color';
-  p.innerHTML=`<div style="font-size:12px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:13px;text-align:center">${title}</div>
+  window._colorDirty=false;
+  document.getElementById('sheet-title').textContent=title;
+  document.getElementById('sheet-body').innerHTML=`<div class="mf-wrap">
     <div class="color-popup-grid">${PRESET_COLORS.map(col=>`<div class="cp-dot${locs[i].color===col?' sel':''}" style="background:${col}" onclick="setLocColor(${i},'${col}')"></div>`).join('')}</div>
-    <label class="cp-custom"><span>${T.svc.colorCustom}</span><input type="color" value="${locs[i].color}" onchange="setLocColor(${i},this.value)"></label>`;
-  // Center on screen
-  p.style.top='50%';p.style.left='50%';p.style.transform='translate(-50%,-50%)';
-  p.classList.add('open');
-  backdrop.style.display='block';
-  const close=()=>{p.classList.remove('open');backdrop.style.display='none';backdrop.onclick=null;};
-  backdrop.onclick=close;
-  p._closeFn=close;
+    <label class="cp-custom"><span>${T.svc.colorCustom}</span><span class="cp-wheel" id="cp-wheel" style="--c:${locs[i].color}"><i></i><input type="color" value="${locs[i].color}" oninput="colorLive(${i},this.value)"></span></label>
+    <button type="button" class="cp-done" id="cp-done" onclick="colorDone(${i})">✓ ${T.done}</button>
+  </div>`;
+  // whatever was changed with the native picker is saved and shown when the sheet goes away
+  window._sheetCloseHook=()=>{if(window._colorDirty){window._colorDirty=false;saveAll();renderLocGrid();renderLocSettings();renderStats();renderInvoice()}};
+  openSheet();hap('light');
 }
 function firstGrapheme(s){
   s=String(s||'');if(!s)return'';
@@ -3951,10 +4312,17 @@ function locIconInput(i,el){
   const g=firstGrapheme(el.value.trim());if(!g)return;
   el.value=g;locs[i].icon=g;saveAll();renderLocGrid();hap('light');el.blur();
 }
+/* custom colour: the native picker stays open while the finger drags; nothing is re-rendered until Done / tap outside */
+function colorLive(i,v){
+  locs[i].color=v;window._colorDirty=true;
+  const w=document.getElementById('cp-wheel');if(w)w.style.setProperty('--c',v);
+  const d=document.getElementById('cp-done');if(d)d.classList.add('show');
+  document.querySelectorAll('#sheet-body .cp-dot.sel').forEach(x=>x.classList.remove('sel'));
+}
+function colorDone(i){hap('light');closeSheet()}
 function setLocColor(i,color){
-  hap('light');locs[i].color=color;saveAll();renderLocGrid();renderLocSettings();renderStats();renderInvoice();
-  const p=document.getElementById('color-popup');
-  if(p&&p._closeFn)p._closeFn();else if(p)p.classList.remove('open');
+  hap('light');locs[i].color=color;window._colorDirty=false;window._sheetCloseHook=null;
+  saveAll();closeSheet();renderLocGrid();renderLocSettings();renderStats();renderInvoice();
 }
 function renameLoc(i,v){if(!v.trim())return;locs[i].name=v.trim();saveAll();renderLocGrid();renderStats();renderInvoice()}
 function toggleReform(i){hap('light');locs[i].isReform=!locs[i].isReform;saveAll();renderLocGrid();renderLocSettings();renderStats();renderInvoice()}
@@ -3966,10 +4334,10 @@ function deleteLoc(i){
   const sheet=document.createElement('div');sheet.style.cssText='width:100%;max-width:460px;margin-bottom:8px;';
   sheet.innerHTML='<div style="background:var(--dlg);border-radius:18px;overflow:hidden;margin-bottom:10px;">'+
     '<div style="padding:16px 20px 12px;text-align:center;border-bottom:1px solid var(--dlg-sep);">'+
-      '<div style="font-size:13px;font-weight:700;color:var(--dlg-t);margin-bottom:4px;">'+(lang==='pl'?'Usuń lokalizację':'Удалить локацию')+'</div>'+
+      '<div style="font-size:13px;font-weight:700;color:var(--dlg-t);margin-bottom:4px;">'+L3('Usuń lokalizację','Удалить локацию','Delete location')+'</div>'+
       '<div style="font-size:12px;color:#8e8e93;">"'+name+'"</div></div>'+
-    '<button id="cfl-del" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;color:#ff453a;cursor:pointer;border-bottom:1px solid var(--dlg-sep);">'+(lang==='pl'?'Usuń':'Удалить')+'</button>'+
-    '<button id="cfl-cancel" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:600;color:#0a84ff;cursor:pointer;">'+(lang==='pl'?'Anuluj':'Отмена')+'</button></div>';
+    '<button id="cfl-del" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;color:#ff453a;cursor:pointer;border-bottom:1px solid var(--dlg-sep);">'+L3('Usuń','Удалить','Delete')+'</button>'+
+    '<button id="cfl-cancel" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:600;color:#0a84ff;cursor:pointer;">'+L3('Anuluj','Отмена','Cancel')+'</button></div>';
   overlay.appendChild(sheet);document.body.appendChild(overlay);
   const close=()=>overlay.remove();
   overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
@@ -4001,7 +4369,7 @@ function addLoc(){
       <div id="addloc-colors" style="display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-bottom:8px">
         ${PRESET_COLORS.map(col=>`<button onclick="selNewLocColor('${col}',this)" class="addloc-color-btn" style="border:2.5px solid ${col===_newLocColor?'var(--t1)':'transparent'};background:${col};width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;padding:0"></button>`).join('')}
       </div>
-      <label class="cp-custom" style="margin-top:6px;border-top:none;padding-top:0"><span>${T.svc.colorCustom}</span><input id="addloc-color-custom" type="color" value="${_newLocColor}" oninput="selNewLocColor(this.value,null)"></label>
+      <label class="cp-custom" style="margin-top:6px;border-top:none;padding-top:0"><span>${T.svc.colorCustom}</span><span class="cp-wheel" id="addloc-wheel" style="--c:${_newLocColor}"><i></i><input id="addloc-color-custom" type="color" value="${_newLocColor}" oninput="selNewLocColor(this.value,null)"></span></label>
     </div>
     <div style="display:flex;gap:10px;padding:8px 16px 16px;">
       <button onclick="closeSheet()" style="flex:1;padding:13px;border:none;border-radius:14px;background:var(--bg2);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color:var(--t2);">${T.cancel}</button>
@@ -4015,6 +4383,8 @@ function selNewLocColor(col,btn){
   document.querySelectorAll('.addloc-color-btn').forEach(b=>b.style.borderColor='transparent');
   if(btn)btn.style.borderColor='var(--t1)';
   const cc=document.getElementById('addloc-color-custom');if(cc&&btn)cc.value=col;
+  const aw=document.getElementById('addloc-wheel');if(aw)aw.style.setProperty('--c',col);
+  if(!btn)document.querySelectorAll('.addloc-color-btn').forEach(b=>b.style.borderColor='transparent');
 }
 function addLocConfirm(){
   const inp=document.getElementById('addloc-input');const n=inp?inp.value.trim():'';
@@ -4035,7 +4405,7 @@ async function exportSmart(){
       const file=new File([json],filename,{type:'application/json'});
       if(navigator.canShare({files:[file]})){
         await navigator.share({files:[file],title:filename});
-        return;
+        backupDone();return;
       }
     }catch(e){
       if(e.name==='AbortError')return; // user cancelled — that's fine
@@ -4047,14 +4417,14 @@ async function exportSmart(){
   if(navigator.share){
     try{
       await navigator.share({title:filename,text:json});
-      return;
+      backupDone();return;
     }catch(e){
       if(e.name==='AbortError')return;
     }
   }
 
   // Desktop / Android: standard blob download
-  fallbackExport(json,filename);
+  fallbackExport(json,filename);backupDone();
 }
 function fallbackExport(json,filename){
   const blob=new Blob([json],{type:'application/json'});
@@ -4063,9 +4433,37 @@ function fallbackExport(json,filename){
   a.href=url;a.download=filename;a.style.display='none';
   document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},300);
-  showToast(lang==='pl'?'Eksport gotowy':'Экспорт готов');
+  showToast(L3('Eksport gotowy','Экспорт готов','Export ready'));
 }
 function exportData(){exportSmart();}
+
+/* ══ Backup reminder ══ */
+function bkGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function bkSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function bkDays(){
+  const t=Date.parse(bkGet('bLastBackup')||'');if(!isFinite(t))return null;
+  const a=new Date(todayStr()+'T12:00:00'),b=new Date(new Date(t).getFullYear(),new Date(t).getMonth(),new Date(t).getDate(),12);
+  return Math.max(0,Math.round((a-b)/86400000));
+}
+function bkWhen(){
+  const d=bkDays(),V=T.svc;
+  if(d===null)return V.bkNever;
+  return d===0?V.bkToday:d===1?V.bkYest:V.bkDaysAgo.replace('{n}',d);
+}
+function backupDone(){bkSet('bLastBackup',new Date().toISOString());bkSet('bBkSnooze','');showToast(T.svc.bkDone);renderBackupInfo()}
+function backupLater(){bkSet('bBkSnooze',String(Date.now()+3*86400000));hap('light');renderBackupInfo()}
+function renderBackupInfo(){
+  const V=T.svc,d=bkDays();
+  const sub=document.getElementById('sl-exp-s');
+  if(sub)sub.textContent=(d===null?V.bkNever:V.bkLast+': '+bkWhen())+' · '+V.bkSub;
+  const host=document.getElementById('bk-banner');if(!host)return;
+  const snooze=Number(bkGet('bBkSnooze'))||0;
+  const stale=entries.length>0&&(d===null||d>=7)&&Date.now()>snooze;
+  host.innerHTML=stale?`<div class="bk-ban"><div style="font-size:22px">💾</div>
+    <div class="bk-t">${d===null?V.bkNever:V.bkAgo.replace('{n}',d)}<small>${V.bkHint}</small></div>
+    <button class="bk-go" onclick="exportSmart()">${V.bkSave}</button>
+    <button class="bk-x" onclick="backupLater()" aria-label="${V.bkLater}">✕</button></div>`:'';
+}
 
 function importData(ev){
   const file=ev.target.files[0];if(!file)return;
@@ -4082,6 +4480,7 @@ function importData(ev){
       if(d.shifts){shifts=d.shifts;saveShifts();}
       T=TR[lang];saveAll();applyLang();renderLocGrid();renderLocSettings();renderStats();renderInvoice();
       const chk=document.getElementById('reform-chk');if(chk)chk.checked=settings.reformSeparate;
+      bkSet('bLastBackup',new Date().toISOString());renderBackupInfo();
       showToast(T.imported);
     }catch{showToast(T.importErr)}
   };
@@ -4095,24 +4494,22 @@ function clearAll(){
   const thisMonth=`${now.getFullYear()}-${p2(now.getMonth()+1)}`;
   const thisYear=String(now.getFullYear());
 
-  const pl=lang!=='ru';  // pl and en both use latin
-
   // Period options
   const periodOpts=[
-    {id:'today', label:pl?`Dzisiaj (${fmtDFull(todayS)})`:`Сегодня (${fmtDFull(todayS)})`,
+    {id:'today', label:L3(`Dzisiaj (${fmtDFull(todayS)})`,`Сегодня (${fmtDFull(todayS)})`,`Today (${fmtDFull(todayS)})`),
       count:entries.filter(e=>e.date===todayS).length},
-    {id:'month', label:pl?`Ten miesiąc (${T.monthsFull[now.getMonth()]} ${now.getFullYear()})`:`Этот месяц (${T.monthsFull[now.getMonth()]} ${now.getFullYear()})`,
+    {id:'month', label:L3(`Ten miesiąc (${T.monthsFull[now.getMonth()]} ${now.getFullYear()})`,`Этот месяц (${T.monthsFull[now.getMonth()]} ${now.getFullYear()})`,`This month (${T.monthsFull[now.getMonth()]} ${now.getFullYear()})`),
       count:entries.filter(e=>e.date.startsWith(thisMonth)).length},
     ...years.map(y=>({
       id:'year_'+y,
-      label:pl?`Rok ${y}`:`Год ${y}`,
+      label:L3(`Rok ${y}`,`Год ${y}`,`Year ${y}`),
       count:entries.filter(e=>e.date.startsWith(y)).length
     })),
-    {id:'all', label:pl?'Wszystkie dane':'Все данные',
+    {id:'all', label:L3('Wszystkie dane','Все данные','All data'),
       count:entries.length, danger:true},
   ].filter(o=>o.count>0);
 
-  if(periodOpts.length===0){showToast(pl?'Brak danych':'Нет данных');return}
+  if(periodOpts.length===0){showToast(L3('Brak danych','Нет данных','No data'));return}
 
   const overlay=document.createElement('div');
   overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(12px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:12px;';
@@ -4120,14 +4517,14 @@ function clearAll(){
   const optHtml=periodOpts.map((o,i)=>`
     <button data-id="${o.id}" style="width:100%;padding:15px 20px;border:none;background:none;font-family:inherit;font-size:15px;font-weight:${o.danger?700:500};color:${o.danger?'#ff453a':'var(--t1)'};cursor:pointer;text-align:left;border-bottom:1px solid var(--dlg-sep);display:flex;justify-content:space-between;align-items:center;">
       <span>${o.label}</span>
-      <span style="font-size:12px;color:#8e8e93;font-weight:500">${o.count} ${pl?'wpisów':'записей'}</span>
+      <span style="font-size:12px;color:#8e8e93;font-weight:500">${o.count} ${L3('wpisów','записей','entries')}</span>
     </button>`).join('');
 
   overlay.innerHTML=`<div style="width:100%;max-width:460px;margin-bottom:8px;animation:fadeUp .28s cubic-bezier(.34,1.2,.64,1)">
     <div style="background:var(--dlg);border-radius:20px;overflow:hidden;margin-bottom:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)">
       <div style="padding:16px 20px 12px;text-align:center;border-bottom:1px solid var(--dlg-sep)">
-        <div style="font-size:16px;font-weight:800;color:var(--dlg-t);margin-bottom:4px">${pl?'Usuń dane za okres':'Удалить данные за период'}</div>
-        <div style="font-size:13px;color:#8e8e93">${pl?'Wybierz zakres danych do usunięcia':'Выберите период для удаления'}</div>
+        <div style="font-size:16px;font-weight:800;color:var(--dlg-t);margin-bottom:4px">${L3('Usuń dane za okres','Удалить данные за период','Delete data for a period')}</div>
+        <div style="font-size:13px;color:#8e8e93">${L3('Wybierz zakres danych do usunięcia','Выберите период для удаления','Choose the range of data to delete')}</div>
       </div>
       ${optHtml}
     </div>
@@ -4152,21 +4549,20 @@ function clearAll(){
 }
 
 function confirmDelete(periodId,opt){
-  const pl=lang!=='ru';  // pl and en both use latin
   const overlay=document.createElement('div');
   overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(14px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:12px;';
   overlay.innerHTML=`<div style="width:100%;max-width:460px;margin-bottom:8px;animation:fadeUp .28s cubic-bezier(.34,1.2,.64,1)">
     <div style="background:var(--dlg);border-radius:20px;overflow:hidden;margin-bottom:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)">
       <div style="padding:22px 20px 16px;text-align:center;border-bottom:1px solid var(--dlg-sep)">
         <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,59,48,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px">🗑</div>
-        <div style="font-size:17px;font-weight:800;color:var(--dlg-t);margin-bottom:8px">${pl?'Czy masz kopię zapasową?':'Есть резервная копия?'}</div>
-        <div style="font-size:13.5px;color:#8e8e93;line-height:1.5;margin-bottom:8px">${pl?'Zanim usuniesz <strong style="color:var(--dlg-t)">${opt.count} wpisów</strong> za <strong style="color:var(--dlg-t)">${opt.label}</strong> — upewnij się że masz eksport JSON!':'Перед удалением <strong style="color:var(--dlg-t)">${opt.count} записей</strong> за <strong style="color:var(--dlg-t)">${opt.label}</strong> — убедись что есть копия JSON!'}</div>
+        <div style="font-size:17px;font-weight:800;color:var(--dlg-t);margin-bottom:8px">${L3('Czy masz kopię zapasową?','Есть резервная копия?','Do you have a backup?')}</div>
+        <div style="font-size:13.5px;color:#8e8e93;line-height:1.5;margin-bottom:8px">${L3(`Zanim usuniesz <strong style="color:var(--dlg-t)">${opt.count} wpisów</strong> za <strong style="color:var(--dlg-t)">${opt.label}</strong> — upewnij się że masz eksport JSON!`,`Перед удалением <strong style="color:var(--dlg-t)">${opt.count} записей</strong> за <strong style="color:var(--dlg-t)">${opt.label}</strong> — убедись что есть копия JSON!`,`Before deleting <strong style="color:var(--dlg-t)">${opt.count} entries</strong> for <strong style="color:var(--dlg-t)">${opt.label}</strong> — make sure you have a JSON export!`)}</div>
         <button id="cd-export" style="margin-top:4px;padding:8px 18px;border:none;border-radius:10px;background:rgba(52,199,89,.15);color:#30d158;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">
-          💾 ${pl?'Eksportuj teraz':'Экспорт сейчас'}
+          💾 ${L3('Eksportuj teraz','Экспорт сейчас','Export now')}
         </button>
       </div>
       <button id="cd-del" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:600;color:#ff453a;cursor:pointer;border-bottom:1px solid var(--dlg-sep)">
-        ${pl?'Usuń mimo to':'Удалить в любом случае'}
+        ${L3('Usuń mimo to','Удалить в любом случае','Delete anyway')}
       </button>
       <button id="cd-cancel" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:700;color:#0a84ff;cursor:pointer">
         ${T.cancel}
@@ -4191,7 +4587,7 @@ function confirmDelete(periodId,opt){
       // Nice success animation
       const toast=document.createElement('div');
       toast.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(28,28,32,.97);color:#fff;padding:20px 28px;border-radius:20px;font-size:16px;font-weight:700;z-index:9999;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5);transition:all .4s cubic-bezier(.34,1.3,.64,1)';
-      toast.innerHTML='🗑<br><span style="font-size:13px;color:#8e8e93;font-weight:500">'+(lang==='pl'?'Dane usunięte':'Данные удалены')+'</span>';
+      toast.innerHTML='🗑<br><span style="font-size:13px;color:#8e8e93;font-weight:500">'+L3('Dane usunięte','Данные удалены','Data deleted')+'</span>';
       document.body.appendChild(toast);
       requestAnimationFrame(()=>{requestAnimationFrame(()=>{toast.style.transform='translate(-50%,-50%) scale(1)'})});
       setTimeout(()=>{toast.style.opacity='0';setTimeout(()=>toast.remove(),400)},1800);
@@ -4384,7 +4780,7 @@ function confirmSheet(title,sub,okLabel,onOk){
    SHIFTS — work schedule per location  {id,date,locId,start,end}
 ══════════════════════════════════════════ */
 let shifts=JSON.parse(localStorage.getItem('bShifts')||'[]');
-function saveShifts(){localStorage.setItem('bShifts',JSON.stringify(shifts))}
+function saveShifts(){localStorage.setItem('bShifts',JSON.stringify(shifts));tdRefresh()}
 function shiftsFor(ds,locId){
   return shifts.filter(x=>x.date===ds&&(locId==null||x.locId===locId)).sort((a,b)=>a.start.localeCompare(b.start));
 }
@@ -4520,7 +4916,8 @@ function clearShiftDay(){
     clientName(free text — used when no saved client picked), service, notes}
 ══════════════════════════════════════════ */
 let appointments=JSON.parse(localStorage.getItem('bAppointments')||'[]');
-function saveAppointments(){localStorage.setItem('bAppointments',JSON.stringify(appointments))}
+function tdRefresh(){const t=document.getElementById('tab-today');if(t&&t.style.display!=='none'&&typeof renderToday==='function')try{renderToday()}catch(e){}}
+function saveAppointments(){localStorage.setItem('bAppointments',JSON.stringify(appointments));tdRefresh()}
 
 let schedDate=new Date(NOW);
 const SCHED_START_H=7,SCHED_END_H=22,SCHED_HOUR_PX=64;
@@ -4933,7 +5330,6 @@ function avatarInitials(first,last){
 function renderClientList(){
   const q=(document.getElementById('cl-search')?.value||'').toLowerCase().trim();
   const el=document.getElementById('cl-list');if(!el)return;
-  const pl=lang!=='ru';  // pl and en both use latin
 
   const stOf={};clients.forEach(c=>{stOf[c.id]=clientStats(c)});
   const dueN=clients.filter(c=>stOf[c.id].overdue).length;
@@ -5466,7 +5862,7 @@ function apCommit(ap){
   if(fromRebook&&typeof showTab==='function')showTab('sched');
   renderSchedule();
   hap('medium');
-  showToast(lang==='pl'?'✓ Zapisano':'✓ Сохранено');
+  showToast(L3('✓ Zapisano','✓ Сохранено','✓ Saved'));
 }
 function deleteAppt(id){
   const ap=appointments.find(a=>a.id===id);if(!ap)return;
@@ -5656,7 +6052,6 @@ function renderClientMentionsBlock(cl){
 
 function openClientForm(id){
   editClientId=id;
-  const pl=lang!=='ru';  // pl and en both use latin
   const cl=id?clients.find(c=>c.id===id):null;
 
   const L=T.cl;
@@ -5725,7 +6120,6 @@ function cfClose(){
   if(cfHasData()){
     const ov=document.createElement('div');
     ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(10px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:12px;';
-    const pl=lang!=='ru';
     ov.innerHTML=`<div style="width:100%;max-width:460px;margin-bottom:8px;animation:fadeUp .25s cubic-bezier(.34,1.2,.64,1)">
       <div style="background:var(--dlg);border-radius:20px;overflow:hidden;margin-bottom:10px;box-shadow:var(--sh-xl)">
         <div style="padding:18px 20px 14px;text-align:center;border-bottom:1px solid var(--dlg-sep)">
@@ -5773,21 +6167,20 @@ function saveClient(){
   else{clients.push(cl);}
   window._inClientForm=false;
   saveClients();closeSheet();renderClientList();
-  showToast(lang==='pl'?'✓ Zapisano':'✓ Сохранено');
+  showToast(L3('✓ Zapisano','✓ Сохранено','✓ Saved'));
 }
 
 function deleteClient(id){
-  const pl=lang!=='ru';  // pl and en both use latin
   const cl=clients.find(x=>x.id===id);if(!cl)return;
   const ov=document.createElement('div');
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(10px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:12px;';
   ov.innerHTML=`<div style="width:100%;max-width:460px;margin-bottom:8px;animation:fadeUp .28s cubic-bezier(.34,1.2,.64,1)">
     <div style="background:var(--dlg);border-radius:20px;overflow:hidden;margin-bottom:10px;box-shadow:var(--sh-xl)">
       <div style="padding:20px;text-align:center;border-bottom:1px solid var(--dlg-sep)">
-        <div style="font-size:17px;font-weight:800;color:var(--dlg-t);margin-bottom:4px">${pl?'Usunąć klienta?':'Удалить клиента?'}</div>
+        <div style="font-size:17px;font-weight:800;color:var(--dlg-t);margin-bottom:4px">${L3('Usunąć klienta?','Удалить клиента?','Delete client?')}</div>
         <div style="font-size:14px;color:#8e8e93">${cl.first} ${cl.last}</div>
       </div>
-      <button id="cdel-ok" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;color:#ff453a;cursor:pointer;border-bottom:1px solid var(--dlg-sep)">${pl?'Usuń':'Удалить'}</button>
+      <button id="cdel-ok" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;color:#ff453a;cursor:pointer;border-bottom:1px solid var(--dlg-sep)">${L3('Usuń','Удалить','Delete')}</button>
       <button id="cdel-no" style="width:100%;padding:16px;border:none;background:none;font-family:inherit;font-size:17px;font-weight:700;color:#0a84ff;cursor:pointer">${T.cancel}</button>
     </div></div>`;
   document.body.appendChild(ov);
@@ -5806,7 +6199,7 @@ function deleteClient(id){
     document.body.classList.remove('sheet-open');document.body.style.top='';window.scrollTo(0,scrollY);
     setTimeout(()=>{if(shOv)shOv.classList.remove('open');if(shBox)shBox.style.transform='';},340);
     renderClientList();
-    showToast(pl?'Klient usunięty':'Клиент удалён');
+    showToast(L3('Klient usunięty','Клиент удалён','Client deleted'));
   });
 }
 
@@ -5924,6 +6317,66 @@ function taxSave(){
   const n=id=>{const v=parseFloat(String(document.getElementById(id).value).replace(',','.').replace(/[^\d.]/g,''));return isFinite(v)?v:0};
   settings.taxRate=Math.min(100,n('tax-rate'));settings.zusSoc=n('tax-soc');settings.zusHealth=n('tax-health');
   saveAll();closeSheet();renderStats();
+}
+
+
+/* ══ Insights: weekdays and locations ══ */
+let _anaP='3m';
+function anaSetP(p){_anaP=p;hap('light');renderAnalytics()}
+function anaEnts(){
+  const ts=todayStr(),t=new Date(ts+'T12:00:00');
+  let from='0000-00-00';
+  if(_anaP==='3m'){t.setDate(t.getDate()-90);from=t.getFullYear()+'-'+p2(t.getMonth()+1)+'-'+p2(t.getDate())}
+  else if(_anaP==='12m'){t.setDate(t.getDate()-365);from=t.getFullYear()+'-'+p2(t.getMonth()+1)+'-'+p2(t.getDate())}
+  return entries.filter(e=>isReal(e)&&e.date>=from&&e.date<=ts);
+}
+function anaInc(e){return e.realTotal!=null?e.realTotal:(e.total||0)}
+function anaCalc(ents){
+  const days={};
+  ents.forEach(e=>{const d=days[e.date]||(days[e.date]={inc:0,h:0,cl:0});d.inc+=anaInc(e);d.h+=(+e.hours||0);d.cl+=(+e.clients||0)});
+  const dow=Array.from({length:7},()=>({n:0,inc:0,h:0,cl:0}));
+  Object.keys(days).forEach(ds=>{const i=(new Date(ds+'T12:00:00').getDay()+6)%7,d=days[ds],o=dow[i];o.n++;o.inc+=d.inc;o.h+=d.h;o.cl+=d.cl});
+  dow.forEach(o=>{o.avg=o.n?o.inc/o.n:0;o.rate=o.h>0?o.inc/o.h:0});
+  const rel=dow.map((o,i)=>({o,i})).filter(x=>x.o.n>=3);
+  let best=-1,weak=-1;
+  if(rel.length>=2){best=rel.reduce((a,x)=>x.o.avg>a.o.avg?x:a).i;weak=rel.reduce((a,x)=>x.o.avg<a.o.avg?x:a).i;if(best===weak)weak=-1}
+  const L=locs.map(l=>{
+    const le=ents.filter(e=>e.locId===l.id);
+    const inc=le.reduce((a,e)=>a+anaInc(e),0),hh=le.reduce((a,e)=>a+(+e.hours||0),0),cl=le.reduce((a,e)=>a+(+e.clients||0),0);
+    const nd=new Set(le.map(e=>e.date)).size;
+    return{l,inc,h:hh,cl,nd,rate:hh>0?inc/hh:0,per:cl>0?inc/cl:0,day:nd?inc/nd:0};
+  }).filter(r=>r.nd>0).sort((a,b)=>b.inc-a.inc);
+  return{dow,best,weak,L,total:L.reduce((a,r)=>a+r.inc,0),nDays:Object.keys(days).length};
+}
+function renderAnalytics(){
+  const hosts=document.querySelectorAll('.ana-host');if(!hosts.length)return;
+  const V=T.svc,A=anaCalc(anaEnts());
+  const seg=`<div class="ana-seg">${[['3m',V.anaP3],['12m',V.anaP12],['all',V.anaPAll]].map(([k,l])=>`<button class="${_anaP===k?'on':''}" onclick="anaSetP('${k}')">${l}</button>`).join('')}</div>`;
+  let html=`<div class="slabel" style="margin-top:16px;display:flex;justify-content:space-between;align-items:center"><span>${V.anaT}</span>${seg}</div>`;
+  if(A.nDays<3){
+    html+=`<div class="card" style="margin-bottom:12px;padding:18px;text-align:center;font-size:13px;color:var(--t3);font-weight:600">${V.anaNone}</div>`;
+  }else{
+    const max=Math.max(...A.dow.map(o=>o.avg),1);
+    const cols=A.dow.map((o,i)=>`<div class="ana-col${i===A.best?' best':''}${i===A.weak?' weak':''}${o.n&&o.n<3?' few':''}">
+        <div class="v">${o.n?gf(o.avg):'–'}</div><div class="b" style="height:${o.n?Math.max(3,Math.round(o.avg/max*84)):3}px"></div></div>`).join('');
+    const labs=A.dow.map((o,i)=>`<div><b>${T.dows[i]}</b><span>${o.n}×${o.rate>0?' · '+Math.round(o.rate):''}</span></div>`).join('');
+    const nm=i=>i>=0?`${T.dows[i]} · ${gf(A.dow[i].avg)} ${V.anaPerDay}`:'—';
+    html+=`<div class="card" style="margin-bottom:12px;padding:14px 14px 12px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><b style="font-size:14px">${V.anaDow}</b><span style="font-size:11px;color:var(--t3);font-weight:600">${V.anaDowSub}</span></div>
+      <div class="ana-cols">${cols}</div><div class="ana-lab">${labs}</div>
+      ${A.best>=0?`<div class="ana-note"><div>${V.anaBest}<b style="color:var(--green)">${nm(A.best)}</b></div>${A.weak>=0?`<div>${V.anaWeak}<b style="color:var(--orange)">${nm(A.weak)}</b></div>`:''}</div>`:''}
+      <div style="font-size:10.5px;color:var(--t3);font-weight:600;margin-top:10px">n× = ${V.anaDays} · ${V.anaPerH}</div></div>`;
+    const rows=A.L.map((r,i)=>`<div style="padding:11px 16px;${i<A.L.length-1?'border-bottom:1px solid var(--sep)':''}">
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:${r.l.color};flex:none"></span>
+          <span style="font-size:14px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.l.icon} ${apEsc(r.l.name)}</span>
+          <b style="font-size:15px">${gf(r.inc)} zł</b></div>
+        <div style="height:6px;border-radius:3px;background:var(--bg2);overflow:hidden;margin:7px 0 6px"><div style="height:100%;width:${A.total?Math.max(3,r.inc/A.total*100):0}%;background:${r.l.color};border-radius:3px"></div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--t2);font-weight:600">
+          <span>${A.total?Math.round(r.inc/A.total*100):0}% ${V.anaShare}</span><span>${nDays(r.nd)}</span>
+          ${r.rate>0?`<span>${Math.round(r.rate)} ${V.anaPerH}</span>`:''}${r.per>0?`<span>${Math.round(r.per)} ${V.anaPerCl}</span>`:''}<span>${gf(r.day)} ${V.anaPerDay}</span></div></div>`).join('');
+    html+=`<div class="slabel" style="margin-top:4px">${V.anaLoc}</div><div class="card" style="margin-bottom:12px;padding:2px 0">${rows}</div>`;
+  }
+  hosts.forEach(el=>{el.innerHTML=html});
 }
 
 /* ══ Free slots: text for clients ══ */
@@ -6443,7 +6896,7 @@ function showDayDetail(ds){
       <div style="width:10px;height:10px;border-radius:50%;background:${l.color};flex-shrink:0"></div>
       <div style="flex:1;min-width:0">
         <div style="font-size:14px;font-weight:700">${l.icon} ${l.name}</div>
-        ${e.clients?`<div style="font-size:11px;color:var(--t2);margin-top:1px">${e.clients} kl · ${fmt(e.revenue)} zł</div>`:''}
+        ${e.clients?`<div style="font-size:11px;color:var(--t2);margin-top:1px">${e.clients} ${uKl()} · ${fmt(e.revenue)} zł</div>`:''}
       </div>
       <div style="font-size:15px;font-weight:800;color:${l.color};flex-shrink:0">${fmt(e.total)} zł</div>
     </div>`;
